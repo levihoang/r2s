@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/screens/login.dart';
+import 'package:it_intership_jobs_r2s/screens/register.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
