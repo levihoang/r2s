@@ -233,6 +233,9 @@ class _LoginState extends State<Login> {
               isFill = false;
             }
             // circular = true;
+
+            // Tạm thời
+            locator<NavigationService>().globalNavigateTo(HomeRoute, context);
           });
         },
         child: Container(
