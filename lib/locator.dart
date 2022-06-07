@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:it_intership_jobs_r2s/navigation_service.dart';
+import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
 
 GetIt locator = GetIt.instance;
 

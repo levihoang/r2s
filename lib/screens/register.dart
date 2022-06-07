@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
+
+import '../utils/routing/navigation_service.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -10,9 +14,13 @@ class Register extends StatefulWidget {
 class _Register extends State<Register> {
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+
   bool circular = false;
   bool isChecked = false;
-
+  bool isFill = true;
+  bool isValid = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,18 +63,26 @@ class _Register extends State<Register> {
                       const SizedBox(
                         height: 10,
                       ),
-                      inputBox("Xác nhận mật khẩu", _password, Icons.key, true),
+                      inputBox("Xác nhận mật khẩu", _confirmPassword, Icons.key,
+                          true),
                       const SizedBox(
                         height: 10,
                       ),
-                      inputBox("Email", _password, Icons.key, true),
+                      inputBox("Email", _email, Icons.key, true),
                       const SizedBox(
                         height: 20,
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
+
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [anounnment()],
+                    ),
                   ),
                   button("Đăng Kí"),
                   const SizedBox(
@@ -78,7 +94,7 @@ class _Register extends State<Register> {
                       children: [
                         const Text("Bạn đã có tài khoản?"),
                         const SizedBox(width: 4),
-                        link("Đăng nhập"),
+                        link("Đăng nhập", LoginRoute),
                       ],
                     ),
                   ),
@@ -109,7 +125,7 @@ class _Register extends State<Register> {
           children: [
             Text(
               text,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const SizedBox(
               height: 10,
@@ -117,7 +133,7 @@ class _Register extends State<Register> {
             TextFormField(
                 controller: controller,
                 obscureText: obscureText,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Color.fromARGB(255, 7, 7, 7)),
                 // decoration: InputDecoration(
 
                 //   border:
@@ -145,7 +161,15 @@ class _Register extends State<Register> {
       child: InkWell(
         onTap: () async {
           setState(() {
-            circular = true;
+            if (checkFill()) {
+              if (validPassword(_password.text)) {
+              } else {
+                isValid = false;
+              }
+            } else {
+              isFill = false;
+            }
+            // circular = true;
           });
         },
         child: Container(
@@ -167,14 +191,60 @@ class _Register extends State<Register> {
     );
   }
 
-  Widget link(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 17,
-        decoration: TextDecoration.underline,
-        color: Color.fromARGB(255, 4, 174, 78),
+  Widget link(String text, String route) {
+    return InkWell(
+      onTap: () {
+        locator<NavigationService>().globalNavigateTo(route, context);
+      },
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 17,
+          decoration: TextDecoration.underline,
+          color: Color.fromARGB(255, 4, 174, 78),
+        ),
       ),
     );
+  }
+
+  Widget anounnment() {
+    return isFill == false
+        ? Column(
+            children: const [
+              Text(
+                "Vui lòng điền hết thông tin",
+                style: TextStyle(color: Colors.red, fontSize: 15),
+              )
+            ],
+          )
+        : isValid == false
+            ? Column(
+                children: const [
+                  Text(
+                    "Mật khẩu không an toàn",
+                    style: TextStyle(color: Colors.red, fontSize: 15),
+                  ),
+                ],
+              )
+            : const SizedBox(
+                height: 18,
+              );
+  }
+
+  bool checkFill() {
+    if (_username.text.isEmpty ||
+        _password.text.isEmpty ||
+        _confirmPassword.text.isEmpty ||
+        _email.text.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool validPassword(String value) {
+    String pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 }

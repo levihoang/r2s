@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/screens/login.dart';
+import 'package:it_intership_jobs_r2s/screens/register.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
-import 'package:it_intership_jobs_r2s/utils/screens/login.dart';
-import 'package:it_intership_jobs_r2s/utils/screens/register.dart';
 
 PageRoute generateRoute(RouteSettings settings) {
   print("generateRoute: ${settings.name}");

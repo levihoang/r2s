@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
+
+import '../utils/routing/navigation_service.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -12,6 +16,8 @@ class _LoginState extends State<Login> {
   final TextEditingController _password = TextEditingController();
   bool circular = false;
   bool isChecked = false;
+  bool isWrong = true;
+  bool isFill = true;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class _LoginState extends State<Login> {
           child: Container(
               padding: const EdgeInsets.only(top: 100),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -50,28 +56,34 @@ class _LoginState extends State<Login> {
                       ),
                       inputBox("Tài khoản", _username, Icons.people, false),
                       const SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
                       inputBox("Mật khẩu", _password, Icons.key, true),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                     ],
                   ),
                   checkBox(),
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [anounnment()],
+                    ),
+                  ),
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   button("Đăng nhập"),
                   const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 140),
-                    child: link("Quên mật khẩu?"),
+                    child: link("Quên mật khẩu?", RegisterRoute),
                   ),
                   const SizedBox(
                     height: 10,
@@ -81,7 +93,7 @@ class _LoginState extends State<Login> {
                     child: Row(
                       children: [
                         const Text("Bạn chưa có tài khoản?"),
-                        link("Đăng kí"),
+                        link("Đăng kí", RegisterRoute),
                       ],
                     ),
                   ),
@@ -89,14 +101,16 @@ class _LoginState extends State<Login> {
                     height: 40,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 160),
-                    child: Image.asset(
-                      "images/google.jpg",
-                      width: 70.0,
-                      height: 70.0,
-                      fit: BoxFit.cover,
-                    ),
-                  )
+                      padding: const EdgeInsets.only(left: 160),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Image.asset(
+                          "images/google.jpg",
+                          width: 70.0,
+                          height: 70.0,
+                          fit: BoxFit.cover,
+                        ),
+                      ))
                 ],
               )),
         ),
@@ -110,11 +124,11 @@ class _LoginState extends State<Login> {
       width: MediaQuery.of(context).size.width - 30,
       height: 50,
       child: Padding(
-        padding: const EdgeInsets.only(left: 22),
+        padding: const EdgeInsets.only(left: 12),
         child: TextFormField(
             controller: controller,
             obscureText: obscureText,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Color.fromARGB(255, 6, 2, 2)),
             decoration: InputDecoration(
               prefixIcon: Icon(
                 icon,
@@ -171,13 +185,54 @@ class _LoginState extends State<Login> {
     );
   }
 
+  Widget anounnment() {
+    return isFill == false
+        ? Column(
+            children: const [
+              Text(
+                "Vui lòng điền hết thông tin",
+                style: TextStyle(color: Colors.red, fontSize: 15),
+              )
+            ],
+          )
+        : isWrong == false
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    "Đăng nhập sai tài khoản hoặc mật khẩu.",
+                    style: TextStyle(color: Colors.red, fontSize: 15),
+                  ),
+                  Text(
+                    "Bạn còn 2 lần thử",
+                    style: TextStyle(color: Colors.red, fontSize: 15),
+                  )
+                ],
+              )
+            : const SizedBox(
+                height: 18,
+              );
+  }
+
+  bool checkFillAll() {
+    if (_username.text.isEmpty || _password.text.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   Widget button(String btnname) {
     return Padding(
       padding: const EdgeInsets.only(left: 110),
       child: InkWell(
         onTap: () async {
           setState(() {
-            circular = true;
+            //Kiểm tra đã điền username and password chưa
+            if (_username.text.isEmpty || _password.text.isEmpty) {
+              isFill = false;
+            }
+            // circular = true;
           });
         },
         child: Container(
@@ -199,13 +254,18 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget link(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 17,
-        decoration: TextDecoration.underline,
-        color: Color.fromARGB(255, 4, 174, 78),
+  Widget link(String text, String route) {
+    return InkWell(
+      onTap: () {
+        locator<NavigationService>().globalNavigateTo(route, context);
+      },
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 17,
+          decoration: TextDecoration.underline,
+          color: Color.fromARGB(255, 4, 174, 78),
+        ),
       ),
     );
   }
