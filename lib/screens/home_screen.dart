@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 
+import '../locator.dart';
+import '../utils/routing/navigation_service.dart';
+import '../utils/routing/route_name.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -91,6 +95,8 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double sizeDivide = MediaQuery.of(context).size.width / 39;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -112,8 +118,8 @@ class SearchBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            width: 10,
+          SizedBox(
+            width: sizeDivide,
           ),
           Image.asset(
             'images/icon_filter.png',
