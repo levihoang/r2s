@@ -23,6 +23,7 @@ class _Register extends State<Register> {
   bool isValid = true;
   @override
   Widget build(BuildContext context) {
+    double sizediv = MediaQuery.of(context).size.width / 39;
     return Scaffold(
       body: SingleChildScrollView(
         physics: const ScrollPhysics(),
@@ -31,7 +32,7 @@ class _Register extends State<Register> {
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Container(
-              padding: const EdgeInsets.only(top: 100),
+              padding: EdgeInsets.only(top: sizediv * 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,59 +53,52 @@ class _Register extends State<Register> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(
-                        height: 50,
+                      SizedBox(
+                        height: sizediv * 5,
                       ),
-                      inputBox("Tài Khoản", _username, Icons.people, false),
-                      const SizedBox(
-                        height: 10,
+                      inputBox(
+                          "Tài Khoản", _username, Icons.people, false, sizediv),
+                      SizedBox(
+                        height: sizediv,
                       ),
-                      inputBox("Mật Khẩu", _password, Icons.key, true),
-                      const SizedBox(
-                        height: 10,
+                      inputBox("Mật Khẩu", _password, Icons.key, true, sizediv),
+                      SizedBox(
+                        height: sizediv,
                       ),
                       inputBox("Xác nhận mật khẩu", _confirmPassword, Icons.key,
-                          true),
-                      const SizedBox(
-                        height: 10,
+                          true, sizediv),
+                      SizedBox(
+                        height: sizediv,
                       ),
-                      inputBox("Email", _email, Icons.key, true),
-                      const SizedBox(
-                        height: 20,
+                      inputBox("Email", _email, Icons.key, true, sizediv),
+                      SizedBox(
+                        height: sizediv * 2,
                       ),
                     ],
                   ),
-
                   SizedBox(
-                    height: 50,
+                    height: sizediv * 5,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [anounnment()],
+                      children: [anounnment(sizediv)],
                     ),
                   ),
-                  button("Đăng Kí"),
-                  const SizedBox(
-                    height: 10,
+                  button("Đăng Kí", sizediv),
+                  SizedBox(
+                    height: sizediv,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 100),
+                    padding: EdgeInsets.only(left: sizediv * 10),
                     child: Row(
                       children: [
                         const Text("Bạn đã có tài khoản?"),
-                        const SizedBox(width: 4),
+                        SizedBox(width: sizediv / 2),
                         link("Đăng nhập", LoginRoute),
                       ],
                     ),
                   ),
-
-                  // Image.asset(
-                  //   "/images/google.ico",
-                  //   width: 60.0,
-                  //   height: 40.0,
-                  //   fit: BoxFit.cover,
-                  // )
                 ],
               )),
         ),
@@ -113,12 +107,12 @@ class _Register extends State<Register> {
   }
 
   Widget inputBox(String text, TextEditingController controller, IconData icon,
-      bool obscureText) {
+      bool obscureText, double sizediv) {
     return SizedBox(
       width: MediaQuery.of(context).size.width - 30,
-      height: 92,
+      height: sizediv * 9.2,
       child: Padding(
-        padding: const EdgeInsets.only(left: 22),
+        padding: EdgeInsets.only(left: sizediv * 2.2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,8 +121,8 @@ class _Register extends State<Register> {
               text,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: sizediv,
             ),
             TextFormField(
                 controller: controller,
@@ -155,9 +149,9 @@ class _Register extends State<Register> {
     );
   }
 
-  Widget button(String btnname) {
+  Widget button(String btnname, double sizediv) {
     return Padding(
-      padding: const EdgeInsets.only(left: 110),
+      padding: EdgeInsets.only(left: sizediv * 11),
       child: InkWell(
         onTap: () async {
           setState(() {
@@ -174,7 +168,7 @@ class _Register extends State<Register> {
         },
         child: Container(
           width: MediaQuery.of(context).size.width / 2,
-          height: 50,
+          height: sizediv * 5,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: const Color.fromARGB(255, 5, 177, 80)),
@@ -207,7 +201,7 @@ class _Register extends State<Register> {
     );
   }
 
-  Widget anounnment() {
+  Widget anounnment(double sizediv) {
     return isFill == false
         ? Column(
             children: const [
@@ -226,8 +220,8 @@ class _Register extends State<Register> {
                   ),
                 ],
               )
-            : const SizedBox(
-                height: 18,
+            : SizedBox(
+                height: sizediv * 1.8,
               );
   }
 
