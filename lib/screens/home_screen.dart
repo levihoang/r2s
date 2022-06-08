@@ -1,9 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
-
-import '../locator.dart';
-import '../utils/routing/navigation_service.dart';
-import '../utils/routing/route_name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -90,8 +88,15 @@ class TopBar extends StatelessWidget {
   }
 }
 
-class SearchBar extends StatelessWidget {
+class SearchBar extends StatefulWidget {
   const SearchBar({Key? key}) : super(key: key);
+
+  @override
+  State<SearchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<SearchBar> {
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +106,10 @@ class SearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              controller: _searchController,
+              decoration: const InputDecoration(
                 contentPadding: EdgeInsets.all(0),
                 filled: true,
                 fillColor: Color(0xFFFFFFFF),
@@ -116,6 +122,9 @@ class SearchBar extends StatelessWidget {
                 ),
                 hintText: ' Search',
               ),
+              onChanged: (value) => {
+                log(_searchController.text),
+              },
             ),
           ),
           SizedBox(

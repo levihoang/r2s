@@ -32,75 +32,73 @@ class _Register extends State<Register> {
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Container(
-              padding: EdgeInsets.only(top: sizediv * 10),
+              // padding: EdgeInsets.only(top: sizediv * 10),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      const Text(
-                        "IT IntershipJob",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text(
-                        "Đăng Kí",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: sizediv * 5,
-                      ),
-                      inputBox(
-                          "Tài Khoản", _username, Icons.people, false, sizediv),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                      inputBox("Mật Khẩu", _password, Icons.key, true, sizediv),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                      inputBox("Xác nhận mật khẩu", _confirmPassword, Icons.key,
-                          true, sizediv),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                      inputBox("Email", _email, Icons.key, true, sizediv),
-                      SizedBox(
-                        height: sizediv * 2,
-                      ),
-                    ],
+                  const Text(
+                    "IT IntershipJob",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Text(
+                    "Đăng Kí",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(
                     height: sizediv * 5,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [anounnment(sizediv)],
-                    ),
                   ),
-                  button("Đăng Kí", sizediv),
+                  inputBox(
+                      "Tài Khoản", _username, Icons.people, false, sizediv),
                   SizedBox(
                     height: sizediv,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: sizediv * 10),
-                    child: Row(
-                      children: [
-                        const Text("Bạn đã có tài khoản?"),
-                        SizedBox(width: sizediv / 2),
-                        link("Đăng nhập", LoginRoute),
-                      ],
-                    ),
+                  inputBox("Mật Khẩu", _password, Icons.key, true, sizediv),
+                  SizedBox(
+                    height: sizediv,
+                  ),
+                  inputBox("Xác nhận mật khẩu", _confirmPassword, Icons.key,
+                      true, sizediv),
+                  SizedBox(
+                    height: sizediv,
+                  ),
+                  inputBox("Email", _email, Icons.key, true, sizediv),
+                  SizedBox(
+                    height: sizediv * 2,
                   ),
                 ],
-              )),
+              ),
+              SizedBox(
+                height: sizediv * 5,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [anounnment(sizediv)],
+                ),
+              ),
+              button("Đăng Kí", sizediv),
+              SizedBox(
+                height: sizediv,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Bạn đã có tài khoản?"),
+                  SizedBox(width: sizediv / 2),
+                  link("Đăng nhập", LoginRoute),
+                ],
+              ),
+            ],
+          )),
         ),
       ),
     );
@@ -108,11 +106,11 @@ class _Register extends State<Register> {
 
   Widget inputBox(String text, TextEditingController controller, IconData icon,
       bool obscureText, double sizediv) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width - 30,
-      height: sizediv * 9.2,
-      child: Padding(
-        padding: EdgeInsets.only(left: sizediv * 2.2),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width - 30,
+        // height: sizediv * 10,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,6 +132,8 @@ class _Register extends State<Register> {
                 //       OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 // ),
                 decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(
@@ -150,36 +150,33 @@ class _Register extends State<Register> {
   }
 
   Widget button(String btnname, double sizediv) {
-    return Padding(
-      padding: EdgeInsets.only(left: sizediv * 11),
-      child: InkWell(
-        onTap: () async {
-          setState(() {
-            if (checkFill()) {
-              if (validPassword(_password.text)) {
-              } else {
-                isValid = false;
-              }
+    return InkWell(
+      onTap: () async {
+        setState(() {
+          if (checkFill()) {
+            if (validPassword(_password.text)) {
             } else {
-              isFill = false;
+              isValid = false;
             }
-            // circular = true;
-          });
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width / 2,
-          height: sizediv * 5,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(255, 5, 177, 80)),
-          child: Center(
-            child: circular
-                ? const CircularProgressIndicator()
-                : Text(
-                    btnname,
-                    style: const TextStyle(fontSize: 19, color: Colors.white),
-                  ),
-          ),
+          } else {
+            isFill = false;
+          }
+          // circular = true;
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2,
+        height: sizediv * 5,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(255, 5, 177, 80)),
+        child: Center(
+          child: circular
+              ? const CircularProgressIndicator()
+              : Text(
+                  btnname,
+                  style: const TextStyle(fontSize: 19, color: Colors.white),
+                ),
         ),
       ),
     );
