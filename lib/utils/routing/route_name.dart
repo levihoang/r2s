@@ -2,5 +2,6 @@
 
 const String LoginRoute = "Login";
 const String RegisterRoute = "Register";
-
-const String fillter = "Fillter";
+const String HomeRoute = "HomeScreen";
+const String DetailPostRoute = "DetailPostScreen";
+const String ProfileRoute = "ProfileScreen";
