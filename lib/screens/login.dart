@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
 import '../utils/routing/navigation_service.dart';
@@ -14,6 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
+
   bool circular = false;
   bool isChecked = false;
   bool isWrong = true;
@@ -21,6 +23,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    double sizediv = MediaQuery.of(context).size.width / 39;
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: const ScrollPhysics(),
@@ -29,9 +33,8 @@ class _LoginState extends State<Login> {
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Container(
-              padding: const EdgeInsets.only(top: 100),
+              padding: EdgeInsets.only(top: sizediv * 10),
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,22 +54,23 @@ class _LoginState extends State<Login> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(
-                        height: 80,
+                      SizedBox(
+                        height: sizediv * 8,
                       ),
-                      inputBox("Tài khoản", _username, Icons.people, false),
-                      const SizedBox(
-                        height: 15,
+                      inputBox(
+                          "Tài khoản", _username, Icons.people, false, sizediv),
+                      SizedBox(
+                        height: sizediv * 3 / 2,
                       ),
-                      inputBox("Mật khẩu", _password, Icons.key, true),
-                      const SizedBox(
-                        height: 10,
+                      inputBox("Mật khẩu", _password, Icons.key, true, sizediv),
+                      SizedBox(
+                        height: sizediv,
                       ),
                     ],
                   ),
-                  checkBox(),
+                  checkBox(sizediv),
                   SizedBox(
-                    height: 50,
+                    height: sizediv * 5,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,22 +78,22 @@ class _LoginState extends State<Login> {
                       children: [anounnment()],
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height: sizediv * 2,
                   ),
-                  button("Đăng nhập"),
-                  const SizedBox(
-                    height: 20,
+                  button("Đăng nhập", sizediv),
+                  SizedBox(
+                    height: sizediv * 2,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 140),
+                    padding: EdgeInsets.only(left: sizediv * 14),
                     child: link("Quên mật khẩu?", RegisterRoute),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: sizediv,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 100),
+                    padding: EdgeInsets.only(left: sizediv * 10),
                     child: Row(
                       children: [
                         const Text("Bạn chưa có tài khoản?"),
@@ -97,11 +101,11 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: sizediv * 4,
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(left: 160),
+                      padding: EdgeInsets.only(left: sizediv * 16),
                       child: InkWell(
                         onTap: () {},
                         child: Image.asset(
@@ -119,12 +123,12 @@ class _LoginState extends State<Login> {
   }
 
   Widget inputBox(String text, TextEditingController controller, IconData icon,
-      bool obscureText) {
+      bool obscureText, double sizediv) {
     return SizedBox(
       width: MediaQuery.of(context).size.width - 30,
-      height: 50,
+      height: sizediv * 5,
       child: Padding(
-        padding: const EdgeInsets.only(left: 12),
+        padding: EdgeInsets.only(left: sizediv * 1.4),
         child: TextFormField(
             controller: controller,
             obscureText: obscureText,
@@ -149,7 +153,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget checkBox() {
+  Widget checkBox(double sizediv) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -163,7 +167,7 @@ class _LoginState extends State<Login> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 17),
+      padding: EdgeInsets.only(left: sizediv * 1.7),
       child: Row(
         children: [
           Checkbox(
@@ -186,6 +190,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget anounnment() {
+    double sizediv = MediaQuery.of(context).size.width / 39;
     return isFill == false
         ? Column(
             children: const [
@@ -210,8 +215,8 @@ class _LoginState extends State<Login> {
                   )
                 ],
               )
-            : const SizedBox(
-                height: 18,
+            : SizedBox(
+                height: sizediv * 1.8,
               );
   }
 
@@ -222,9 +227,9 @@ class _LoginState extends State<Login> {
     return true;
   }
 
-  Widget button(String btnname) {
+  Widget button(String btnname, double sizediv) {
     return Padding(
-      padding: const EdgeInsets.only(left: 110),
+      padding: EdgeInsets.only(left: sizediv * 11.1),
       child: InkWell(
         onTap: () async {
           setState(() {
@@ -240,7 +245,7 @@ class _LoginState extends State<Login> {
         },
         child: Container(
           width: MediaQuery.of(context).size.width / 2,
-          height: 50,
+          height: sizediv * 5,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: const Color.fromARGB(255, 5, 177, 80)),
