@@ -1,9 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
-
-import '../locator.dart';
-import '../utils/routing/navigation_service.dart';
-import '../utils/routing/route_name.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: const [
-            TopBar(),
+            // TopBar(),
+            SizedBox(
+              height: 10,
+            ),
             SearchBar(),
             SizedBox(
               height: 10,
@@ -36,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Saved'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Notifications'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Person'),
         ],
         onTap: (index) {
@@ -70,7 +74,7 @@ class TopBar extends StatelessWidget {
             ),
           ),
           const Text(
-            'Home',
+            'HOME',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -133,15 +137,118 @@ class SearchBar extends StatelessWidget {
   }
 }
 
-class Body extends StatelessWidget {
-  const Body({super.key});
+class LatestPost extends StatelessWidget {
+  const LatestPost({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PageController pageBriefController = PageController();
+    PageController pageHomeController = PageController();
+
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 320,
+          child: PageView(
+            controller: pageBriefController,
+            children: const [
+              BriefPost(),
+              BriefPost(),
+              BriefPost(),
+              BriefPost(),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        SmoothPageIndicator(
+          controller: pageBriefController,
+          count: 4,
+          effect: const WormEffect(
+            activeDotColor: yellowColor,
+            dotHeight: 5,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Posts(),
+      ],
+    );
+  }
+}
+
+class MostPosts extends StatelessWidget {
+  const MostPosts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Posts(),
+      ],
+    );
+  }
+}
+
+class NearPosts extends StatelessWidget {
+  const NearPosts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Posts(),
+      ],
+    );
+  }
+}
+
+class Body extends StatefulWidget {
+  const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  var bodyItems = [
+    const LatestPost(),
+    const MostPosts(),
+    const NearPosts(),
+  ];
+  var topBar = 0;
+  @override
+  Widget build(BuildContext context) {
+    PageController pageHomeController = PageController();
+
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           child: Column(
             children: [
               const SizedBox(
@@ -149,26 +256,61 @@ class Body extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Text(
-                    'Latest',
-                    style: TextStyle(
-                      color: yellowColor,
-                      fontWeight: FontWeight.bold,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      topBar = 0;
+                      pageHomeController.jumpToPage(topBar);
+
+                      setState(() {});
+                    },
+                    child: Text(
+                      'Latest',
+                      style: TextStyle(
+                          color: topBar == 0 ? yellowColor : Colors.black),
                     ),
                   ),
-                  Text('Most'),
-                  Text('Near'),
+                  InkWell(
+                      onTap: () {
+                        topBar = 1;
+                        pageHomeController.jumpToPage(topBar);
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Most',
+                        style: TextStyle(
+                            color: topBar == 1 ? yellowColor : Colors.black),
+                      )),
+                  InkWell(
+                      onTap: () {
+                        topBar = 2;
+                        pageHomeController.jumpToPage(topBar);
+
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Near',
+                        style: TextStyle(
+                            color: topBar == 2 ? yellowColor : Colors.black),
+                      )),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const BriefPost(),
-              const SizedBox(
-                height: 20,
-              ),
-              const PostLatest(),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 2000,
+                    child: PageView(
+                      controller: pageHomeController,
+                      children: bodyItems,
+                      onPageChanged: (value) {
+                        topBar = value;
+                        log('$pageHomeController');
+                        setState(() {});
+                      },
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -182,42 +324,42 @@ class BriefPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-          child: Image.asset(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
             'images/intro_1.jpg',
             height: 250,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
-        ),
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-              bottomRight: Radius.circular(20),
-              bottomLeft: Radius.circular(20)),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            color: Colors.white,
-            child: const Text(
-              'Nash Tech - Global software, offshore, development and IT company',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20)),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              height: 70,
+              color: Colors.white,
+              child: const Text(
+                'Nash Tech - Global software, offshore, development and IT company',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class PostLatest extends StatelessWidget {
-  const PostLatest({super.key});
+class Posts extends StatelessWidget {
+  const Posts({super.key});
 
   @override
   Widget build(BuildContext context) {
