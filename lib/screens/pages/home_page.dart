@@ -76,23 +76,25 @@ class SearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                filled: true,
-                fillColor: Color(0xFFFFFFFF),
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                suffixIcon: Icon(Icons.close),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                hintText: ' Search',
+          Expanded(
+              child: TextField(
+            style: const TextStyle(fontSize: 15, color: textColor),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText: 'Tìm kiếm',
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
-          ),
+          )),
           SizedBox(
             width: sizeDivide,
           ),
@@ -199,12 +201,10 @@ class _BodyState extends State<Body> {
   var topBar = 0;
   @override
   Widget build(BuildContext context) {
-    PageController pageHomeController = PageController();
-
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
               Row(
@@ -218,7 +218,7 @@ class _BodyState extends State<Body> {
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: Text(
-                        'Latest',
+                        'Mới nhất',
                         style: TextStyle(
                             color: topBar == 0 ? yellowColor : Colors.black),
                       ),
@@ -233,7 +233,7 @@ class _BodyState extends State<Body> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         child: Text(
-                          'Most',
+                          'Phổ biến nhất',
                           style: TextStyle(
                               color: topBar == 1 ? yellowColor : Colors.black),
                         ),
@@ -246,7 +246,7 @@ class _BodyState extends State<Body> {
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: Text(
-                          'Near',
+                          'Gần nhất',
                           style: TextStyle(
                               color: topBar == 2 ? yellowColor : Colors.black),
                         ),
@@ -313,19 +313,19 @@ class Posts extends StatelessWidget {
       children: const [
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
       ],
