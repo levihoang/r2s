@@ -31,10 +31,12 @@ dependencies:
   dropdown_button2: ^1.5.3
   flutter:
     sdk: flutter
+  flutter_easyloading: ^3.0.5
   flutter_launcher_icons: ^0.9.3
   flutter_linkify: ^5.0.2
   get_it: ^7.2.0
   google_fonts: ^3.0.1
+  smooth_page_indicator: ^1.0.0+2
   syncfusion_flutter_sliders: ^20.1.59
 
 dev_dependencies:
@@ -43,7 +45,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
-  image_path: "images/logo_r2s.png" 
+  image_path: "images/logo_r2s.png"
   android: true
   ios: true
 # For information on the generic Dart part of this file, see the
