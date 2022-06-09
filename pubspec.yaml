@@ -31,6 +31,7 @@ dependencies:
   dropdown_button2: ^1.5.3
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.3
   flutter_linkify: ^5.0.2
   get_it: ^7.2.0
   google_fonts: ^3.0.1
@@ -41,6 +42,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  image_path: "images/logo_r2s.png" 
+  android: true
+  ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.

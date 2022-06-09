@@ -1,42 +1,24 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:it_intership_jobs_r2s/utils/global_variables.dart';
+import 'package:it_intership_jobs_r2s/utils/colors.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../utils/colors.dart';
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  var selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: grayColor,
-      body: SafeArea(
-        child: appScreen[selectedIndex],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Saved'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Person'),
-        ],
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-      ),
+    return Column(
+      children: const [
+        // TopBar(),
+        SizedBox(
+          height: 10,
+        ),
+        SearchBar(),
+        SizedBox(
+          height: 10,
+        ),
+        Body(),
+      ],
     );
   }
 }
@@ -63,7 +45,7 @@ class TopBar extends StatelessWidget {
             ),
           ),
           const Text(
-            'Home',
+            'HOME',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -83,15 +65,8 @@ class TopBar extends StatelessWidget {
   }
 }
 
-class SearchBar extends StatefulWidget {
+class SearchBar extends StatelessWidget {
   const SearchBar({Key? key}) : super(key: key);
-
-  @override
-  State<SearchBar> createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<SearchBar> {
-  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +76,9 @@ class _SearchBarState extends State<SearchBar> {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(0),
                 filled: true,
                 fillColor: Color(0xFFFFFFFF),
@@ -117,9 +91,6 @@ class _SearchBarState extends State<SearchBar> {
                 ),
                 hintText: ' Search',
               ),
-              onChanged: (value) => {
-                log(_searchController.text),
-              },
             ),
           ),
           SizedBox(
@@ -137,42 +108,155 @@ class _SearchBarState extends State<SearchBar> {
   }
 }
 
-class Body extends StatelessWidget {
-  const Body({super.key});
+class LatestPost extends StatelessWidget {
+  const LatestPost({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PageController pageBriefController = PageController();
+    PageController pageHomeController = PageController();
+
+    return Column(
+      children: [
+        SizedBox(
+          width: double.infinity,
+          height: 320,
+          child: PageView(
+            controller: pageBriefController,
+            children: const [
+              BriefPost(),
+              BriefPost(),
+              BriefPost(),
+              BriefPost(),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        SmoothPageIndicator(
+          controller: pageBriefController,
+          count: 4,
+          effect: const WormEffect(
+            activeDotColor: yellowColor,
+            dotHeight: 5,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        const Posts(),
+      ],
+    );
+  }
+}
+
+class MostPosts extends StatelessWidget {
+  const MostPosts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 10,
+        ),
+        Posts(),
+      ],
+    );
+  }
+}
+
+class NearPosts extends StatelessWidget {
+  const NearPosts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 10,
+        ),
+        Posts(),
+      ],
+    );
+  }
+}
+
+class Body extends StatefulWidget {
+  const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  var bodyItems = [
+    const LatestPost(),
+    const MostPosts(),
+    const NearPosts(),
+  ];
+  var topBar = 0;
+  @override
+  Widget build(BuildContext context) {
+    PageController pageHomeController = PageController();
+
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              const SizedBox(
-                height: 10,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Text(
-                    'Latest',
-                    style: TextStyle(
-                      color: yellowColor,
-                      fontWeight: FontWeight.bold,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      topBar = 0;
+                      setState(() {});
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Text(
+                        'Latest',
+                        style: TextStyle(
+                            color: topBar == 0 ? yellowColor : Colors.black),
+                      ),
                     ),
                   ),
-                  Text('Most'),
-                  Text('Near'),
+                  InkWell(
+                      onTap: () {
+                        topBar = 1;
+                        setState(() {});
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Text(
+                          'Most',
+                          style: TextStyle(
+                              color: topBar == 1 ? yellowColor : Colors.black),
+                        ),
+                      )),
+                  InkWell(
+                      onTap: () {
+                        topBar = 2;
+                        setState(() {});
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          'Near',
+                          style: TextStyle(
+                              color: topBar == 2 ? yellowColor : Colors.black),
+                        ),
+                      )),
                 ],
               ),
+              bodyItems[topBar],
               const SizedBox(
-                height: 20,
-              ),
-              const BriefPost(),
-              const SizedBox(
-                height: 20,
-              ),
-              const PostLatest(),
+                height: 10,
+              )
             ],
           ),
         ),
@@ -186,42 +270,42 @@ class BriefPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-          child: Image.asset(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
             'images/intro_1.jpg',
             height: 250,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
-        ),
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-              bottomRight: Radius.circular(20),
-              bottomLeft: Radius.circular(20)),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            color: Colors.white,
-            child: const Text(
-              'Nash Tech - Global software, offshore, development and IT company',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20)),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              height: 70,
+              color: Colors.white,
+              child: const Text(
+                'Nash Tech - Global software, offshore, development and IT company',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class PostLatest extends StatelessWidget {
-  const PostLatest({super.key});
+class Posts extends StatelessWidget {
+  const Posts({super.key});
 
   @override
   Widget build(BuildContext context) {
