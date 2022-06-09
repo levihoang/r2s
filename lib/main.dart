@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       // home: Login(),
       onGenerateRoute: generateRoute,
-      initialRoute: LoginRoute,
+      initialRoute: FillterRoute,
     );
   }
 }

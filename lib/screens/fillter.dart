@@ -1,4 +1,8 @@
+import 'dart:math';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class Fillter extends StatefulWidget {
   const Fillter({Key? key}) : super(key: key);
@@ -8,19 +12,33 @@ class Fillter extends StatefulWidget {
 }
 
 class _FillterState extends State<Fillter> {
+  num? start, end;
   String? selectedValue;
   String tasktype = "";
+  bool circular = false;
+  final double _currentSliderValue = 20;
+  SfRangeValues _values = const SfRangeValues(0, 10);
 
   final _dropdownFormKey = GlobalKey<FormState>();
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "USA", child: Text("USA")),
-      const DropdownMenuItem(value: "Canada", child: Text("Canada")),
-      const DropdownMenuItem(value: "Brazil", child: Text("Brazil")),
-      const DropdownMenuItem(value: "England", child: Text("England")),
-    ];
-    return menuItems;
-  }
+  // List<DropdownMenuItem<String>> get dropdownItems {
+  //   List<DropdownMenuItem<String>> menuItems = [
+  //     const DropdownMenuItem(value: "USA", child: Text("USA")),
+  //     const DropdownMenuItem(value: "Canada", child: Text("Canada")),
+  //     const DropdownMenuItem(value: "Brazil", child: Text("Brazil")),
+  //     const DropdownMenuItem(value: "England", child: Text("England")),
+  //   ];
+  //   return menuItems;
+  // }
+  final List<String> items = [
+    'Item1',
+    'Item2',
+    'Item3',
+    'Item4',
+    'Item5',
+    'Item6',
+    'Item7',
+    'Item8',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,25 +60,90 @@ class _FillterState extends State<Fillter> {
             children: [
               title("Ngành Nghề"),
               SizedBox(
-                height: sizediv,
+                height: sizediv * 2,
               ),
-              dropDownPositon(),
+              dropDownPositon(items, "Chọn ngành nghề"),
               SizedBox(
-                height: sizediv,
+                height: sizediv * 2,
               ),
               title("Địa Điểm"),
+              SizedBox(
+                height: sizediv * 2,
+              ),
+              dropDownPositon(items, "Chọn địa điểm"),
+              SizedBox(
+                height: sizediv * 2,
+              ),
               title("Mức Lương"),
+              SizedBox(
+                height: sizediv * 2,
+              ),
+              salaryRange(),
+              SizedBox(
+                height: sizediv * 2,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  "Từ ${_values.start.toString().replaceFirst(".0", "")}-${_values.end.toString().replaceFirst(".0", "")} triệu",
+                  style: const TextStyle(fontSize: 17),
+                ),
+              ),
+              SizedBox(
+                height: sizediv * 2,
+              ),
               title("Hình thức làm việc"),
+              SizedBox(
+                height: sizediv * 2,
+              ),
               Row(
                 children: [
                   taskSelect("Full-time", 0xFFE0E0E0, sizediv),
                   taskSelect("Part time", 0xFFE0E0E0, sizediv),
                   taskSelect("Remote", 0xFFE0E0E0, sizediv)
                 ],
+              ),
+              SizedBox(
+                height: sizediv * 3,
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [button("Áp Dụng", sizediv)],
+                ),
               )
             ],
           ),
         ));
+  }
+
+  Widget button(String btnname, double sizediv) {
+    return InkWell(
+      onTap: () async {
+        setState(() {
+          // circular = true;
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2,
+        height: sizediv * 5,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.yellowAccent),
+        child: Center(
+          child: circular
+              ? const CircularProgressIndicator()
+              : Text(
+                  btnname,
+                  style: const TextStyle(
+                      fontSize: 19,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+        ),
+      ),
+    );
   }
 
   Widget title(String text) {
@@ -86,7 +169,7 @@ class _FillterState extends State<Fillter> {
         },
         child: Chip(
           backgroundColor: tasktype == lable
-              ? Color.fromARGB(255, 240, 173, 66)
+              ? const Color.fromARGB(255, 186, 174, 154)
               : Color(color),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -106,42 +189,101 @@ class _FillterState extends State<Fillter> {
     );
   }
 
-  Widget dropDownPositon() {
-    return Form(
-        key: _dropdownFormKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButtonFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 243, 240, 238), width: 2),
-                    borderRadius: BorderRadius.circular(20),
+  Widget salaryRange() {
+    return SfRangeSlider(
+      min: 0,
+      max: 10,
+      values: _values,
+      interval: 2,
+      showTicks: true,
+      showLabels: true,
+      activeColor: Colors.indigo,
+      inactiveColor: Colors.grey[300],
+      enableTooltip: true,
+      minorTicksPerInterval: 1,
+      stepSize: 1,
+      onChanged: (SfRangeValues values) {
+        setState(() {
+          _values = values;
+        });
+      },
+    );
+  }
+
+  Widget dropDownPositon(List<String> list, String text) {
+    return Center(
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          isExpanded: true,
+          hint: Row(
+            children: [
+              const SizedBox(
+                width: 4,
+              ),
+              Expanded(
+                child: Text(
+                  text,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 29, 29, 28),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 242, 240, 239), width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: Color.fromARGB(72, 234, 236, 238), width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  filled: true,
-                  fillColor: Color.fromARGB(255, 232, 235, 240),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                validator: (value) => value == null ? "Select a country" : null,
-                dropdownColor: Color.fromARGB(255, 229, 229, 239),
-                value: selectedValue,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedValue = newValue!;
-                  });
-                },
-                items: dropdownItems),
-          ],
-        ));
+              ),
+            ],
+          ),
+          items: list
+              .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 21, 20, 20),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ))
+              .toList(),
+          value: selectedValue,
+          onChanged: (value) {
+            setState(() {
+              selectedValue = value as String;
+            });
+          },
+          icon: const Icon(Icons.arrow_drop_down),
+          iconSize: 14,
+          iconEnabledColor: const Color.fromARGB(255, 16, 16, 15),
+          iconDisabledColor: Colors.white,
+          buttonHeight: 50,
+          buttonWidth: MediaQuery.of(context).size.width - 30,
+          buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+          buttonDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: const Color.fromARGB(66, 241, 234, 234),
+            ),
+            color: Colors.white,
+          ),
+          buttonElevation: 2,
+          itemHeight: 40,
+          itemPadding: const EdgeInsets.only(left: 14, right: 14),
+          dropdownMaxHeight: 200,
+          dropdownWidth: MediaQuery.of(context).size.width - 30,
+          dropdownPadding: null,
+          dropdownDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: Colors.white,
+          ),
+          dropdownElevation: 8,
+          scrollbarRadius: const Radius.circular(40),
+          scrollbarThickness: 6,
+          scrollbarAlwaysShow: true,
+          offset: const Offset(0, 0),
+        ),
+      ),
+    );
   }
 }

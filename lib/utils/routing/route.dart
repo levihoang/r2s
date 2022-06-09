@@ -20,6 +20,8 @@ PageRoute generateRoute(RouteSettings settings) {
       return _getPageRoute(const DetailPostScreen());
     case ProfileRoute:
       return _getPageRoute(const ProfileScreen());
+    case FillterRoute:
+      return _getPageRoute(const Fillter());
     default:
       return _getPageRoute(const Login());
   }
