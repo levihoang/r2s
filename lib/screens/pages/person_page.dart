@@ -31,21 +31,30 @@ class _PersonPageState extends State<PersonPage> {
       child: Column(
         children: [
           Stack(
-            alignment: Alignment.topRight,
+            alignment: Alignment.bottomCenter,
             children: [
               CardVisit(
-                update: _update,
                 major: major,
                 username: username,
                 name: name,
               ),
-              InkWell(
-                onTap: () {
-                  log('Settings');
-                },
-                child: const Padding(
-                    padding: EdgeInsets.all(30), child: Icon(Icons.edit)),
-              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 40, right: 20, left: 20),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            _update(true);
+                          },
+                          child: buttonWithIcon(Icons.account_box, 'CV')),
+                      InkWell(
+                          onTap: () {
+                            _update(false);
+                          },
+                          child: buttonWithIcon(Icons.link, 'Chi tiết')),
+                    ]),
+              )
             ],
           ),
           show == true
@@ -106,7 +115,7 @@ class InformationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -172,15 +181,101 @@ class InformationCard extends StatelessWidget {
   }
 }
 
+Widget buttonWithIcon(IconData icon, String text) {
+  return ClipRRect(
+    borderRadius: BorderRadius.circular(10),
+    child: Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 30,
+        vertical: 7,
+      ),
+      color: textColor,
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
+          Text(
+            text,
+            style: const TextStyle(color: whiteColor),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class ButtonShow extends StatelessWidget {
+  const ButtonShow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        InkWell(
+          onTap: () {},
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30,
+                vertical: 7,
+              ),
+              color: textColor,
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.account_box,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    'CV',
+                    style: TextStyle(color: whiteColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {},
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30,
+                vertical: 7,
+              ),
+              color: textColor,
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.link,
+                    color: whiteColor,
+                  ),
+                  Text(
+                    'Chi tiết',
+                    style: TextStyle(color: whiteColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class CardVisit extends StatefulWidget {
   const CardVisit(
       {super.key,
-      this.update,
       required this.major,
       required this.username,
       required this.name});
 
-  final update;
   final String major;
   final String username;
   final String name;
@@ -212,98 +307,55 @@ class _CardVisitState extends State<CardVisit> {
               ])),
           child: Wrap(
             children: [
-              Column(
-                children: [
-                  const CircleAvatar(
-                    backgroundColor: darkGrayColor,
-                    radius: 75,
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(
-                        'images/sontung.png',
-                      ),
-                      radius: 70,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      widget.username,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.openSans(fontSize: 30),
-                    ),
-                  ),
-                  Text(widget.name,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    widget.major,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          widget.update(true);
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 7,
-                            ),
-                            color: textColor,
-                            child: Row(
-                              children: const [
-                                Icon(
-                                  Icons.account_box,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'CV',
-                                  style: TextStyle(color: whiteColor),
-                                ),
-                              ],
-                            ),
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Stack(alignment: Alignment.topCenter, children: [
+                      const CircleAvatar(
+                        backgroundColor: darkGrayColor,
+                        radius: 75,
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(
+                            'images/sontung.png',
                           ),
+                          radius: 70,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          widget.update(false);
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 7,
-                            ),
-                            color: textColor,
-                            child: Row(
-                              children: const [
-                                Icon(
-                                  Icons.link,
-                                  color: whiteColor,
-                                ),
-                                Text(
-                                  'Chi tiết',
-                                  style: TextStyle(color: whiteColor),
-                                ),
-                              ],
-                            ),
-                          ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: InkWell(
+                          onTap: () {
+                            log('Setting');
+                          },
+                          child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(Icons.edit)),
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ]),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        widget.username,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.openSans(fontSize: 30),
+                      ),
+                    ),
+                    Text(widget.name,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      widget.major,
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
