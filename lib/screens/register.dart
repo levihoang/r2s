@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/models/user.dart';
+import 'package:it_intership_jobs_r2s/screens/login.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
+import '../resources/register_api.dart';
 import '../utils/routing/navigation_service.dart';
 
 class Register extends StatefulWidget {
@@ -13,12 +18,56 @@ class Register extends StatefulWidget {
 
 class _Register extends State<Register> {
   final TextEditingController _username = TextEditingController();
-  final TextEditingController _lastname = TextEditingController();
-  final TextEditingController _firstname = TextEditingController();
-
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   final TextEditingController _email = TextEditingController();
+
+  _register() async {
+    var data = jsonEncode(<String, dynamic>{
+      'username': _username.text,
+      'password': _password.text,
+      'confirmPassword': _confirmPassword.text,
+      // "role": {
+      //   "id": 3,
+      // },
+      'email': _email.text,
+    });
+    var res = await CallRegisterApi().postData(data, 'candi');
+    ;
+    if (res.statusCode == 201) {
+      // ignore: use_build_context_synchronously
+      print(User.fromJson(jsonDecode(res.body)));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Login()));
+    } else {
+      print("Error");
+    }
+  }
+
+  // _register1() async {
+  //   var data = jsonEncode(<String, dynamic>{
+  //     'username': _username.text,
+  //     'password': _password.text,
+  //     'confirmPassword': _confirmPassword.text,
+  //     "role": {
+  //       "id": 3,
+  //     },
+  //     'email': _email.text,
+  //   });
+  //   var res = await CallRegisterApi().postData(data, 'candi');
+  //   var body = json.decode(res.body);
+  //   if (res.statusCode == 201) {
+  //     // ignore: use_build_context_synchronously
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => const Login()));
+  //   }
+  //   if (res.body['httpCode'] == 500) {
+  //     var message = res.body['message'];
+  //     setState(() {
+  //       announcement = message;
+  //     });
+  //   }
+  // }
 
   bool circular = false;
   bool isChecked = false;
@@ -58,15 +107,6 @@ class _Register extends State<Register> {
                   ),
                   SizedBox(
                     height: sizediv * 3,
-                  ),
-                  Row(
-                    children: [
-                      inputBox("Họ", _firstname, false, sizediv / 2.4),
-                      inputBox("Tên", _lastname, false, sizediv / 2.4),
-                    ],
-                  ),
-                  SizedBox(
-                    height: sizediv,
                   ),
                   inputBox("Tài Khoản", _username, false, sizediv),
                   SizedBox(
@@ -158,28 +198,30 @@ class _Register extends State<Register> {
     return InkWell(
       onTap: () async {
         setState(() {
-          if (checkFill()) {
-            if (_username.text.length > 6 && _username.text.length < 12) {
-              if (validPassword(_password.text)) {
-                if (_password.text == _confirmPassword.text) {
-                  if (isValidEmail(_email.text)) {
-                    announcement = "ok";
-                  } else {
-                    announcement = "Email không không đúng định dạng";
-                  }
-                } else {
-                  announcement = "Xác nhận mật khẩu sai";
-                }
-              } else {
-                announcement = "Mật khẩu không an toàn";
-              }
-            } else {
-              announcement = "Tài khoản phải chứa từ 6 đến 12 kí tự";
-            }
-          } else {
-            announcement = "Vui lòng điền hết thông tin";
-          }
-          // circular = true;
+          _register();
+
+          // if (checkFill()) {
+          //   if (_username.text.length > 6 && _username.text.length < 12) {
+          //     if (validPassword(_password.text)) {
+          //       if (_password.text == _confirmPassword.text) {
+          //         if (isValidEmail(_email.text)) {
+          //           _register();
+          //         } else {
+          //           announcement = "Email không không đúng định dạng";
+          //         }
+          //       } else {
+          //         announcement = "Xác nhận mật khẩu sai";
+          //       }
+          //     } else {
+          //       announcement = "Mật khẩu không an toàn";
+          //     }
+          //   } else {
+          //     announcement = "Tài khoản phải chứa từ 6 đến 12 kí tự";
+          //   }
+          // } else {
+          //   announcement = "Vui lòng điền hết thông tin";
+          // }
+          // // circular = true;
         });
       },
       child: Container(
@@ -237,9 +279,7 @@ class _Register extends State<Register> {
     if (_username.text.isEmpty ||
         _password.text.isEmpty ||
         _confirmPassword.text.isEmpty ||
-        _email.text.isEmpty ||
-        _firstname.text.isEmpty ||
-        _lastname.text.isEmpty) {
+        _email.text.isEmpty) {
       return false;
     }
     return true;

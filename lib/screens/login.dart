@@ -29,96 +29,91 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: Container(
-              padding: EdgeInsets.only(top: sizediv * 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      const Text(
-                        "IT IntershipJob",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
+            padding: EdgeInsets.only(top: sizediv * 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      "IT IntershipJob",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                      const Text(
-                        "Đăng Nhập",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: sizediv * 5,
-                      ),
-                      inputBox(
-                          "Tài khoản", _username, Icons.people, false, sizediv),
-                      SizedBox(
-                        height: sizediv * 3 / 2,
-                      ),
-                      inputBox("Mật khẩu", _password, Icons.key, true, sizediv),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                    ],
-                  ),
-                  checkBox(sizediv),
-                  SizedBox(
-                    height: sizediv * 4,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [anounnment()],
                     ),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                    const Text(
+                      "Đăng Nhập",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: sizediv * 5,
+                    ),
+                    inputBox(
+                        "Tài khoản", _username, Icons.people, false, sizediv),
+                    SizedBox(
+                      height: sizediv * 3 / 2,
+                    ),
+                    inputBox("Mật khẩu", _password, Icons.key, true, sizediv),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                  ],
+                ),
+                checkBox(sizediv),
+                SizedBox(
+                  height: sizediv * 4,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [anounnment()],
                   ),
-                  SizedBox(
-                    height: sizediv,
-                  ),
-                  Center(
-                      child: Column(
-                    children: [
-                      button("Đăng nhập", sizediv),
-                      SizedBox(
-                        height: sizediv * 2,
+                ),
+                SizedBox(
+                  height: sizediv,
+                ),
+                Center(
+                    child: Column(
+                  children: [
+                    button("Đăng nhập", sizediv),
+                    SizedBox(
+                      height: sizediv * 2,
+                    ),
+                    link("Quên mật khẩu?", RegisterRoute),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Bạn chưa có tài khoản?"),
+                        link(" Đăng kí", RegisterRoute),
+                      ],
+                    ),
+                    SizedBox(
+                      height: sizediv * 4,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Image.asset(
+                        "images/google.jpg",
+                        width: 70.0,
+                        height: 70.0,
+                        fit: BoxFit.cover,
                       ),
-                      link("Quên mật khẩu?", RegisterRoute),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Bạn chưa có tài khoản?"),
-                          link(" Đăng kí", RegisterRoute),
-                        ],
-                      ),
-                      SizedBox(
-                        height: sizediv * 4,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Image.asset(
-                          "images/google.jpg",
-                          width: 70.0,
-                          height: 70.0,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    ],
-                  )),
-                ],
-              )),
-        ),
+                    )
+                  ],
+                )),
+              ],
+            )),
       ),
     );
   }
