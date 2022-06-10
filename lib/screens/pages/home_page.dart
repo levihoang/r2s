@@ -23,51 +23,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class TopBar extends StatelessWidget {
-  const TopBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () => {},
-            child: Image.asset(
-              'images/icon_line.png',
-              height: 30,
-              width: 30,
-            ),
-          ),
-          const Text(
-            'HOME',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          InkWell(
-            onTap: () => {},
-            child: Image.asset(
-              'images/icon_notification.png',
-              height: 30,
-              width: 30,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class SearchBar extends StatelessWidget {
   const SearchBar({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     double sizeDivide = MediaQuery.of(context).size.width / 39;
@@ -202,62 +159,68 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      topBar = 0;
-                      setState(() {});
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(
-                        'Mới nhất',
-                        style: TextStyle(
-                            color: topBar == 0 ? yellowColor : Colors.black),
-                      ),
-                    ),
-                  ),
-                  InkWell(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(const Duration(seconds: 1));
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
                       onTap: () {
-                        topBar = 1;
-                        setState(() {});
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Text(
-                          'Phổ biến nhất',
-                          style: TextStyle(
-                              color: topBar == 1 ? yellowColor : Colors.black),
-                        ),
-                      )),
-                  InkWell(
-                      onTap: () {
-                        topBar = 2;
+                        topBar = 0;
                         setState(() {});
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: Text(
-                          'Gần nhất',
+                          'Mới nhất',
                           style: TextStyle(
-                              color: topBar == 2 ? yellowColor : Colors.black),
+                              color: topBar == 0 ? yellowColor : Colors.black),
                         ),
-                      )),
-                ],
-              ),
-              bodyItems[topBar],
-              const SizedBox(
-                height: 10,
-              )
-            ],
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          topBar = 1;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            'Phổ biến nhất',
+                            style: TextStyle(
+                                color:
+                                    topBar == 1 ? yellowColor : Colors.black),
+                          ),
+                        )),
+                    InkWell(
+                        onTap: () {
+                          topBar = 2;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            'Gần nhất',
+                            style: TextStyle(
+                                color:
+                                    topBar == 2 ? yellowColor : Colors.black),
+                          ),
+                        )),
+                  ],
+                ),
+                bodyItems[topBar],
+                const SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
           ),
         ),
       ),
