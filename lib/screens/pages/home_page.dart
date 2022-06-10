@@ -250,6 +250,7 @@ class BriefPost extends StatelessWidget {
                 bottomLeft: Radius.circular(20)),
             child: Container(
               padding: const EdgeInsets.all(10),
+              width: double.infinity,
               height: 70,
               color: Colors.white,
               child: const Text(
