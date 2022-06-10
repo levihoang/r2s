@@ -47,6 +47,9 @@ class _LoginState extends State<Login> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(
+                        height: sizediv,
+                      ),
                       const Text(
                         "Đăng Nhập",
                         style: TextStyle(
@@ -55,7 +58,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: sizediv * 8,
+                        height: sizediv * 5,
                       ),
                       inputBox(
                           "Tài khoản", _username, Icons.people, false, sizediv),
@@ -70,7 +73,7 @@ class _LoginState extends State<Login> {
                   ),
                   checkBox(sizediv),
                   SizedBox(
-                    height: sizediv * 5,
+                    height: sizediv * 4,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,34 +82,30 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   SizedBox(
-                    height: sizediv * 2,
-                  ),
-                  button("Đăng nhập", sizediv),
-                  SizedBox(
-                    height: sizediv * 2,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: sizediv * 14),
-                    child: link("Quên mật khẩu?", RegisterRoute),
-                  ),
-                  SizedBox(
                     height: sizediv,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: sizediv * 10),
-                    child: Row(
-                      children: [
-                        const Text("Bạn chưa có tài khoản?"),
-                        link("Đăng kí", RegisterRoute),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: sizediv * 4,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(left: sizediv * 16),
-                      child: InkWell(
+                  Center(
+                      child: Column(
+                    children: [
+                      button("Đăng nhập", sizediv),
+                      SizedBox(
+                        height: sizediv * 2,
+                      ),
+                      link("Quên mật khẩu?", RegisterRoute),
+                      SizedBox(
+                        height: sizediv,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Bạn chưa có tài khoản?"),
+                          link(" Đăng kí", RegisterRoute),
+                        ],
+                      ),
+                      SizedBox(
+                        height: sizediv * 4,
+                      ),
+                      InkWell(
                         onTap: () {},
                         child: Image.asset(
                           "images/google.jpg",
@@ -114,7 +113,9 @@ class _LoginState extends State<Login> {
                           height: 70.0,
                           fit: BoxFit.cover,
                         ),
-                      ))
+                      )
+                    ],
+                  )),
                 ],
               )),
         ),
@@ -228,35 +229,33 @@ class _LoginState extends State<Login> {
   }
 
   Widget button(String btnname, double sizediv) {
-    return Padding(
-      padding: EdgeInsets.only(left: sizediv * 11.1),
-      child: InkWell(
-        onTap: () async {
-          setState(() {
-            //Kiểm tra đã điền username and password chưa
-            if (_username.text.isEmpty || _password.text.isEmpty) {
-              isFill = false;
-            }
-            // circular = true;
-
-            // Tạm thời
+    return InkWell(
+      onTap: () async {
+        setState(() {
+          //Kiểm tra đã điền username and password chưa
+          if (_username.text.isEmpty || _password.text.isEmpty) {
+            isFill = false;
+          } else {
             locator<NavigationService>().globalNavigateTo(HomeRoute, context);
-          });
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width / 2,
-          height: sizediv * 5,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(255, 5, 177, 80)),
-          child: Center(
-            child: circular
-                ? const CircularProgressIndicator()
-                : Text(
-                    btnname,
-                    style: const TextStyle(fontSize: 19, color: Colors.white),
-                  ),
-          ),
+          }
+          // circular = true;
+
+          // Tạm thời
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2,
+        height: sizediv * 5,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color.fromARGB(255, 5, 177, 80)),
+        child: Center(
+          child: circular
+              ? const CircularProgressIndicator()
+              : Text(
+                  btnname,
+                  style: const TextStyle(fontSize: 19, color: Colors.white),
+                ),
         ),
       ),
     );
