@@ -10,3 +10,6 @@ const Color pinkColor = Color.fromARGB(239, 255, 41, 116);
 const Color whitePinkColor = Color(0xf0fce2c9);
 const Color textColor = Color(0xf02e343e);
 const Color whiteColor = Colors.white;
+
+const Color greenColor = Color.fromARGB(255, 11, 230, 109);
+const Color redColor = Colors.red;
