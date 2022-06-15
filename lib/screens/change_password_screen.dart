@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
+import 'package:it_intership_jobs_r2s/validates/validate.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);
@@ -29,51 +30,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     super.dispose();
   }
 
-  bool checkEmptyBox() {
-    if (currentPassword.text == '' ||
-        newPassword.text == '' ||
-        reNewPassword.text == '') {
-      mess = '*Nhập thiếu';
-      return true;
-    }
-    return false;
-  }
-
-  bool checkInvalidateNewPassword() {
-    RegExp regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
-    if (!regex.hasMatch(newPassword.text)) {
+  bool checkConditionCallChangePasswordAPI() {
+    if (Validate.checkInvalidateNewPassword(newPassword.text) == false &&
+        Validate.checkNotEqualNewPassword(
+                newPassword.text, reNewPassword.text) ==
+            false &&
+        Validate.checkInvalidateNewPassword(currentPassword.text) == false) {
+      log('Thỏa điều kiện gọi API');
       return true;
     } else {
+      log('Không thỏa điều kiện gọi API');
       return false;
     }
-  }
-
-  bool checkNotEqualNewPassword() {
-    if (newPassword.text != reNewPassword.text) {
-      return false;
-    }
-    return true;
-  }
-
-  bool checkInputBox() {
-    if (checkEmptyBox()) {
-      mess = '*Nhập thiếu';
-      return false;
-    }
-
-    if (checkInvalidateNewPassword()) {
-      mess =
-          '*Mật khẩu mới có ít nhất 8 ký tự: cần có chữ hoa, chữ thường và số';
-      return false;
-    }
-
-    if (checkNotEqualNewPassword()) {
-      mess = '*Mật khẩu mới không khớp';
-      return false;
-    }
-
-    mess = '';
-    return true;
   }
 
   @override
@@ -105,21 +73,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   textEditingController: currentPassword,
                 ),
                 const SizedBox(height: 20),
-                BoxWithLabel(
+                NewPassBoxWithLabel(
                   label: 'Nhập mật khẩu mới',
                   textEditingController: newPassword,
                 ),
                 const SizedBox(height: 20),
-                BoxWithLabel(
+                ConfirmBoxWithLabel(
                   label: 'Nhập lại mật khẩu mới',
+                  newPassword: newPassword,
                   textEditingController: reNewPassword,
                 ),
                 InkWell(
                   onTap: () {
-                    if (checkInputBox()) {
-                      log('InputBox thỏa');
+                    if (checkConditionCallChangePasswordAPI()) {
+                      log('Thành công');
                     } else {
-                      log('InputBox KHÔNG thỏa');
+                      log('Thất bại');
                     }
                     setState(() {});
                   },
@@ -157,6 +126,155 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 }
 
+class NewPassBoxWithLabel extends StatefulWidget {
+  const NewPassBoxWithLabel({
+    Key? key,
+    required this.label,
+    required this.textEditingController,
+  }) : super(key: key);
+  final String label;
+  final TextEditingController textEditingController;
+  @override
+  State<NewPassBoxWithLabel> createState() => NewPassBoxWithLabelState();
+}
+
+class NewPassBoxWithLabelState extends State<NewPassBoxWithLabel> {
+  bool showPass = true;
+  String mess = '';
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(widget.label,
+            style: GoogleFonts.openSans(
+                fontSize: 20, color: textColor, fontWeight: FontWeight.bold)),
+        TextField(
+          onChanged: (value) {
+            if (Validate.checkInvalidateNewPassword(value) && value != '') {
+              mess =
+                  'Mật khẩu phải có ký tự hoa, ký tự thường, viết hoa và ít nhất 8 ký tự';
+            } else {
+              mess = '';
+            }
+            setState(() {});
+          },
+          obscureText: showPass,
+          controller: widget.textEditingController,
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: yellowColor),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: yellowColor),
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                // Based on passwordVisible state choose the icon
+                showPass ? Icons.visibility_off : Icons.visibility,
+                color: Theme.of(context).primaryColorDark,
+              ),
+              onPressed: () {
+                // Update the state i.e. toogle the state of passwordVisible variable
+                setState(() {
+                  showPass = !showPass;
+                });
+              },
+            ),
+            hintText: 'Nhập vào đây',
+          ),
+        ),
+        Text(
+          mess,
+          style: const TextStyle(color: redColor),
+        ),
+        const SizedBox(
+          height: 20,
+        )
+      ],
+    );
+  }
+}
+
+class ConfirmBoxWithLabel extends StatefulWidget {
+  const ConfirmBoxWithLabel({
+    Key? key,
+    required this.label,
+    required this.textEditingController,
+    required this.newPassword,
+  }) : super(key: key);
+  final String label;
+  final TextEditingController newPassword;
+  final TextEditingController textEditingController;
+
+  @override
+  State<ConfirmBoxWithLabel> createState() => ConfirmBoxWithLabelState();
+}
+
+class ConfirmBoxWithLabelState extends State<ConfirmBoxWithLabel> {
+  bool showPass = true;
+  String mess = '';
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(widget.label,
+            style: GoogleFonts.openSans(
+                fontSize: 20, color: textColor, fontWeight: FontWeight.bold)),
+        TextField(
+          onChanged: (value) {
+            log(value);
+            if (Validate.checkNotEqualNewPassword(widget.newPassword.text,
+                    widget.textEditingController.text) &&
+                value != '') {
+              mess = 'Không khớp';
+            } else {
+              mess = '';
+            }
+            setState(() {});
+          },
+          obscureText: showPass,
+          controller: widget.textEditingController,
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: yellowColor),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: yellowColor),
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                // Based on passwordVisible state choose the icon
+                showPass ? Icons.visibility_off : Icons.visibility,
+                color: Theme.of(context).primaryColorDark,
+              ),
+              onPressed: () {
+                // Update the state i.e. toogle the state of passwordVisible variable
+                setState(() {
+                  showPass = !showPass;
+                });
+              },
+            ),
+            hintText: 'Nhập vào đây',
+          ),
+        ),
+        Text(
+          mess,
+          style: const TextStyle(color: redColor),
+        ),
+        const SizedBox(
+          height: 20,
+        )
+      ],
+    );
+  }
+}
+
 class BoxWithLabel extends StatefulWidget {
   const BoxWithLabel({
     Key? key,
@@ -182,6 +300,7 @@ class _BoxWithLabelState extends State<BoxWithLabel> {
             style: GoogleFonts.openSans(
                 fontSize: 20, color: textColor, fontWeight: FontWeight.bold)),
         TextField(
+          textInputAction: TextInputAction.next,
           obscureText: showPass,
           controller: widget.textEditingController,
           decoration: InputDecoration(
