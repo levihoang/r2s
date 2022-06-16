@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
@@ -16,7 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "It Intership Jobs",
-      theme: ThemeData(),
+      theme: ThemeData(
+          textTheme: Theme.of(context)
+              .textTheme
+              .apply(bodyColor: textColor, displayColor: textColor)),
       // home: Login(),
       onGenerateRoute: generateRoute,
       initialRoute: LoginRoute,

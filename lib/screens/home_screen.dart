@@ -1,9 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/global_variables.dart';
-
-import '../utils/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,11 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Saved'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notifications'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Person'),
+              icon: Icon(Icons.bookmark), label: 'Công việc'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Thông báo'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Cá nhân'),
         ],
         onTap: (index) {
           setState(() {

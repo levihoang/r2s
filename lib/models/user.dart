@@ -1,55 +1,55 @@
-import 'dart:convert';
-
 class User {
   final String username;
-  // final int gender;
-  // final String avatar;
-  // final String phone;
-  // final String firstname;
-  // final String lastname;
-  final String email;
-  // final String status;
-  // final String role;
-  // final int id;
-  // final String name;
-  // final String fileAvatar;
-  final String password;
-  final String confirmPassword;
+  final int? gender;
+  final String? avatar;
+  final String? phone;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? status;
+  final Map<String, dynamic>? role;
 
-  const User({
-    required this.username,
-    // required this.gender,
-    // required this.avatar,
-    // required this.phone,
-    // required this.firstname,
-    // required this.lastname,
-    required this.email,
-    // required this.status,
-    // required this.role,
-    // required this.name,
-    // required this.fileAvatar,
-    required this.password,
-    required this.confirmPassword,
-    // required this.id
-  });
+  User(this.username, this.gender, this.avatar, this.phone, this.firstName,
+      this.lastName, this.email, this.status, this.role);
+
+  Map<String, dynamic> toJson() => {
+        'username': username,
+        'gender': gender,
+        'avatar': avatar,
+        'phone': phone,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'status': status,
+        'role': {
+          // default candidate
+          'id': 1,
+        }
+      };
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        username: json['username'],
-        // gender: json['gender'],
-        // avatar: json['avatar'],
-        // phone: json['phone'],
-        // firstname: json['firstname'],
-        // lastname: json['lastname'],
-        email: json['email'],
-        // status: json['status'],
-        // role: ({
-        //   name: json['name'],
-        //   id: json['id']);
-        // }),
-
-        // fileAvatar: json['fileAvatar'],
-        password: json['password'],
-        confirmPassword: json['confirmPassword']);
+        json['username'],
+        json['gender'],
+        json['avatar'],
+        json['phone'],
+        json['firstName'],
+        json['lastName'],
+        json['email'],
+        json['status'],
+        json['role']);
   }
+
+  // static User fromSnap(DocumentSnapshot snap) {
+  //   var snapShot = snap.data() as Map<String, dynamic>;
+
+  //   return User(
+  //       username: snapShot['username'],
+  //       uid: snapShot['uid'],
+  //       email: snapShot['email'],
+  //       bio: snapShot['bio'],
+  //       followers: snapShot['followers'],
+  //       following: snapShot['following'],
+  //       photoUrl: snapShot['photoUrl']);
+  // }
 }

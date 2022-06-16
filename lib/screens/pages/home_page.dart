@@ -23,51 +23,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class TopBar extends StatelessWidget {
-  const TopBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () => {},
-            child: Image.asset(
-              'images/icon_line.png',
-              height: 30,
-              width: 30,
-            ),
-          ),
-          const Text(
-            'HOME',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          InkWell(
-            onTap: () => {},
-            child: Image.asset(
-              'images/icon_notification.png',
-              height: 30,
-              width: 30,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class SearchBar extends StatelessWidget {
   const SearchBar({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     double sizeDivide = MediaQuery.of(context).size.width / 39;
@@ -76,23 +33,25 @@ class SearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(0),
-                filled: true,
-                fillColor: Color(0xFFFFFFFF),
-                prefixIcon: Icon(Icons.search, color: Colors.grey),
-                suffixIcon: Icon(Icons.close),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                hintText: ' Search',
+          Expanded(
+              child: TextField(
+            style: const TextStyle(fontSize: 15, color: textColor),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText: 'Tìm kiếm',
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
-          ),
+          )),
           SizedBox(
             width: sizeDivide,
           ),
@@ -199,65 +158,69 @@ class _BodyState extends State<Body> {
   var topBar = 0;
   @override
   Widget build(BuildContext context) {
-    PageController pageHomeController = PageController();
-
     return Expanded(
-      child: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      topBar = 0;
-                      setState(() {});
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(
-                        'Latest',
-                        style: TextStyle(
-                            color: topBar == 0 ? yellowColor : Colors.black),
-                      ),
-                    ),
-                  ),
-                  InkWell(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(const Duration(seconds: 1));
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
                       onTap: () {
-                        topBar = 1;
-                        setState(() {});
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Text(
-                          'Most',
-                          style: TextStyle(
-                              color: topBar == 1 ? yellowColor : Colors.black),
-                        ),
-                      )),
-                  InkWell(
-                      onTap: () {
-                        topBar = 2;
+                        topBar = 0;
                         setState(() {});
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: Text(
-                          'Near',
+                          'Mới nhất',
                           style: TextStyle(
-                              color: topBar == 2 ? yellowColor : Colors.black),
+                              color: topBar == 0 ? yellowColor : Colors.black),
                         ),
-                      )),
-                ],
-              ),
-              bodyItems[topBar],
-              const SizedBox(
-                height: 10,
-              )
-            ],
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          topBar = 1;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            'Phổ biến nhất',
+                            style: TextStyle(
+                                color:
+                                    topBar == 1 ? yellowColor : Colors.black),
+                          ),
+                        )),
+                    InkWell(
+                        onTap: () {
+                          topBar = 2;
+                          setState(() {});
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            'Gần nhất',
+                            style: TextStyle(
+                                color:
+                                    topBar == 2 ? yellowColor : Colors.black),
+                          ),
+                        )),
+                  ],
+                ),
+                bodyItems[topBar],
+                const SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -287,6 +250,7 @@ class BriefPost extends StatelessWidget {
                 bottomLeft: Radius.circular(20)),
             child: Container(
               padding: const EdgeInsets.all(10),
+              width: double.infinity,
               height: 70,
               color: Colors.white,
               child: const Text(
@@ -313,19 +277,19 @@ class Posts extends StatelessWidget {
       children: const [
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
         SizedBox(
-          height: 5,
+          height: 10,
         ),
         PostCard(),
       ],
