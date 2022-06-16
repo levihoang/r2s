@@ -2,11 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
-import 'package:it_intership_jobs_r2s/models/user.dart';
-import 'package:it_intership_jobs_r2s/screens/login.dart';
+import 'package:it_intership_jobs_r2s/services/register_api.dart';
+import 'package:it_intership_jobs_r2s/screens/component/input_box.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
-
-import '../resources/register_api.dart';
 import '../utils/routing/navigation_service.dart';
 
 class Register extends StatefulWidget {
@@ -23,51 +21,41 @@ class _Register extends State<Register> {
   final TextEditingController _email = TextEditingController();
 
   _register() async {
-    var data = jsonEncode(<String, dynamic>{
-      'username': _username.text,
-      'password': _password.text,
-      'confirmPassword': _confirmPassword.text,
-      // "role": {
-      //   "id": 3,
-      // },
-      'email': _email.text,
-    });
-    var res = await CallRegisterApi().postData(data, 'candi');
-    ;
-    if (res.statusCode == 201) {
-      // ignore: use_build_context_synchronously
-      print(User.fromJson(jsonDecode(res.body)));
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Login()));
+    Map data = {
+      "username": "Dobinhduy4",
+      "password": "Dobinhduy23",
+      "confirmPassword": "Dobinhduy23",
+      "role": {
+        "id": 3,
+      },
+      "email": "123@123W",
+    };
+    // Map data = {
+    //   "username": _username.text,
+    //   "password": _password.text,
+    //   "confirmPassword": _confirmPassword.text,
+    //   "role": {
+    //     "id": 3,
+    //   },
+    //   "email": _email.text,
+    // };
+    print(data);
+    String body = json.encode(data);
+    // String body = json.encode(data);
+
+    var response = await CallRegisterApi().postData(body, "/user/add");
+    // var response =
+    //     await CallRegisterApi().postData(jsonEncode(body), "/register");
+    var myResponse = json.decode(response.body);
+    if (response.statusCode == 200) {
+      print('success');
     } else {
-      print("Error");
+      print(response.statusCode);
+      setState(() {
+        announcement = myResponse["Email"];
+      });
     }
   }
-
-  // _register1() async {
-  //   var data = jsonEncode(<String, dynamic>{
-  //     'username': _username.text,
-  //     'password': _password.text,
-  //     'confirmPassword': _confirmPassword.text,
-  //     "role": {
-  //       "id": 3,
-  //     },
-  //     'email': _email.text,
-  //   });
-  //   var res = await CallRegisterApi().postData(data, 'candi');
-  //   var body = json.decode(res.body);
-  //   if (res.statusCode == 201) {
-  //     // ignore: use_build_context_synchronously
-  //     Navigator.push(
-  //         context, MaterialPageRoute(builder: (context) => const Login()));
-  //   }
-  //   if (res.body['httpCode'] == 500) {
-  //     var message = res.body['message'];
-  //     setState(() {
-  //       announcement = message;
-  //     });
-  //   }
-  // }
 
   bool circular = false;
   bool isChecked = false;
@@ -75,120 +63,87 @@ class _Register extends State<Register> {
   @override
   Widget build(BuildContext context) {
     double sizediv = MediaQuery.of(context).size.width / 39;
-    return Scaffold(
-      body: SingleChildScrollView(
-        physics: const ScrollPhysics(),
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: sizediv,
-                  ),
-                  const Text(
-                    "IT IntershipJob",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: const ScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    const Text(
+                      "IT IntershipJob",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    "Đăng Kí",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                    const Text(
+                      "Đăng Kí",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: sizediv * 3,
-                  ),
-                  inputBox("Tài Khoản", _username, false, sizediv),
-                  SizedBox(
-                    height: sizediv,
-                  ),
-                  inputBox("Mật Khẩu", _password, true, sizediv),
-                  SizedBox(
-                    height: sizediv,
-                  ),
-                  inputBox(
-                      "Xác nhận mật khẩu", _confirmPassword, true, sizediv),
-                  SizedBox(
-                    height: sizediv,
-                  ),
-                  inputBox("Email", _email, true, sizediv),
-                  SizedBox(
-                    height: sizediv * 2,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: sizediv * 5,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [message(sizediv, announcement)],
+                    SizedBox(
+                      height: sizediv * 3,
+                    ),
+                    InputBox(
+                        btnname: "Tài Khoản",
+                        size: sizediv,
+                        controller: _username,
+                        obscureText: false),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                    InputBox(
+                        btnname: "Mật Khẩu",
+                        size: sizediv,
+                        controller: _password,
+                        obscureText: true),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                    InputBox(
+                        btnname: "Xác nhận mật khẩu",
+                        size: sizediv,
+                        controller: _confirmPassword,
+                        obscureText: true),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                    InputBox(
+                        btnname: "Email",
+                        size: sizediv,
+                        controller: _email,
+                        obscureText: false),
+                    SizedBox(
+                      height: sizediv * 3,
+                    ),
+                    getAnnouncement(),
+                  ],
                 ),
-              ),
-              button("Đăng Kí", sizediv),
-              SizedBox(
-                height: sizediv,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Bạn đã có tài khoản?"),
-                  SizedBox(width: sizediv / 2),
-                  link("Đăng nhập", LoginRoute),
-                ],
-              ),
-            ],
+                button("Đăng Kí", sizediv),
+                SizedBox(
+                  height: sizediv,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Bạn đã có tài khoản?"),
+                    SizedBox(width: sizediv / 2),
+                    link("Đăng nhập", LoginRoute),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget inputBox(String text, TextEditingController controller,
-      bool obscureText, double sizediv) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: SizedBox(
-        width: sizediv * 39 - 30,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              text,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-                controller: controller,
-                obscureText: obscureText,
-                style: const TextStyle(color: Color.fromARGB(255, 7, 7, 7)),
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                          width: 1, color: Color.fromARGB(255, 11, 230, 109))),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: const BorderSide(
-                          width: 1, color: Color.fromARGB(255, 14, 219, 96))),
-                )),
-          ],
         ),
       ),
     );
@@ -221,7 +176,7 @@ class _Register extends State<Register> {
           // } else {
           //   announcement = "Vui lòng điền hết thông tin";
           // }
-          // // circular = true;
+          // circular = true;
         });
       },
       child: Container(
@@ -229,7 +184,7 @@ class _Register extends State<Register> {
         height: sizediv * 5,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(255, 5, 177, 80)),
+            color: Colors.orangeAccent),
         child: Center(
           child: circular
               ? const CircularProgressIndicator()
@@ -253,6 +208,30 @@ class _Register extends State<Register> {
           fontSize: 17,
           decoration: TextDecoration.underline,
           color: Color.fromARGB(255, 4, 174, 78),
+        ),
+      ),
+    );
+  }
+
+  Widget getAnnouncement() {
+    double sizediv = MediaQuery.of(context).size.width / 39;
+    return SizedBox(
+      height: sizediv * 5,
+      width: MediaQuery.of(context).size.width - sizediv * 4,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            // ignore: unnecessary_null_comparison
+            children: [
+              // ignore: unnecessary_null_comparison
+              announcement == ""
+                  ? const SizedBox()
+                  : message(sizediv, announcement)
+            ],
+          ),
         ),
       ),
     );
