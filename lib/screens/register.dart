@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
 import 'package:it_intership_jobs_r2s/services/register_api.dart';
-import 'package:it_intership_jobs_r2s/screens/component/input_box.dart';
+import 'package:it_intership_jobs_r2s/widgets/input_box.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 import '../utils/routing/navigation_service.dart';
 
@@ -22,23 +22,14 @@ class _Register extends State<Register> {
 
   _register() async {
     Map data = {
-      "username": "Dobinhduy4",
-      "password": "Dobinhduy23",
-      "confirmPassword": "Dobinhduy23",
+      "username": _username.text,
+      "password": _password.text,
+      "confirmPassword": _confirmPassword.text,
       "role": {
         "id": 3,
       },
-      "email": "123@123W",
+      "email": _email.text,
     };
-    // Map data = {
-    //   "username": _username.text,
-    //   "password": _password.text,
-    //   "confirmPassword": _confirmPassword.text,
-    //   "role": {
-    //     "id": 3,
-    //   },
-    //   "email": _email.text,
-    // };
     print(data);
     String body = json.encode(data);
     // String body = json.encode(data);
@@ -46,13 +37,21 @@ class _Register extends State<Register> {
     var response = await CallRegisterApi().postData(body, "/user/add");
     // var response =
     //     await CallRegisterApi().postData(jsonEncode(body), "/register");
-    var myResponse = json.decode(response.body);
+    var myResponse = json.decode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-      print('success');
+      print('register success');
+      setState(() {
+        announcement = "register success";
+      });
     } else {
       print(response.statusCode);
       setState(() {
-        announcement = myResponse["Email"];
+        if (myResponse["Email"].toString().isNotEmpty) {
+          announcement = myResponse["Email"];
+          print(myResponse["Email"]);
+        } else {
+          announcement = myResponse["username"];
+        }
       });
     }
   }
@@ -71,77 +70,78 @@ class _Register extends State<Register> {
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    const Text(
-                      "IT IntershipJob",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: EdgeInsets.only(top: sizediv * 4),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      const Text(
+                        "IT IntershipJob",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const Text(
-                      "Đăng Kí",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                      const Text(
+                        "Đăng Kí",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: sizediv * 3,
-                    ),
-                    InputBox(
-                        btnname: "Tài Khoản",
-                        size: sizediv,
-                        controller: _username,
-                        obscureText: false),
-                    SizedBox(
-                      height: sizediv,
-                    ),
-                    InputBox(
-                        btnname: "Mật Khẩu",
-                        size: sizediv,
-                        controller: _password,
-                        obscureText: true),
-                    SizedBox(
-                      height: sizediv,
-                    ),
-                    InputBox(
-                        btnname: "Xác nhận mật khẩu",
-                        size: sizediv,
-                        controller: _confirmPassword,
-                        obscureText: true),
-                    SizedBox(
-                      height: sizediv,
-                    ),
-                    InputBox(
-                        btnname: "Email",
-                        size: sizediv,
-                        controller: _email,
-                        obscureText: false),
-                    SizedBox(
-                      height: sizediv * 3,
-                    ),
-                    getAnnouncement(),
-                  ],
-                ),
-                button("Đăng Kí", sizediv),
-                SizedBox(
-                  height: sizediv,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Bạn đã có tài khoản?"),
-                    SizedBox(width: sizediv / 2),
-                    link("Đăng nhập", LoginRoute),
-                  ],
-                ),
-              ],
+                      SizedBox(
+                        height: sizediv * 3,
+                      ),
+                      InputBox(
+                          btnname: "Tài Khoản",
+                          size: sizediv,
+                          controller: _username,
+                          obscureText: false),
+                      SizedBox(
+                        height: sizediv,
+                      ),
+                      InputBox(
+                          btnname: "Mật Khẩu",
+                          size: sizediv,
+                          controller: _password,
+                          obscureText: true),
+                      SizedBox(
+                        height: sizediv,
+                      ),
+                      InputBox(
+                          btnname: "Xác nhận mật khẩu",
+                          size: sizediv,
+                          controller: _confirmPassword,
+                          obscureText: true),
+                      SizedBox(
+                        height: sizediv,
+                      ),
+                      InputBox(
+                          btnname: "Email",
+                          size: sizediv,
+                          controller: _email,
+                          obscureText: false),
+                      SizedBox(
+                        height: sizediv * 3,
+                      ),
+                      getAnnouncement(),
+                    ],
+                  ),
+                  button("Đăng Kí", sizediv),
+                  SizedBox(
+                    height: sizediv,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Bạn đã có tài khoản?"),
+                      SizedBox(width: sizediv / 2),
+                      link("Đăng nhập", LoginRoute),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -153,29 +153,28 @@ class _Register extends State<Register> {
     return InkWell(
       onTap: () async {
         setState(() {
-          _register();
-
-          // if (checkFill()) {
-          //   if (_username.text.length > 6 && _username.text.length < 12) {
-          //     if (validPassword(_password.text)) {
-          //       if (_password.text == _confirmPassword.text) {
-          //         if (isValidEmail(_email.text)) {
-          //           _register();
-          //         } else {
-          //           announcement = "Email không không đúng định dạng";
-          //         }
-          //       } else {
-          //         announcement = "Xác nhận mật khẩu sai";
-          //       }
-          //     } else {
-          //       announcement = "Mật khẩu không an toàn";
-          //     }
-          //   } else {
-          //     announcement = "Tài khoản phải chứa từ 6 đến 12 kí tự";
-          //   }
-          // } else {
-          //   announcement = "Vui lòng điền hết thông tin";
-          // }
+          if (checkFill()) {
+            if (_username.text.length > 6 && _username.text.length < 12) {
+              if (validPassword(_password.text)) {
+                if (_password.text == _confirmPassword.text) {
+                  _register();
+                  // if (isValidEmail(_email.text)) {
+                  //   _register();
+                  // } else {
+                  //   announcement = "Email không không đúng định dạng";
+                  // }
+                } else {
+                  announcement = "Xác nhận mật khẩu sai";
+                }
+              } else {
+                announcement = "Mật khẩu không an toàn";
+              }
+            } else {
+              announcement = "Tài khoản phải chứa từ 6 đến 12 kí tự";
+            }
+          } else {
+            announcement = "Vui lòng điền hết thông tin";
+          }
           // circular = true;
         });
       },
@@ -248,11 +247,11 @@ class _Register extends State<Register> {
     );
   }
 
-  bool isValidEmail(String value) {
-    return RegExp(
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(value);
-  }
+  // bool isValidEmail(String value) {
+  //   return RegExp(
+  //           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+  //       .hasMatch(value);
+  // }
 
   bool checkFill() {
     if (_username.text.isEmpty ||
