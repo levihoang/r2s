@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/screens/pages/recover_password.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
@@ -20,6 +21,7 @@ class _LoginState extends State<Login> {
   bool isChecked = false;
   bool isWrong = true;
   bool isFill = true;
+  int numTry = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +31,11 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: Container(
-              padding: EdgeInsets.only(top: sizediv * 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
+            padding: EdgeInsets.only(top: sizediv * 10),
+            child: Column(
+              children: [
+                Center(
+                  child: Column(
                     children: [
                       const Text(
                         "IT IntershipJob",
@@ -71,54 +68,54 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-                  checkBox(sizediv),
-                  SizedBox(
-                    height: sizediv * 4,
-                    width: MediaQuery.of(context).size.width,
+                ),
+                checkBox(sizediv),
+                SizedBox(
+                  height: sizediv * 4,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [anounnment()],
+                  ),
+                ),
+                SizedBox(
+                  height: sizediv,
+                ),
+                Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [anounnment()],
+                  children: [
+                    button("Đăng nhập", sizediv),
+                    SizedBox(
+                      height: sizediv * 2,
                     ),
-                  ),
-                  SizedBox(
-                    height: sizediv,
-                  ),
-                  Center(
-                      child: Column(
-                    children: [
-                      button("Đăng nhập", sizediv),
-                      SizedBox(
-                        height: sizediv * 2,
+                    link2("Quên mật khẩu?"),
+                    SizedBox(
+                      height: sizediv,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Bạn chưa có tài khoản?"),
+                        link(" Đăng kí", RegisterRoute),
+                      ],
+                    ),
+                    SizedBox(
+                      height: sizediv * 4,
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Image.asset(
+                        "images/google.jpg",
+                        width: 70.0,
+                        height: 70.0,
+                        fit: BoxFit.cover,
                       ),
-                      link("Quên mật khẩu?", RegisterRoute),
-                      SizedBox(
-                        height: sizediv,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Bạn chưa có tài khoản?"),
-                          link(" Đăng kí", RegisterRoute),
-                        ],
-                      ),
-                      SizedBox(
-                        height: sizediv * 4,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Image.asset(
-                          "images/google.jpg",
-                          width: 70.0,
-                          height: 70.0,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    ],
-                  )),
-                ],
-              )),
-        ),
+                    )
+                  ],
+                )),
+              ],
+            )),
       ),
     );
   }
@@ -128,29 +125,26 @@ class _LoginState extends State<Login> {
     return SizedBox(
       width: MediaQuery.of(context).size.width - 30,
       height: sizediv * 5,
-      child: Padding(
-        padding: EdgeInsets.only(left: sizediv * 1.4),
-        child: TextFormField(
-            controller: controller,
-            obscureText: obscureText,
-            style: const TextStyle(color: Color.fromARGB(255, 6, 2, 2)),
-            decoration: InputDecoration(
-              prefixIcon: Icon(
-                icon,
-                color: Colors.grey,
-              ),
-              labelText: text,
-              labelStyle: const TextStyle(fontSize: 17, color: Colors.black),
-              focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(
-                      width: 1, color: Color.fromARGB(255, 11, 230, 109))),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(
-                      width: 1, color: Color.fromARGB(255, 139, 211, 168))),
-            )),
-      ),
+      child: TextFormField(
+          controller: controller,
+          obscureText: obscureText,
+          style: const TextStyle(color: Color.fromARGB(255, 6, 2, 2)),
+          decoration: InputDecoration(
+            prefixIcon: Icon(
+              icon,
+              color: Colors.grey,
+            ),
+            labelText: text,
+            labelStyle: const TextStyle(fontSize: 17, color: Colors.black),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(
+                    width: 1, color: Color.fromARGB(255, 11, 230, 109))),
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(
+                    width: 1, color: Color.fromARGB(255, 139, 211, 168))),
+          )),
     );
   }
 
@@ -167,54 +161,57 @@ class _LoginState extends State<Login> {
       return const Color.fromARGB(255, 14, 223, 18);
     }
 
-    return Padding(
-      padding: EdgeInsets.only(left: sizediv * 1.7),
-      child: Row(
-        children: [
-          Checkbox(
-            checkColor: Colors.white,
-            fillColor: MaterialStateProperty.resolveWith(getColor),
-            value: isChecked,
-            onChanged: (bool? value) {
-              setState(() {
-                isChecked = value!;
-              });
-            },
-          ),
-          const Text(
-            "Lưu Mật Khẩu",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        Checkbox(
+          checkColor: Colors.white,
+          fillColor: MaterialStateProperty.resolveWith(getColor),
+          value: isChecked,
+          onChanged: (bool? value) {
+            setState(() {
+              isChecked = value!;
+            });
+          },
+        ),
+        const Text(
+          "Lưu Mật Khẩu",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+      ],
     );
   }
 
   Widget anounnment() {
     double sizediv = MediaQuery.of(context).size.width / 39;
     return isFill == false
-        ? Column(
-            children: const [
-              Text(
-                "Vui lòng điền hết thông tin",
-                style: TextStyle(color: Colors.red, fontSize: 15),
-              )
-            ],
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: const [
+                Text(
+                  "Vui lòng điền hết thông tin",
+                  style: TextStyle(color: Colors.red, fontSize: 15),
+                )
+              ],
+            ),
           )
         : isWrong == false
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    "Đăng nhập sai tài khoản hoặc mật khẩu.",
-                    style: TextStyle(color: Colors.red, fontSize: 15),
-                  ),
-                  Text(
-                    "Bạn còn 2 lần thử",
-                    style: TextStyle(color: Colors.red, fontSize: 15),
-                  )
-                ],
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Đăng nhập sai tài khoản hoặc mật khẩu.",
+                      style: TextStyle(color: Colors.red, fontSize: 15),
+                    ),
+                    Text(
+                      "Bạn còn $numTry lần thử",
+                      style: const TextStyle(color: Colors.red, fontSize: 15),
+                    )
+                  ],
+                ),
               )
             : SizedBox(
                 height: sizediv * 1.8,
@@ -248,7 +245,7 @@ class _LoginState extends State<Login> {
         height: sizediv * 5,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(255, 5, 177, 80)),
+            color: Colors.orangeAccent),
         child: Center(
           child: circular
               ? const CircularProgressIndicator()
@@ -265,6 +262,25 @@ class _LoginState extends State<Login> {
     return InkWell(
       onTap: () {
         locator<NavigationService>().globalNavigateTo(route, context);
+      },
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 17,
+          decoration: TextDecoration.underline,
+          color: Color.fromARGB(255, 4, 174, 78),
+        ),
+      ),
+    );
+  }
+
+  Widget link2(String text) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Recoverpassword()),
+        );
       },
       child: Text(
         text,
