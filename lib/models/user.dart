@@ -39,17 +39,4 @@ class User {
         json['status'],
         json['role']);
   }
-
-  // static User fromSnap(DocumentSnapshot snap) {
-  //   var snapShot = snap.data() as Map<String, dynamic>;
-
-  //   return User(
-  //       username: snapShot['username'],
-  //       uid: snapShot['uid'],
-  //       email: snapShot['email'],
-  //       bio: snapShot['bio'],
-  //       followers: snapShot['followers'],
-  //       following: snapShot['following'],
-  //       photoUrl: snapShot['photoUrl']);
-  // }
 }
