@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:it_intership_jobs_r2s/screens/otp_page.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
+import 'package:it_intership_jobs_r2s/validates/validate.dart';
+
+import 'change_password_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
@@ -70,19 +72,6 @@ class EnterMailPage extends StatefulWidget {
 }
 
 class _EnterMailPageState extends State<EnterMailPage> {
-  bool invalidateEmail(String? value) {
-    String pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?)*$";
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   bool emptyInput(String? value) {
     if (value == null) {
       return true;
@@ -101,7 +90,7 @@ class _EnterMailPageState extends State<EnterMailPage> {
       widget.mess = '*Nhập thiếu';
       return false;
     }
-    if (invalidateEmail(widget.mailController.text)) {
+    if (Validate.invalidateEmail(widget.mailController.text)) {
       widget.mess = '*Mail không hợp lệ';
       return false;
     }
@@ -154,52 +143,6 @@ class _EnterMailPageState extends State<EnterMailPage> {
           style: const TextStyle(
             color: redColor,
           ),
-        )
-      ],
-    );
-  }
-}
-
-class BoxWithLabel extends StatefulWidget {
-  const BoxWithLabel({
-    Key? key,
-    required this.label,
-    required this.textEditingController,
-  }) : super(key: key);
-  final String label;
-  final TextEditingController textEditingController;
-
-  @override
-  State<BoxWithLabel> createState() => _BoxWithLabelState();
-}
-
-class _BoxWithLabelState extends State<BoxWithLabel> {
-  bool showPass = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(widget.label,
-            style: GoogleFonts.openSans(
-                fontSize: 20, color: textColor, fontWeight: FontWeight.bold)),
-        TextField(
-          controller: widget.textEditingController,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: yellowColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: yellowColor),
-            ),
-            hintText: 'Nhập vào đây',
-          ),
-        ),
-        const SizedBox(
-          height: 20,
         )
       ],
     );
