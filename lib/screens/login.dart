@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
 import 'package:it_intership_jobs_r2s/screens/detail_box.dart';
 import 'package:it_intership_jobs_r2s/screens/forgot_pass_screen.dart';
-import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
-import '../models/user.dart';
 import '../services/login_api.dart';
 import '../utils/routing/navigation_service.dart';
 
@@ -28,26 +24,6 @@ class _LoginState extends State<Login> {
   bool isWrong = true;
   bool isFill = true;
   int numTry = 3;
-  _login() async {
-    Map data = {
-      "username": "Test21011933",
-      "password": "Test123",
-    };
-    print(data);
-    String body = json.encode(data);
-    // String body = json.encode(data);
-
-    var response = await CallLoginApi().postData(body, "/login");
-    print((response.headers));
-    // var response =
-    //     await CallRegisterApi().postData(jsonEncode(body), "/register");
-    // var myResponse = json.decode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 302) {
-      // print(CallLoginApi().getData(json.decode(response.headers.location)));
-    } else {
-      print("");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
