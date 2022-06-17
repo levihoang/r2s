@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
-import 'package:it_intership_jobs_r2s/screens/detail_post_screen.dart';
 import 'package:it_intership_jobs_r2s/screens/forgot_pass_screen.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
 
-import '../services/login_api.dart';
 import '../utils/routing/navigation_service.dart';
 
 class Login extends StatefulWidget {
@@ -245,17 +243,7 @@ class _LoginState extends State<Login> {
   Widget button(String btnname, double sizediv) {
     return InkWell(
       onTap: () async {
-        setState(() {
-          _login();
-          //Kiểm tra đã điền username and password chưa
-          // if (_username.text.isEmpty || _password.text.isEmpty) {
-          //   isFill = false;
-          // } else {
-          //   locator<NavigationService>().globalNavigateTo(HomeRoute, context);
-          // }
-
-          // circular = true
-        });
+        setState(() {});
       },
       child: Container(
         width: MediaQuery.of(context).size.width / 2,
