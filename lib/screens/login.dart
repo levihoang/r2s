@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
-import 'package:it_intership_jobs_r2s/screens/detail_box.dart';
+import 'package:it_intership_jobs_r2s/screens/detail_post_screen.dart';
 import 'package:it_intership_jobs_r2s/screens/forgot_pass_screen.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
