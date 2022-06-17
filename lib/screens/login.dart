@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
-import 'package:it_intership_jobs_r2s/screens/detail_box.dart';
+import 'package:it_intership_jobs_r2s/screens/detail_post_screen.dart';
 import 'package:it_intership_jobs_r2s/screens/forgot_pass_screen.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/navigation_service.dart';
@@ -29,10 +29,13 @@ class _LoginState extends State<Login> {
   bool isFill = true;
   int numTry = 3;
   _login() async {
-    Map data = {
-      "username": "Test21011933",
-      "password": "Test123",
-    };
+    var data = <String, dynamic>{};
+    data['username'] = 'Test21011933';
+    data['password'] = 'Test123';
+    // final data = {
+    //   'username': 'Test21011933',
+    //   'password': 'Test123',
+    // };
     print(data);
     String body = json.encode(data);
     // String body = json.encode(data);
