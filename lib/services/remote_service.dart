@@ -5,7 +5,7 @@ import 'package:it_intership_jobs_r2s/models/user.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteService {
-  static String uri = 'http://192.168.1.33:8085';
+  static String uri = 'http://192.168.1.28:8085';
 
   static Future<List<User>?> getUsers() async {
     final response = await http.get(Uri.parse('$uri/api/user'));
