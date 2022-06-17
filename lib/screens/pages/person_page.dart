@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/dimensions.dart';
 
+import '../widgets/button_with_icon.dart';
+
 class PersonPage extends StatefulWidget {
   const PersonPage({Key? key}) : super(key: key);
 
@@ -182,31 +184,6 @@ class InformationCard extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget buttonWithIcon(IconData icon, String text) {
-  return ClipRRect(
-    borderRadius: BorderRadius.circular(10),
-    child: Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 30,
-        vertical: 7,
-      ),
-      color: textColor,
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: Colors.white,
-          ),
-          Text(
-            text,
-            style: const TextStyle(color: whiteColor),
-          ),
-        ],
-      ),
-    ),
-  );
 }
 
 class ButtonShow extends StatelessWidget {

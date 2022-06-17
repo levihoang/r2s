@@ -16,10 +16,7 @@ PageRoute generateRoute(RouteSettings settings) {
     case HomeRoute:
       return _getPageRoute(const HomeScreen());
     case DetailPostRoute:
-      return _getPageRoute(const DetailPost());
-    case ProfileRoute:
-      return _getPageRoute(const ProfileScreen());
-
+      return _getPageRoute(const DetailPostScreen());
     default:
       return _getPageRoute(const Login());
   }
