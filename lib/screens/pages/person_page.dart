@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/dimensions.dart';
 
+import '../../models/user.dart';
 import '../widgets/button_with_icon.dart';
 
 class PersonPage extends StatefulWidget {
@@ -16,19 +19,42 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   bool show = true;
-  final String username = '@hoangtrungnhat';
-  final String name = 'Hoàng Trung Nhật';
-  final String major = 'Flutter Developer';
-  final String cv =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. \nContrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from de Finibus Bonorum et Malorum by Cicero are also reproduced in their exact original form accompanied by English versions from the 1914 translation by H. Rackham ";
+  String username = '';
+  String name = '';
+  String major = '';
+  String cv = '';
+  String phoneNumber = '';
+  String email = '';
+  String gender = '';
+  String avatar = '';
+  User? user;
 
-  final String phoneNumber = '+84935648416';
-  final String email = 'abc@gmail.com';
-  final String gender = 'Nam';
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  getUser() async {
+    user = await RemoteService.getUser('2');
+    if (user != null) {
+      name = user?.firstName ?? 'tên tài khoản';
+      username = user?.username ?? "Tên tài khoản";
+      cv = user?.cv ?? "";
+      major = user?.major ?? "C";
+      gender = user?.gender == 0 ? 'Nam' : 'Nữ';
+      email = user?.email ?? "";
+      phoneNumber = user?.phone ?? "";
+      avatar = user?.avatar ??
+          'https://www.woolha.com/media/2020/03/flutter-circleavatar-radius.jpg';
+      setState(() {});
+    } else {
+      log('Not Found user: $username');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    log('$show');
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -39,6 +65,7 @@ class _PersonPageState extends State<PersonPage> {
                 major: major,
                 username: username,
                 name: name,
+                avatar: avatar,
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 40, right: 20, left: 20),
@@ -46,34 +73,20 @@ class _PersonPageState extends State<PersonPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
-                          onTap: () {
-                            _update(true);
-                          },
+                          onTap: () {},
                           child: buttonWithIcon(Icons.account_box, 'CV')),
-                      InkWell(
-                          onTap: () {
-                            _update(false);
-                          },
-                          child: buttonWithIcon(Icons.link, 'Chi tiết')),
                     ]),
               )
             ],
           ),
-          show == true
-              ? CVCard(cv: cv)
-              : InformationCard(
-                  phoneNumber: phoneNumber,
-                  gender: gender,
-                  email: email,
-                ),
+          InformationCard(
+            phoneNumber: phoneNumber,
+            gender: gender,
+            email: email,
+          ),
         ],
       ),
     );
-  }
-
-  void _update(bool b) {
-    show = b;
-    setState(() {});
   }
 }
 
@@ -95,7 +108,22 @@ class CVCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           width: double.infinity,
           color: whiteColor,
-          child: Text(cv),
+          child: Center(
+              child: cv == ''
+                  ? const Text(
+                      'Chưa có bản lí lịch',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    )
+                  : Text(
+                      cv,
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                        decoration: TextDecoration.underline,
+                      ),
+                    )),
         ),
       ),
     );
@@ -141,7 +169,7 @@ class InformationCard extends StatelessWidget {
             height: 20,
           ),
           Text(
-            'Địa chỉ Email',
+            'Email',
             style:
                 GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.bold),
           ),
@@ -254,11 +282,13 @@ class CardVisit extends StatefulWidget {
       {super.key,
       required this.major,
       required this.username,
-      required this.name});
+      required this.name,
+      required this.avatar});
 
   final String major;
   final String username;
   final String name;
+  final String avatar;
 
   @override
   State<CardVisit> createState() => _CardVisitState();
@@ -292,13 +322,14 @@ class _CardVisitState extends State<CardVisit> {
                 child: Column(
                   children: [
                     Stack(alignment: Alignment.topCenter, children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         backgroundColor: darkGrayColor,
                         radius: 75,
                         child: CircleAvatar(
-                          backgroundImage: AssetImage(
-                            'images/sontung.png',
-                          ),
+                          backgroundImage: (widget.avatar != ''
+                                  ? CachedNetworkImageProvider(widget.avatar)
+                                  : const AssetImage('images/logo_r2s.jpg'))
+                              as ImageProvider,
                           radius: 70,
                         ),
                       ),
