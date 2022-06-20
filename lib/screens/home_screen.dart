@@ -228,23 +228,33 @@ class PostLatest extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 5,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 5,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 5,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 5,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
       ],
     );
   }

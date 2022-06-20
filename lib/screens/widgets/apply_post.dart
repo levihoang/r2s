@@ -3,16 +3,22 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import '../../utils/colors.dart';
+import '../detail_post_screen.dart';
+import '../profile_company_screen.dart';
 import 'hash_tag.dart';
 
 class ApplyPost extends StatelessWidget {
-  const ApplyPost({Key? key}) : super(key: key);
+  const ApplyPost({Key? key, required this.isInCompany}) : super(key: key);
+  final bool isInCompany;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
-        log('Click ApplyPost');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DetailPost()),
+        );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -25,7 +31,13 @@ class ApplyPost extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    log('Click Company');
+                    isInCompany == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CompanyScreen()),
+                          )
+                        : null;
                   },
                   child: const CircleAvatar(
                     radius: 27,
@@ -43,7 +55,13 @@ class ApplyPost extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    log('Click Company');
+                    isInCompany == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CompanyScreen()),
+                          )
+                        : null;
                   },
                   child: const SizedBox(
                     child: Text(
@@ -57,13 +75,15 @@ class ApplyPost extends StatelessWidget {
                 ),
                 const Spacer(),
                 InkWell(
-                    onTap: () {
-                      log('Click Bookmark');
-                    },
-                    child: const Icon(
-                      Icons.wifi_protected_setup_sharp,
-                      color: Colors.blue,
-                    ))
+                  onTap: () {
+                    log('Click Bookmark');
+                  },
+                  child: const Icon(
+                    Icons.wifi_protected_setup_sharp,
+                    // color: darkGrayColor,
+                    color: Colors.blue,
+                  ),
+                )
               ],
             ),
             const SizedBox(
@@ -100,14 +120,17 @@ class ApplyPost extends StatelessWidget {
                     HashTag(),
                   ],
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: const Text(
-                    '\$4K',
-                    style: TextStyle(
-                        color: darkBlueColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: const Text(
+                      '\$4K',
+                      style: TextStyle(
+                          color: darkBlueColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 )
               ],
