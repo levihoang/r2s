@@ -1,18 +1,23 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/screens/detail_post_screen.dart';
+import 'package:it_intership_jobs_r2s/screens/profile_company_screen.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/hash_tag.dart';
 
 import '../../utils/colors.dart';
 
 class JobPost extends StatelessWidget {
-  const JobPost({Key? key}) : super(key: key);
-
+  const JobPost({Key? key, required this.isInCompany}) : super(key: key);
+  final bool isInCompany;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
-        log('Click DetailPost');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DetailPost()),
+        );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -25,7 +30,13 @@ class JobPost extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    log('Click Company');
+                    isInCompany == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CompanyScreen()),
+                          )
+                        : null;
                   },
                   child: const CircleAvatar(
                     radius: 27,
@@ -43,7 +54,13 @@ class JobPost extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    log('Click Company');
+                    isInCompany == false
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CompanyScreen()),
+                          )
+                        : null;
                   },
                   child: const SizedBox(
                     child: Text(

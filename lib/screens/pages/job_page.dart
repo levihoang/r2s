@@ -199,9 +199,15 @@ class ApplyJobs extends StatelessWidget {
           child: Wrap(
             runSpacing: 10,
             children: const [
-              ApplyPost(),
-              ApplyPost(),
-              ApplyPost(),
+              ApplyPost(
+                isInCompany: false,
+              ),
+              ApplyPost(
+                isInCompany: false,
+              ),
+              ApplyPost(
+                isInCompany: false,
+              ),
             ],
           ),
         ),
@@ -219,10 +225,18 @@ class CareJobs extends StatefulWidget {
 
 class _CareJobsState extends State<CareJobs> {
   var listJob = <JobPost>[
-    const JobPost(),
-    const JobPost(),
-    const JobPost(),
-    const JobPost(),
+    const JobPost(
+      isInCompany: false,
+    ),
+    const JobPost(
+      isInCompany: false,
+    ),
+    const JobPost(
+      isInCompany: false,
+    ),
+    const JobPost(
+      isInCompany: false,
+    ),
   ];
 
   @override

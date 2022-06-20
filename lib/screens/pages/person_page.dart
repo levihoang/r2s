@@ -38,16 +38,17 @@ class _PersonPageState extends State<PersonPage> {
   getUser() async {
     user = await RemoteService.getUser('2');
     if (user != null) {
-      name = user?.firstName ?? 'tên tài khoản';
-      username = user?.username ?? "Tên tài khoản";
+      name = user?.firstName ?? '';
+      username = user?.username ?? "";
       cv = user?.cv ?? "";
-      major = user?.major ?? "C";
+      major = user?.major ?? "";
       gender = user?.gender == 0 ? 'Nam' : 'Nữ';
       email = user?.email ?? "";
       phoneNumber = user?.phone ?? "";
-      avatar = user?.avatar ??
-          'https://www.woolha.com/media/2020/03/flutter-circleavatar-radius.jpg';
-      setState(() {});
+      avatar = user?.avatar ?? '';
+      if (mounted) {
+        setState(() {});
+      }
     } else {
       log('Not Found user: $username');
     }

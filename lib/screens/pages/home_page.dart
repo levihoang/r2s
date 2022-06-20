@@ -277,23 +277,33 @@ class Posts extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 10,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 10,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 10,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
         SizedBox(
           height: 10,
         ),
-        JobPost(),
+        JobPost(
+          isInCompany: false,
+        ),
       ],
     );
   }
