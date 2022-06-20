@@ -7,10 +7,12 @@ class User {
   final String? lastName;
   final String? email;
   final String? status;
+  final String? cv;
+  final String? major;
   final Map<String, dynamic>? role;
 
   User(this.username, this.gender, this.avatar, this.phone, this.firstName,
-      this.lastName, this.email, this.status, this.role);
+      this.lastName, this.email, this.status, this.cv, this.major, this.role);
 
   Map<String, dynamic> toJson() => {
         'username': username,
@@ -21,6 +23,8 @@ class User {
         'lastName': lastName,
         'email': email,
         'status': status,
+        'cv': cv,
+        'major': major,
         'role': {
           // default candidate
           'id': 1,
@@ -29,14 +33,17 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        json['username'],
-        json['gender'],
-        json['avatar'],
-        json['phone'],
-        json['firstName'],
-        json['lastName'],
-        json['email'],
-        json['status'],
-        json['role']);
+      json['username'],
+      json['gender'],
+      json['avatar'],
+      json['phone'],
+      json['firstName'],
+      json['lastName'],
+      json['email'],
+      json['status'],
+      json['cv'],
+      json['major'],
+      json['role'],
+    );
   }
 }

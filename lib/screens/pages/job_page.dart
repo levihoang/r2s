@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:it_intership_jobs_r2s/screens/home_screen.dart';
+import 'package:it_intership_jobs_r2s/screens/widgets/apply_post.dart';
+import 'package:it_intership_jobs_r2s/screens/widgets/job_post.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
+import '../widgets/hash_tag.dart';
 
 class JobPage extends StatefulWidget {
   const JobPage({super.key});
@@ -40,8 +42,13 @@ class _JobPageState extends State<JobPage> {
                       color: selectedIndex == 0 ? yellowColor : darkBlueColor,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
-                      child: Text('Đang theo dõi',
-                          style: GoogleFonts.openSans(color: whiteColor))),
+                      child: Text('Đang quan tâm',
+                          style: GoogleFonts.openSans(
+                            fontWeight: selectedIndex == 0
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: whiteColor,
+                          ))),
                 ),
               ),
               const SizedBox(
@@ -58,9 +65,13 @@ class _JobPageState extends State<JobPage> {
                     color: selectedIndex == 1 ? yellowColor : darkBlueColor,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
-                    child: Text('Đã đăng ký',
+                    child: Text('Đang ứng tuyển',
                         style: GoogleFonts.openSans(
-                            fontWeight: FontWeight.bold, color: whiteColor)),
+                          fontWeight: selectedIndex == 1
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                          color: whiteColor,
+                        )),
                   ),
                 ),
               ),
@@ -176,105 +187,6 @@ class ApplyJobPost extends StatelessWidget {
   }
 }
 
-class CareJobPost extends StatelessWidget {
-  const CareJobPost({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        color: Colors.white,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                radius: 27,
-                backgroundColor: darkGrayColor,
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage(
-                    'images/logo_r2s.png',
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Text(
-                'Công ty cổ phần R2S',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: () {},
-                child: const Icon(
-                  Icons.bookmark,
-                  // color: darkGrayColor,
-                  color: yellowColor,
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Junior UI/UX Designer',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Row(
-            children: const [
-              Icon(
-                Icons.location_on,
-                color: darkGrayColor,
-              ),
-              Text(
-                '1162 Pham Van Dong, Thu Duc',
-                style: TextStyle(color: darkGrayColor),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: const [
-                  HashTag(),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  HashTag(),
-                ],
-              ),
-              Flexible(
-                flex: 1,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: const Text(
-                    '\$4K',
-                    style: TextStyle(
-                        color: darkBlueColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ]),
-      ),
-    );
-  }
-}
-
 class ApplyJobs extends StatelessWidget {
   const ApplyJobs({super.key});
 
@@ -287,10 +199,9 @@ class ApplyJobs extends StatelessWidget {
           child: Wrap(
             runSpacing: 10,
             children: const [
-              ApplyJobPost(),
-              ApplyJobPost(),
-              ApplyJobPost(),
-              ApplyJobPost(),
+              ApplyPost(),
+              ApplyPost(),
+              ApplyPost(),
             ],
           ),
         ),
@@ -307,11 +218,11 @@ class CareJobs extends StatefulWidget {
 }
 
 class _CareJobsState extends State<CareJobs> {
-  var listJob = <CareJobPost>[
-    const CareJobPost(),
-    const CareJobPost(),
-    const CareJobPost(),
-    const CareJobPost(),
+  var listJob = <JobPost>[
+    const JobPost(),
+    const JobPost(),
+    const JobPost(),
+    const JobPost(),
   ];
 
   @override

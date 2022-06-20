@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/screens/widgets/job_post.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/global_variables.dart';
 
@@ -227,138 +228,24 @@ class PostLatest extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: const [
-        PostCard(),
+        JobPost(),
         SizedBox(
           height: 5,
         ),
-        PostCard(),
+        JobPost(),
         SizedBox(
           height: 5,
         ),
-        PostCard(),
+        JobPost(),
         SizedBox(
           height: 5,
         ),
-        PostCard(),
+        JobPost(),
         SizedBox(
           height: 5,
         ),
-        PostCard(),
+        JobPost(),
       ],
-    );
-  }
-}
-
-class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        color: Colors.white,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            children: const [
-              CircleAvatar(
-                radius: 27,
-                backgroundColor: darkGrayColor,
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage(
-                    'images/logo_r2s.png',
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                'Công ty cổ phần R2S',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Spacer(),
-              Icon(
-                Icons.bookmark,
-                // color: darkGrayColor,
-                color: yellowColor,
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Junior UI/UX Designer',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Row(
-            children: const [
-              Icon(
-                Icons.location_on,
-                color: darkGrayColor,
-              ),
-              Text(
-                '1162 Pham Van Dong, Thu Duc',
-                style: TextStyle(color: darkGrayColor),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: const [
-                  HashTag(),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  HashTag(),
-                ],
-              ),
-              Flexible(
-                flex: 1,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: const Text(
-                    '\$4K',
-                    style: TextStyle(
-                        color: darkBlueColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ]),
-      ),
-    );
-  }
-}
-
-class HashTag extends StatelessWidget {
-  const HashTag({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(40),
-      child: Container(
-        color: grayColor,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: const Text(
-          'Part - time',
-        ),
-      ),
     );
   }
 }
