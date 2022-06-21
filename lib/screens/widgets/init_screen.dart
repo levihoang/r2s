@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:it_intership_jobs_r2s/screens/login.dart';
+import 'package:it_intership_jobs_r2s/screens/home_screen.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 class Splash2 extends StatelessWidget {
@@ -9,7 +9,7 @@ class Splash2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 6,
-      navigateAfterSeconds: const Login(),
+      navigateAfterSeconds: const HomeScreen(),
       title: const Text(
         'GeeksForGeeks',
         textScaleFactor: 2,
