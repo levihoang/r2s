@@ -21,7 +21,7 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   bool show = true;
-  String username = '123455663';
+  String username = '';
   String name = '';
   String major = '';
   String cv = '';
@@ -42,7 +42,7 @@ class _PersonPageState extends State<PersonPage> {
     candidate = await RemoteService.getCandidate('liemha3');
 
     if (candidate != null) {
-      name = candidate?.userDTO?.firstName ?? 'asd';
+      name = candidate?.userDTO?.firstName ?? '';
       username = candidate?.userDTO?.username ?? "";
       gender = candidate?.userDTO?.gender == 0 ? 'Nam' : 'Nữ';
       email = candidate?.userDTO?.email ?? "";
@@ -346,7 +346,7 @@ class _CardVisitState extends State<CardVisit> {
                         alignment: Alignment.topRight,
                         child: InkWell(
                           onTap: () {
-                            log('Setting');
+                            log('Edit profile');
                           },
                           child: const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),

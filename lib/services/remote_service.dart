@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:it_intership_jobs_r2s/models/user.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/candidate.dart';
+
 class RemoteService {
-  static String uri = 'http://192.168.1.28:8085';
+  static String uri = 'http://192.168.49.146:8085';
 
   static Future<List<User>?> getUsers() async {
     final response = await getHTTP('/api/user');
@@ -26,6 +27,20 @@ class RemoteService {
     if (response.statusCode == 200) {
       if (response.body != '') {
         return User.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      }
+    } else {
+      // throw Exception('Failed to load getUserAPI');
+      log('Failed to load getUserAPI');
+    }
+    return null;
+  }
+
+  static Future<Candidate?> getCandidate(String username) async {
+    final response = await getHTTP('/api/candidate/u/$username');
+
+    if (response.statusCode == 200) {
+      if (response.body != '') {
+        return Candidate.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       }
     } else {
       // throw Exception('Failed to load getUserAPI');
