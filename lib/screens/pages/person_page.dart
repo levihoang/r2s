@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/models/candidate.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/dimensions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/user.dart';
 import '../widgets/button_with_icon.dart';
@@ -19,7 +21,7 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   bool show = true;
-  String username = '';
+  String username = '123455663';
   String name = '';
   String major = '';
   String cv = '';
@@ -28,6 +30,7 @@ class _PersonPageState extends State<PersonPage> {
   String gender = '';
   String avatar = '';
   User? user;
+  Candidate? candidate;
 
   @override
   void initState() {
@@ -36,16 +39,18 @@ class _PersonPageState extends State<PersonPage> {
   }
 
   getUser() async {
-    user = await RemoteService.getUser('2');
-    if (user != null) {
-      name = user?.firstName ?? '';
-      username = user?.username ?? "";
-      cv = user?.cv ?? "";
-      major = user?.major ?? "";
-      gender = user?.gender == 0 ? 'Nam' : 'Nữ';
-      email = user?.email ?? "";
-      phoneNumber = user?.phone ?? "";
-      avatar = user?.avatar ?? '';
+    candidate = await RemoteService.getCandidate('liemha3');
+
+    if (candidate != null) {
+      name = candidate?.userDTO?.firstName ?? 'asd';
+      username = candidate?.userDTO?.username ?? "";
+      gender = candidate?.userDTO?.gender == 0 ? 'Nam' : 'Nữ';
+      email = candidate?.userDTO?.email ?? "";
+      phoneNumber = candidate?.userDTO?.phone ?? "";
+      avatar = candidate?.userDTO?.avatar ?? '';
+      major = candidate?.major?.name ?? "";
+      cv = candidate?.cv ?? "";
+
       if (mounted) {
         setState(() {});
       }
@@ -74,7 +79,10 @@ class _PersonPageState extends State<PersonPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            await launchUrl(Uri.parse(
+                                'https://stackoverflow.com/questions/63625023/flutter-url-launcher-unhandled-exception-could-not-launch-youtube-url-caused-b'));
+                          },
                           child: buttonWithIcon(Icons.account_box, 'CV')),
                     ]),
               )
