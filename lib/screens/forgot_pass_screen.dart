@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/screens/otp_page.dart';
+import 'package:it_intership_jobs_r2s/screens/widgets/box_with_label.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/validates/validate.dart';
 
@@ -24,127 +25,98 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                color: whiteColor,
-                child: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Lấy lại mật khẩu"),
+        backgroundColor: Colors.orangeAccent,
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  color: whiteColor,
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 20),
-                    child: EnterMailPage(
-                      mess: mess,
-                      mailController: mailController,
-                    )),
+                    child: Wrap(
+                      children: [
+                        const Center(
+                          child: Text(
+                            'Quên mật khẩu?',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Column(
+                          children: [
+                            Center(
+                              child: Text(
+                                'Nhập email của bạn vào ô phía dưới để được hướng dẫn lấy lại mật khẩu',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.grey.shade600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 70,
+                        ),
+                        BoxWithLabel(
+                          label: "Nhập email",
+                          textEditingController: mailController,
+                          prefixicon: Icons.email,
+                          hinttext: "Nhập email",
+                          ishide: false,
+                          heightbox: 10,
+                          function: () {},
+                          suffixicon: Icons.warning_amber,
+                          announcement: mess,
+                        ),
+                        const SizedBox(
+                          height: 150,
+                        ),
+                        Center(
+                          child: InkWell(
+                            onTap: () {
+                              if (mailController.text.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const OTPPage()),
+                                );
+                              } else {
+                                mess = "Vui lòng nhập email";
+                              }
+                              setState(() {});
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Container(
+                                color: yellowColor,
+                                child: const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    child: Text('Gửi mã OTP')),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Quay về'),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                'Đăng nhập',
-                style:
-                    TextStyle(color: yellowColor, fontWeight: FontWeight.bold),
-              )
-            ],
-          )
-        ],
+          ],
+        ),
       ),
-    );
-  }
-}
-
-class EnterMailPage extends StatefulWidget {
-  EnterMailPage({super.key, required this.mess, required this.mailController});
-  String mess;
-  TextEditingController mailController;
-  @override
-  State<EnterMailPage> createState() => _EnterMailPageState();
-}
-
-class _EnterMailPageState extends State<EnterMailPage> {
-  bool emptyInput(String? value) {
-    if (value == null) {
-      return true;
-    }
-    if (value.isEmpty) {
-      return true;
-    }
-    if (value.trim() == '') {
-      return true;
-    }
-    return false;
-  }
-
-  bool checkInputBox() {
-    if (emptyInput(widget.mailController.text)) {
-      widget.mess = '*Nhập thiếu';
-      return false;
-    }
-    if (Validate.invalidateEmail(widget.mailController.text)) {
-      widget.mess = '*Mail không hợp lệ';
-      return false;
-    }
-    widget.mess = '';
-    return true;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: [
-        const Center(
-          child: Text(
-            'ITInternship Job',
-            style: TextStyle(fontSize: 30),
-          ),
-        ),
-        const Center(
-          child: Text(
-            'Quên mật khẩu',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        BoxWithLabel(
-            label: 'Email', textEditingController: widget.mailController),
-        Center(
-          child: InkWell(
-            onTap: () {
-              if (checkInputBox()) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const OTPPage()),
-                );
-              }
-              setState(() {});
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Container(
-                color: yellowColor,
-                child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Text('Gửi mã OTP')),
-              ),
-            ),
-          ),
-        ),
-        Text(
-          widget.mess,
-          style: const TextStyle(
-            color: redColor,
-          ),
-        )
-      ],
     );
   }
 }

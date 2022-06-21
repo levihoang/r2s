@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/locator.dart';
+import 'package:it_intership_jobs_r2s/screens/change_password_screen.dart';
+import 'package:it_intership_jobs_r2s/screens/loginandsignup_screen.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route.dart';
 import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
@@ -17,13 +19,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "It Intership Jobs",
-      theme: ThemeData(
-          textTheme: Theme.of(context)
-              .textTheme
-              .apply(bodyColor: textColor, displayColor: textColor)),
-      // home: Login(),
+      theme: ThemeData().copyWith(
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: Colors.grey,
+            ),
+      ),
+      // home: const ChangePasswordScreen(),
       onGenerateRoute: generateRoute,
-      initialRoute: LoginRoute,
+      initialRoute: HomeRoute,
     );
   }
 }
