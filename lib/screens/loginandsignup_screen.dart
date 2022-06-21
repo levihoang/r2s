@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+
 import 'package:it_intership_jobs_r2s/screens/forgot_pass_screen.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/box_with_label.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
@@ -97,7 +98,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 color: const Color(0xFF3b5999).withOpacity(.85),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [],
+                  children: const [],
                 ),
               ),
             ),
@@ -223,7 +224,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     ],
                   ),
                 ),
-                Center(
+                const Center(
                   child: Text("Công ty cổ phầnn R2S"),
                 )
               ],
