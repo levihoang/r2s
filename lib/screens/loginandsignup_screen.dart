@@ -6,10 +6,10 @@ import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:it_intership_jobs_r2s/screens/forgot_pass_screen.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/box_with_label.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
+import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/validates/validate.dart';
 
 import '../services/register_api.dart';
-import 'config/palette.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);
@@ -22,16 +22,20 @@ class LoginSignupScreen extends StatefulWidget {
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _username_reg = TextEditingController();
-  final TextEditingController _password_reg = TextEditingController();
-  final TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _usernameReg = TextEditingController();
+  final TextEditingController _passwordReg = TextEditingController();
+  final TextEditingController _confirmPasswordReg = TextEditingController();
   final TextEditingController _email = TextEditingController();
   bool isSignupScreen = false;
   bool isMale = true;
   bool isRememberMe = false;
   bool isWrong = true;
   bool isFill = true;
-  String _loginAnnounce = "";
+
+  String _usernameLogAnnounce = "";
+  String _passwordLogA = "";
+  String loginAnnounce = "";
+
   String _registerAnnounce = "";
   String _usernameannounce = "";
   String _passRegannounce = "";
@@ -40,9 +44,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
 
   _register() async {
     Map data = {
-      "username": _username_reg.text,
-      "password": _password_reg.text,
-      "confirmPassword": _confirmPassword.text,
+      "username": _usernameReg.text,
+      "password": _passwordReg.text,
+      "confirmPassword": _confirmPasswordReg.text,
       "role": {
         "id": 3,
       },
@@ -56,8 +60,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     if (response.statusCode == 200) {
       setState(() {
         isSignupScreen = false;
-        _username.text = _username_reg.text;
-        _password.text = _password_reg.text;
+        _username.text = _usernameReg.text;
+        _password.text = _passwordReg.text;
       });
     } else {
       setState(() {
@@ -79,158 +83,164 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width / 39;
-    return Scaffold(
-      backgroundColor: Palette.backgroundColor,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            right: 0,
-            left: 0,
-            child: SizedBox(
-              height: 270,
-              // decoration: const BoxDecoration(
-              //     image: DecorationImage(
-              //         image: AssetImage("images/back_ground.png"),
-              //         fit: BoxFit.fill)),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backgroundColor,
+        body: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              right: 0,
+              left: 0,
               child: Container(
-                padding: const EdgeInsets.only(top: 90, left: 20),
-                color: const Color(0xFF3b5999).withOpacity(.85),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [],
+                height: 200,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("images/logo_company.png"),
+                        fit: BoxFit.fill)),
+                child: Container(
+                  padding: const EdgeInsets.only(top: 90, left: 20),
+                  color: const Color(0xFF3b5999).withOpacity(.06),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [],
+                  ),
                 ),
               ),
             ),
-          ),
-          // Trick to add the shadow for the submit button
-          buildBottomHalfContainer(true),
-          //Main Contianer for Login and Signup
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.bounceInOut,
-            top: isSignupScreen ? 100 : 130,
-            child: AnimatedContainer(
+            buildBottomHalfContainer(true),
+            AnimatedPositioned(
               duration: const Duration(milliseconds: 700),
               curve: Curves.bounceInOut,
-              height: isSignupScreen ? 500 : 420,
-              padding: const EdgeInsets.all(20),
-              width: size * 35,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 5),
-                  ]),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isSignupScreen = false;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                "Đăng nhập",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: !isSignupScreen
-                                        ? Palette.activeColor
-                                        : Palette.textColor1),
-                              ),
-                              if (!isSignupScreen)
-                                Container(
-                                  margin: const EdgeInsets.only(top: 3),
-                                  height: 2,
-                                  width: 55,
-                                  color: Colors.orange,
-                                )
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isSignupScreen = true;
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                "Đăng kí",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: isSignupScreen
-                                        ? Palette.activeColor
-                                        : Palette.textColor1),
-                              ),
-                              if (isSignupScreen)
-                                Container(
-                                  margin: const EdgeInsets.only(top: 3),
-                                  height: 2,
-                                  width: 55,
-                                  color: Colors.orange,
-                                )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    if (isSignupScreen) buildSignupSection(),
-                    if (!isSignupScreen) buildSigninSection()
-                  ],
-                ),
-              ),
-            ),
-          ),
-          // Trick to add the submit button
-          buildBottomHalfContainer(false),
-          // Bottom buttons
-          Positioned(
-            top: MediaQuery.of(context).size.height - 150,
-            right: 0,
-            left: 0,
-            child: Column(
-              children: [
-                Text(
-                  isSignupScreen ? "" : "Hoặc đăng nhập với",
-                ),
-                Container(
-                  margin: const EdgeInsets.only(right: 20, left: 20, top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              top: isSignupScreen ? 100 : 130,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 700),
+                curve: Curves.bounceInOut,
+                height: isSignupScreen ? 500 : 330,
+                padding: const EdgeInsets.all(20),
+                width: size * 35,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 15,
+                          spreadRadius: 5),
+                    ]),
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      isSignupScreen
-                          ? Container(
-                              height: 50,
-                            )
-                          : buildTextButton(MaterialCommunityIcons.google_plus,
-                              "Google", Palette.googleColor),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                clear();
+                                clearText();
+                                isSignupScreen = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Đăng nhập",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: !isSignupScreen
+                                          ? activeColor
+                                          : textColor1),
+                                ),
+                                if (!isSignupScreen)
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 3),
+                                    height: 2,
+                                    width: 55,
+                                    color: Colors.orange,
+                                  )
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                clear();
+                                clearText();
+                                isSignupScreen = true;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Đăng kí",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: isSignupScreen
+                                          ? activeColor
+                                          : textColor1),
+                                ),
+                                if (isSignupScreen)
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 3),
+                                    height: 2,
+                                    width: 55,
+                                    color: Colors.orange,
+                                  )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (isSignupScreen) buildSignupSection(),
+                      if (!isSignupScreen) buildSigninSection()
                     ],
                   ),
                 ),
-                const Center(
-                  child: Text("Công ty cổ phầnn R2S"),
-                )
-              ],
+              ),
             ),
-          )
-        ],
+            // Trick to add the submit button
+            buildBottomHalfContainer(false),
+            // Bottom buttons
+            Positioned(
+              top: MediaQuery.of(context).size.height - 300,
+              right: 0,
+              left: 0,
+              child: Column(
+                children: [
+                  Text(
+                    isSignupScreen ? "" : "Hoặc đăng nhập với",
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(right: 20, left: 20, top: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        isSignupScreen
+                            ? Container(
+                                height: 50,
+                              )
+                            : buildTextButton(
+                                MaterialCommunityIcons.google_plus,
+                                "Google",
+                                googleColor),
+                      ],
+                    ),
+                  ),
+                  const Center(
+                    child: Text("Công ty cổ phần R2S"),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -241,27 +251,31 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       child: Column(
         children: [
           BoxWithLabel(
-              label: "Tên đăng nhập",
-              textEditingController: _username_reg,
-              prefixicon: Icons.people_alt,
-              hinttext: "Nhập tên đăng nhập",
-              ishide: false,
-              heightbox: 30,
-              function: () {},
-              suffixicon: Icons.warning_amber,
-              announcement: ""),
+            textEditingController: _username,
+            prefixicon: Icons.people_alt,
+            hinttext: "Tên đăng nhập",
+            ishide: false,
+            function: () {},
+            suffixicon: Icons.warning_amber,
+            announcement: _usernameLogAnnounce,
+          ),
           BoxWithLabel(
-              label: "Mật Khẩu",
-              textEditingController: _password,
-              prefixicon: MaterialCommunityIcons.lock_outline,
-              hinttext: "Nhập mật khẩu",
-              ishide: true,
-              heightbox: 30,
-              function: () {},
-              suffixicon: Icons.remove_red_eye,
-              announcement: _loginAnnounce),
+            textEditingController: _password,
+            prefixicon: MaterialCommunityIcons.lock_outline,
+            hinttext: "Nhập mật khẩu",
+            ishide: true,
+            function: () {},
+            suffixicon: Icons.remove_red_eye,
+            announcement: _passwordLogA,
+          ),
           const SizedBox(
-            height: 50,
+            height: 10,
+          ),
+          Center(
+            child: Text(
+              loginAnnounce,
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -270,7 +284,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 children: [
                   Checkbox(
                     value: isRememberMe,
-                    activeColor: Palette.textColor2,
+                    activeColor: textColor2,
                     onChanged: (value) {
                       setState(() {
                         isRememberMe = !isRememberMe;
@@ -278,7 +292,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     },
                   ),
                   const Text("Lưu mật khẩu",
-                      style: TextStyle(fontSize: 15, color: Palette.textColor1))
+                      style: TextStyle(fontSize: 15, color: textColor1))
                 ],
               ),
               TextButton(
@@ -290,16 +304,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   );
                 },
                 child: const Text("Quên mật khẩu?",
-                    style: TextStyle(fontSize: 15, color: Palette.textColor1)),
+                    style: TextStyle(fontSize: 15, color: textColor1)),
               )
             ],
           ),
-          Center(
-            child: Text(
-              _loginAnnounce,
-              style: const TextStyle(color: Colors.red),
-            ),
-          )
         ],
       ),
     );
@@ -311,42 +319,34 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       child: Column(
         children: [
           BoxWithLabel(
-              label: "Tên đăng nhập",
-              textEditingController: _username_reg,
+              textEditingController: _usernameReg,
               prefixicon: Icons.people,
               hinttext: "Nhập tên đăng nhập",
               ishide: false,
-              heightbox: 30,
               function: () {},
               suffixicon: Icons.warning_amber,
               announcement: _usernameannounce),
           BoxWithLabel(
-              label: "Mật khẩu",
-              textEditingController: _password_reg,
+              textEditingController: _passwordReg,
               prefixicon: Icons.key,
               hinttext: "Nhập mật khẩu",
               ishide: true,
-              heightbox: 30,
               function: () {},
               suffixicon: Icons.remove_red_eye,
               announcement: _passRegannounce),
           BoxWithLabel(
-              label: "Xác nhận lại mật khẩu ",
-              textEditingController: _confirmPassword,
+              textEditingController: _confirmPasswordReg,
               prefixicon: Icons.key,
               hinttext: "Xác nhận lại mật khẩu",
               ishide: true,
-              heightbox: 30,
               function: () {},
               suffixicon: Icons.remove_red_eye,
               announcement: _repassAnnounce),
           BoxWithLabel(
-              label: "Email",
               textEditingController: _email,
               prefixicon: Icons.email,
               hinttext: "Nhập email",
               ishide: false,
-              heightbox: 30,
               function: () {},
               suffixicon: Icons.warning_amber,
               announcement: _emailAnnounce),
@@ -369,7 +369,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           setState(() {
             registerApi();
           });
-        } else {}
+        } else {
+          loginApi();
+        }
       },
       style: TextButton.styleFrom(
           side: const BorderSide(width: 1, color: Colors.grey),
@@ -394,13 +396,29 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     );
   }
 
+  loginApi() {
+    clear();
+    setState(() {
+      bool checklength =
+          _username.text.length >= 6 && _password.text.length < 250;
+      if (checkFillLogin()) {
+        if (checklength) {
+        } else {
+          _usernameLogAnnounce = "Tài khoản phải chứa từ 6 kí tự";
+        }
+      } else {
+        loginAnnounce = "Vui lòng điền hết thông tin";
+      }
+    });
+  }
+
   registerApi() {
     clear();
     setState(() {
       bool checklength =
-          _username_reg.text.length >= 6 && _username_reg.text.length < 250;
-      bool validPass = validPassword(_password_reg.text);
-      bool isMatch = _password_reg.text == _confirmPassword.text;
+          _usernameReg.text.length >= 6 && _usernameReg.text.length < 250;
+      bool validPass = validPassword(_passwordReg.text);
+      bool isMatch = _passwordReg.text == _confirmPasswordReg.text;
       bool validEmail = Validate.invalidateEmail(_email.text);
       if (checkFillRgister()) {
         if (checklength) {
@@ -410,7 +428,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         if (validPass) {
         } else {
           _passRegannounce =
-              "Mật khẩu phải chứa ít nhất 1 chữ hoa,chữ thường, kí tự đặc biệt, số và chứa từ 6 kí tự";
+              "Mật khẩu phải chứa ít nhất 1 chữ hoa, chữ thường, kí tự đặc biệt, số và chứa từ 6 kí tự";
         }
         if (isMatch) {
         } else {
@@ -432,18 +450,18 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     });
   }
 
-  bool checkFillRgister() {
-    if (_username_reg.text.isEmpty ||
-        _password_reg.text.isEmpty ||
-        _confirmPassword.text.isEmpty ||
-        _email.text.isEmpty) {
+  bool checkFillLogin() {
+    if (_username.text.isEmpty || _password.text.isEmpty) {
       return false;
     }
     return true;
   }
 
-  bool checkFillLogin() {
-    if (_username.text.isEmpty || _password.text.isEmpty) {
+  bool checkFillRgister() {
+    if (_usernameReg.text.isEmpty ||
+        _passwordReg.text.isEmpty ||
+        _confirmPasswordReg.text.isEmpty ||
+        _email.text.isEmpty) {
       return false;
     }
     return true;
@@ -460,7 +478,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 700),
       curve: Curves.bounceInOut,
-      top: isSignupScreen ? 555 : 500,
+      top: isSignupScreen ? 555 : 410,
       right: 0,
       left: 0,
       child: Center(
@@ -495,7 +513,18 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                             offset: const Offset(0, 1))
                       ]),
                   child: InkWell(
-                    onTap: () => {registerApi()},
+                    onTap: () => {
+                      if (isSignupScreen)
+                        {
+                          setState(() {
+                            registerApi();
+                          }),
+                        }
+                      else
+                        {
+                          loginApi(),
+                        }
+                    },
                     child: const Icon(
                       Icons.arrow_forward,
                       color: Colors.white,
@@ -521,27 +550,39 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           suffixIconColor: Colors.white,
           prefixIcon: Icon(
             icon,
-            color: Palette.iconColor,
+            color: iconColor,
           ),
           enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Palette.textColor1),
+            borderSide: BorderSide(color: textColor1),
             borderRadius: BorderRadius.all(Radius.circular(35.0)),
           ),
           focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Palette.textColor1),
+            borderSide: BorderSide(color: textColor1),
             borderRadius: BorderRadius.all(Radius.circular(35.0)),
           ),
           contentPadding: const EdgeInsets.all(10),
           hintText: hintText,
-          hintStyle: const TextStyle(fontSize: 14, color: Palette.textColor1),
+          hintStyle: const TextStyle(fontSize: 14, color: textColor1),
         ),
       ),
     );
   }
 
+  clearText() {
+    _username.clear();
+    _password.clear();
+
+    _passwordReg.clear();
+    _usernameReg.clear();
+    _email.clear();
+    _confirmPasswordReg.clear();
+  }
+
   clear() {
+    _passwordLogA = "";
+    _usernameLogAnnounce = "";
     _registerAnnounce = "";
-    _loginAnnounce = "";
+    loginAnnounce = "";
     _emailAnnounce = "";
     _passRegannounce = "";
     _repassAnnounce = "";

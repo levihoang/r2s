@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/screens/home_screen.dart';
+import 'package:it_intership_jobs_r2s/screens/pages/home_page.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 class Splash2 extends StatelessWidget {
@@ -8,17 +9,16 @@ class Splash2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 6,
+      seconds: 5,
       navigateAfterSeconds: const HomeScreen(),
       title: const Text(
-        'GeeksForGeeks',
+        'It InternshipJob',
         textScaleFactor: 2,
       ),
-      image: Image.network(
-          'https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200.png'),
+      image: Image.asset("images/logo_company.png"),
       loadingText: const Text("Loading"),
       photoSize: 100.0,
-      loaderColor: Colors.blue,
+      loaderColor: Colors.orange,
     );
   }
 }

@@ -6,23 +6,21 @@ import '../../utils/colors.dart';
 class BoxWithLabel extends StatefulWidget {
   const BoxWithLabel({
     Key? key,
-    required this.label,
     required this.textEditingController,
     required this.prefixicon,
     required this.hinttext,
     required this.ishide,
-    required this.heightbox,
     required this.function,
     required this.suffixicon,
     required this.announcement,
   }) : super(key: key);
-  final String label;
+
   final TextEditingController textEditingController;
   final IconData prefixicon;
   final IconData suffixicon;
   final String hinttext;
   final bool ishide;
-  final double heightbox;
+
   final Function function;
   final String announcement;
 
@@ -45,9 +43,6 @@ class _BoxWithLabelState extends State<BoxWithLabel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text(widget.label,
-        //     style: GoogleFonts.openSans(
-        //         fontSize: 16, color: textColor, fontWeight: FontWeight.bold)),
         TextField(
           onChanged: (value) {
             setState(() {
@@ -60,7 +55,9 @@ class _BoxWithLabelState extends State<BoxWithLabel> {
             prefixIcon: Icon(widget.prefixicon),
             contentPadding: const EdgeInsets.symmetric(vertical: 0),
             suffixIcon: IconButton(
-              color: onchange != "" && widget.suffixicon != Icons.warning_amber
+              color: onchange != "" &&
+                      widget.textEditingController.text != "" &&
+                      widget.suffixicon != Icons.warning_amber
                   ? Colors.grey
                   : Colors.white,
               onPressed: () {
@@ -96,9 +93,6 @@ class _BoxWithLabelState extends State<BoxWithLabel> {
                   style: const TextStyle(color: Colors.red),
                 ),
               ),
-        // const SizedBox(
-        //   height: 20,
-        // )
       ],
     );
   }

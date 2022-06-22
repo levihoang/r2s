@@ -7,14 +7,15 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/colors.dart';
 
 class OTPPage extends StatefulWidget {
-  const OTPPage({super.key});
-
+  const OTPPage({super.key, required this.email});
+  final String email;
   @override
   State<OTPPage> createState() => _OTPPageState();
 }
 
 class _OTPPageState extends State<OTPPage> {
-  var time_down = 45;
+  var time_down = 44;
+  final int TIME_MAX = 45;
   late Timer _timer;
   TextEditingController opt_1 = TextEditingController();
   TextEditingController opt_2 = TextEditingController();
@@ -72,9 +73,9 @@ class _OTPPageState extends State<OTPPage> {
       oneSec,
       (Timer timer) {
         if (time_down == 0) {
-          // timer.cancel();
+          timer.cancel();
           setState(() {});
-          time_down = 45;
+          time_down = TIME_MAX;
         } else {
           time_down--;
           setState(() {});
@@ -126,10 +127,10 @@ class _OTPPageState extends State<OTPPage> {
                       ),
                       const Center(
                           child: Text('Chúng tôi đã gửi mã đến địa chỉ email')),
-                      const Center(
+                      Center(
                         child: Text(
-                          'abc@r2s.com',
-                          style: TextStyle(
+                          widget.email,
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                       ),
@@ -181,8 +182,11 @@ class _OTPPageState extends State<OTPPage> {
                           ),
                         ),
                       ),
-                      time_down != 45
-                          ? Center(child: Text('$time_down s'))
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      time_down != TIME_MAX
+                          ? Center(child: Text('Gửi lại mã sau $time_down s'))
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -202,7 +206,7 @@ class _OTPPageState extends State<OTPPage> {
                               ],
                             ),
                       const SizedBox(
-                        height: 20,
+                        height: 40,
                         width: double.infinity,
                       ),
                       Row(
