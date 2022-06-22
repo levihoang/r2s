@@ -35,21 +35,32 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     super.dispose();
   }
 
+  bool checkCurrentPass() {
+    if (Validate.checkInvalidateNewPassword(currentPassword.text)) {
+      setState(() {
+        currentPassAnnounce = "Mật khẩu không đúng";
+      });
+    }
+    return false;
+  }
+
   bool checkConditionCallChangePasswordAPI() {
-    if (Validate.checkInvalidateNewPassword(newPassword.text) == true) {
+    bool validateNewPass =
+        Validate.checkInvalidateNewPassword(newPassword.text);
+    bool checkEqual =
+        Validate.checkNotEqualNewPassword(newPassword.text, reNewPassword.text);
+    if (validateNewPass == true) {
       setState(() {
         newPassAnnounce =
             "Mật khẩu phải chứa ít nhất 1 chữ hoa,chữ thường, kí tự đặc biệt, số và chứa từ 6 kí tự";
       });
-      return false;
     }
-
-    if (Validate.checkNotEqualNewPassword(
-            newPassword.text, reNewPassword.text) ==
-        true) {
+    if (checkEqual == true) {
       setState(() {
         prePassAnnounce = "Mật khẩu phải trùng với mật khẩu mới";
       });
+    }
+    if (validateNewPass == true && checkEqual == true) {
       return false;
     }
     return true;
@@ -83,12 +94,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       width: double.infinity,
                     ),
                     BoxWithLabel(
-                      label: "Nhập mật khẩu hiện tại",
                       textEditingController: currentPassword,
                       prefixicon: Icons.key,
                       hinttext: "Nhập mật khẩu hiện tại",
                       ishide: true,
-                      heightbox: 30,
                       suffixicon: Icons.remove_red_eye,
                       function: () {
                         showCurrentPassword != showCurrentPassword;
@@ -96,12 +105,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       announcement: currentPassAnnounce,
                     ),
                     BoxWithLabel(
-                      label: "Nhập mật khẩu mới",
                       textEditingController: newPassword,
                       prefixicon: Icons.key,
                       hinttext: "Nhập mật khẩu mới",
                       ishide: true,
-                      heightbox: 30,
                       function: () {
                         showNewPassword != showNewPassword;
                       },
@@ -109,17 +116,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       announcement: newPassAnnounce,
                     ),
                     BoxWithLabel(
-                        label: "Nhập lại mật khẩu mới",
-                        textEditingController: reNewPassword,
-                        prefixicon: Icons.key,
-                        hinttext: "Nhập lại mật khẩu mới",
-                        ishide: true,
-                        heightbox: 30,
-                        function: () {
-                          !showReNewPassword;
-                        },
-                        suffixicon: Icons.remove_red_eye,
-                        announcement: prePassAnnounce),
+                      textEditingController: reNewPassword,
+                      prefixicon: Icons.key,
+                      hinttext: "Nhập lại mật khẩu mới",
+                      ishide: true,
+                      function: () {
+                        !showReNewPassword;
+                      },
+                      suffixicon: Icons.remove_red_eye,
+                      announcement: prePassAnnounce,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Center(
@@ -134,8 +140,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         setState(() {
                           clear();
                           if (checkFillAll()) {
+                            checkCurrentPass();
                             if (checkConditionCallChangePasswordAPI()) {
-                              log('Thành công');
+                              log("Thành công");
                             } else {
                               log('Thất bại');
                             }

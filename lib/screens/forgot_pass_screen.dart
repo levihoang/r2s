@@ -52,7 +52,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 100,
+                          height: 80,
                         ),
                         Column(
                           children: [
@@ -69,32 +69,40 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           height: 70,
                         ),
                         BoxWithLabel(
-                          label: "Nhập email",
                           textEditingController: mailController,
                           prefixicon: Icons.email,
                           hinttext: "Nhập email",
                           ishide: false,
-                          heightbox: 10,
                           function: () {},
                           suffixicon: Icons.warning_amber,
                           announcement: mess,
                         ),
                         const SizedBox(
-                          height: 150,
+                          height: 100,
                         ),
                         Center(
                           child: InkWell(
                             onTap: () {
-                              if (mailController.text.isNotEmpty) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const OTPPage()),
-                                );
-                              } else {
+                              if (mailController.text.isEmpty) {
                                 mess = "Vui lòng nhập email";
+                                setState(() {});
+                                return;
                               }
-                              setState(() {});
+
+                              if (Validate.invalidateEmail(
+                                  mailController.text)) {
+                                mess = 'Mail không hợp lệ';
+                                setState(() {});
+                                return;
+                              }
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OTPPage(
+                                          email: mailController.text,
+                                        )),
+                              );
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),

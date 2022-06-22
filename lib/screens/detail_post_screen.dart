@@ -20,7 +20,9 @@ class _DetailPostState extends State<DetailPost> {
             IconButton(
               icon: Icon(
                 Icons.bookmark_add_sharp,
-                color: isChangeColor ? Colors.brown : Colors.white,
+                color: isChangeColor
+                    ? Color.fromARGB(255, 203, 83, 39)
+                    : Color.fromARGB(255, 100, 100, 216),
               ),
               onPressed: () {
                 setState(() {
@@ -31,13 +33,13 @@ class _DetailPostState extends State<DetailPost> {
           ],
           title: const Text("Chi tiết công việc",
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.grey,
               )),
           centerTitle: true,
           iconTheme: const IconThemeData(
             color: Colors.black87, //change your color here
           ),
-          backgroundColor: Colors.orangeAccent,
+          backgroundColor: Colors.white,
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),
@@ -54,15 +56,16 @@ class _DetailPostState extends State<DetailPost> {
                   height: sizediv,
                 ),
                 Text(
-                  "Đăng ngày October 24, 2016",
-                  style: TextStyle(fontSize: 17, color: Colors.grey.shade500),
-                ),
-                SizedBox(
-                  height: sizediv,
+                  "Đăng ngày 24/3 2016, 13:00",
+                  style: TextStyle(fontSize: 17, color: Colors.grey.shade600),
                 ),
                 Text(
-                  "Cập nhật lần cuối October 24, 2016, 13pm",
-                  style: TextStyle(fontSize: 17, color: Colors.grey.shade500),
+                  "Cập nhật lần cuối  24/5 2016, 13:30",
+                  style: TextStyle(fontSize: 17, color: Colors.grey.shade600),
+                ),
+                Text(
+                  "Người đăng bài: Nguyễn Văn A",
+                  style: TextStyle(fontSize: 17, color: Colors.grey.shade600),
                 ),
                 SizedBox(
                   height: sizediv,
@@ -79,38 +82,34 @@ class _DetailPostState extends State<DetailPost> {
                   color: Colors.grey.shade400,
                 ),
                 title("Miêu tả công việc", 17, Colors.black),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
                 title("Yêu cầu ứng viên", 17, Colors.black),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title(
+                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                title("Quyền lợi", 17, Colors.black),
+                title(
+                    "Lương cơ bản: 700 - 1000 USD (chưa bao gồm incentive Tháng/ Quý/ Năm)",
+                    15,
                     Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
-                    Colors.grey),
-                title("  Thành thạo ngôn ngữ lập trình ReactJS.", 15,
+                title("Được hỗ trợ Ipad để làm việc", 15, Colors.grey),
+                title(
+                    "Được đào tạo chuyên môn & tham gia các khoá học bổ sung các kỹ năng",
+                    15,
                     Colors.grey),
               ],
             ),
@@ -131,12 +130,15 @@ Widget SJP() {
         Column(
           children: [
             Image.asset(
-              "images/money1.png",
-              width: 55,
-              height: 55,
+              "images/teamwork.png",
+              width: 50,
+              height: 50,
             ),
-            title("Mức Lương", 15, Colors.black),
-            title("3-5 triệu", 13, Colors.grey)
+            SizedBox(
+              height: 5,
+            ),
+            title("Số lượng tuyển", 15, Colors.black),
+            title("3 người", 14, Colors.grey)
           ],
         ),
         Column(
@@ -147,7 +149,7 @@ Widget SJP() {
               height: 55,
             ),
             title("Hình thức làm việc", 15, Colors.black),
-            title("Fulltime", 13, Colors.grey)
+            title("Toàn thời gian", 14, Colors.grey)
           ],
         ),
         Column(
@@ -157,8 +159,8 @@ Widget SJP() {
               width: 55,
               height: 55,
             ),
-            title("Vị trí", 15, Colors.black),
-            title("Thực tập sinh", 13, Colors.grey)
+            title("Cấp Bậc", 15, Colors.black),
+            title("Thực tập sinh", 14, Colors.grey)
           ],
         )
       ],
@@ -208,30 +210,14 @@ Widget companyInfor(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            title("VỊ TRÍ", 18, Colors.black),
-            const Text("New York, United States"),
+            title("ĐỊA CHỈ", 18, Colors.black),
+            const Text("320, Bình Thạnh, HCM"),
           ],
         )
       ],
     ),
   );
 }
-
-// Widget titleBox(double size, BuildContext context) {
-//   return Padding(
-//     padding: const EdgeInsets.only(top: 10),
-//     child: Container(
-//       height: size * 10,
-//       width: MediaQuery.of(context).size.width - 30,
-//       color: Colors.grey.shade200,
-//       child: Column(
-//         children: [
-//           title("UI/UX Design", size * 2),
-//         ],
-//       ),
-//     ),
-//   );
-// }
 
 Widget title(String text, double size, Color color) {
   return Text(
