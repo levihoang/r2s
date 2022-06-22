@@ -9,8 +9,6 @@ import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/validates/validate.dart';
 
-import '../services/register_api.dart';
-
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);
 
@@ -86,133 +84,136 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: backgroundColor,
-        body: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                height: 200,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("images/logo_company.png"),
-                        fit: BoxFit.fill)),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 90, left: 20),
-                  color: const Color(0xFF3b5999).withOpacity(.06),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [],
-                  ),
-                ),
-              ),
-            ),
-            buildBottomHalfContainer(true),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 700),
-              curve: Curves.bounceInOut,
-              top: isSignupScreen ? 100 : 130,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 700),
-                curve: Curves.bounceInOut,
-                height: isSignupScreen ? 500 : 330,
-                padding: const EdgeInsets.all(20),
-                width: size * 35,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 15,
-                          spreadRadius: 5),
-                    ]),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                clear();
-                                clearText();
-                                isSignupScreen = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Đăng nhập",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: !isSignupScreen
-                                          ? activeColor
-                                          : textColor1),
-                                ),
-                                if (!isSignupScreen)
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 3),
-                                    height: 2,
-                                    width: 55,
-                                    color: Colors.orange,
+        body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 650,
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 200,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("images/logo_company.png"),
+                              fit: BoxFit.fill)),
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 90, left: 20),
+                        color: const Color(0xFF3b5999).withOpacity(.06),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [],
+                        ),
+                      ),
+                    ),
+                    buildBottomHalfContainer(true),
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 700),
+                      curve: Curves.bounceInOut,
+                      top: isSignupScreen ? 100 : 130,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 700),
+                        curve: Curves.bounceInOut,
+                        height: isSignupScreen ? 500 : 330,
+                        padding: const EdgeInsets.all(20),
+                        width: size * 35,
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 15,
+                                  spreadRadius: 5),
+                            ]),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        clear();
+                                        clearText();
+                                        isSignupScreen = false;
+                                      });
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Đăng nhập",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: !isSignupScreen
+                                                  ? activeColor
+                                                  : textColor1),
+                                        ),
+                                        if (!isSignupScreen)
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 3),
+                                            height: 2,
+                                            width: 55,
+                                            color: Colors.orange,
+                                          )
+                                      ],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        clear();
+                                        clearText();
+                                        isSignupScreen = true;
+                                      });
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Đăng kí",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: isSignupScreen
+                                                  ? activeColor
+                                                  : textColor1),
+                                        ),
+                                        if (isSignupScreen)
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(top: 3),
+                                            height: 2,
+                                            width: 55,
+                                            color: Colors.orange,
+                                          )
+                                      ],
+                                    ),
                                   )
-                              ],
-                            ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              if (isSignupScreen) buildSignupSection(),
+                              if (!isSignupScreen) buildSigninSection()
+                            ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                clear();
-                                clearText();
-                                isSignupScreen = true;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Đăng kí",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: isSignupScreen
-                                          ? activeColor
-                                          : textColor1),
-                                ),
-                                if (isSignupScreen)
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 3),
-                                    height: 2,
-                                    width: 55,
-                                    color: Colors.orange,
-                                  )
-                              ],
-                            ),
-                          )
-                        ],
+                        ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      if (isSignupScreen) buildSignupSection(),
-                      if (!isSignupScreen) buildSigninSection()
-                    ],
-                  ),
+                    ),
+                    buildBottomHalfContainer(false),
+                    // Bottom buttons
+                  ],
                 ),
               ),
-            ),
-            // Trick to add the submit button
-            buildBottomHalfContainer(false),
-            // Bottom buttons
-            Positioned(
-              top: MediaQuery.of(context).size.height - 300,
-              right: 0,
-              left: 0,
-              child: Column(
+              Column(
                 children: [
                   Text(
                     isSignupScreen ? "" : "Hoặc đăng nhập với",
@@ -237,9 +238,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     child: Text("Công ty cổ phần R2S"),
                   )
                 ],
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
