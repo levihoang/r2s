@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:it_intership_jobs_r2s/models/company.dart';
 import 'package:it_intership_jobs_r2s/models/user.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/candidate.dart';
 
 class RemoteService {
-  static String uri = 'http://192.168.49.146:8085';
+  static String uri = 'http://10.0.2.2:8085';
 
   static Future<List<User>?> getUsers() async {
     final response = await getHTTP('/api/user');
@@ -31,6 +32,20 @@ class RemoteService {
     } else {
       // throw Exception('Failed to load getUserAPI');
       log('Failed to load getUserAPI');
+    }
+    return null;
+  }
+
+  static Future<Company?> getCompany(String id) async {
+    final response = await getHTTP('/api/company/$id');
+
+    if (response.statusCode == 200) {
+      if (response.body != '') {
+        return Company.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      }
+    } else {
+      // throw Exception('Failed to load getUserAPI');
+      log('Failed to load getCompanyAPI');
     }
     return null;
   }
