@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/models/company.dart';
+import 'package:it_intership_jobs_r2s/models/locationDTO.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/button_with_icon.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/job_post.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
@@ -19,41 +21,19 @@ class CompanyScreen extends StatefulWidget {
 
 class _CompanyScreenState extends State<CompanyScreen> {
   bool show = true;
-  String username = '';
-  String name = 'Công ty cổ phần R2S';
-  String major = '';
-  String cv = '';
-  String phoneNumber = '';
-  String email = '';
-  String gender = '';
-  String avatar = '';
-  String tax = '12345678';
+  Company? company;
   User? user;
+  late Future<Company?> dataFuture;
 
   @override
   void initState() {
-    getUser();
     super.initState();
+    dataFuture = getCompany();
   }
 
-  getUser() async {
-    user = await RemoteService.getUser('2');
-    if (user != null) {
-      // name = user?.firstName ?? 'tên tài khoản';
-      // username = user?.username ?? "Tên tài khoản";
-      // cv = user?.cv ?? "";
-      // major = user?.major ?? "C";
-      // gender = user?.gender == 0 ? 'Nam' : 'Nữ';
-      // email = user?.email ?? "";
-      // phoneNumber = user?.phone ?? "";
-      // avatar = user?.avatar ??
-      //     'https://www.woolha.com/media/2020/03/flutter-circleavatar-radius.jpg';
-      if (mounted) {
-        setState(() {});
-      }
-    } else {
-      log('Not Found user: $username');
-    }
+  Future<Company?> getCompany() async {
+    company = await RemoteService.getCompany('1');
+    return company;
   }
 
   void showHide(bool b) {
@@ -73,11 +53,23 @@ class _CompanyScreenState extends State<CompanyScreen> {
                   Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      CardVisit(
-                        name: name,
-                        avatar: avatar,
-                        tax: tax,
-                      ),
+                      FutureBuilder<Company?>(
+                          future: dataFuture,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              final error = snapshot.error;
+                              return Text('$error');
+                            } else if (snapshot.hasData) {
+                              Company company = snapshot.data!;
+                              return CardVisit(
+                                  name: company.name ?? '',
+                                  avatar: company.logo ?? '',
+                                  tax: company.tax ?? '');
+                            } else {
+                              return const CardVisit(
+                                  name: '', avatar: '', tax: '');
+                            }
+                          }),
                       Padding(
                         padding: const EdgeInsets.only(
                             bottom: 40, right: 20, left: 20),
@@ -104,12 +96,12 @@ class _CompanyScreenState extends State<CompanyScreen> {
                   ),
                   show == true
                       ? const JobsCompanyCard()
-                      : const InformationCompanyCard(
-                          description:
-                              'Trở thành một trong những ngân hàng tốt nhất Việt Nam, hướng tới vị trí trong top 3, với định vị là một ngân hàng cộng đồng, có đội ngũ nhân viên thân thiện và điểm giao dịch thuận lợi',
-                          email: 'abc@gmail.com',
-                          phoneNumber: '0935638416',
-                          website: 'https://r2s.com.vn/',
+                      : InformationCompanyCard(
+                          description: company?.description,
+                          email: company?.email,
+                          phoneNumber: company?.phone,
+                          website: company?.website,
+                          location: company?.locationsDTO,
                         ),
                 ],
               ),
@@ -179,12 +171,14 @@ class InformationCompanyCard extends StatelessWidget {
     required this.website,
     required this.email,
     required this.phoneNumber,
+    this.location,
   });
 
-  final String description;
-  final String website;
-  final String email;
-  final String phoneNumber;
+  final String? description;
+  final String? website;
+  final String? email;
+  final String? phoneNumber;
+  final List<LocationsDTO>? location;
 
   @override
   Widget build(BuildContext context) {
@@ -201,53 +195,53 @@ class InformationCompanyCard extends StatelessWidget {
               'Giới thiệu',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(
-              height: 20,
+            customText(
+              description ?? '',
             ),
             const Text(
               'Website',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
-            const Text(
-              'Link',
-              style: TextStyle(
-                color: Colors.blue,
-                decoration: TextDecoration.underline,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            customText(website ?? ''),
             const Text(
               'Email',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(
-              email,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            customText(email ?? ''),
             const Text(
               'Số điện thoại',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(
-              phoneNumber,
-              style: const TextStyle(fontSize: 18),
+            customText(phoneNumber ?? ''),
+            const Text(
+              'Địa chỉ',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: location?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return customText(
+                  'Số ${location?[index].note},đường ${location?[index].address}, quận ${location?[index].district?.name}, ${location?[index].district?.province?.shortName}',
+                );
+              },
+            )
           ]),
         ),
       ),
     );
   }
+}
+
+Widget customText(String text) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 7, bottom: 7),
+    child: Text(
+      text,
+      style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
+    ),
+  );
 }
 
 class CardVisit extends StatefulWidget {
@@ -297,8 +291,8 @@ class _CardVisitState extends State<CardVisit> {
                         backgroundColor: darkGrayColor,
                         radius: 75,
                         child: CircleAvatar(
-                          backgroundImage: (widget.avatar != ''
-                                  ? CachedNetworkImageProvider(widget.avatar)
+                          backgroundImage: (widget.avatar.toString() == null
+                                  ? CachedNetworkImageProvider("")
                                   : const AssetImage('images/logo_r2s.jpg'))
                               as ImageProvider,
                           radius: 70,
