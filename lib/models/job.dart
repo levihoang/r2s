@@ -1,68 +1,116 @@
 class Job {
-  String? desciption;
-  String? nameMajor;
-  String? namePosition;
-  int? amount;
-  int? salaryMax;
-  int? salaryMin;
-  String? requirement;
-  String? additionInfor;
-  int? startTime;
-  int? endtime;
-  String? location;
-  int? createDate;
-  String? status;
+  int? id;
   String? name;
+  String? hr;
+  String? desciption;
+  String? major;
+  Jobposition? jobposition;
+  int? amount;
+  int? salaryMin;
+  int? salaryMax;
+  String? requirement;
+  String? otherInfo;
+  String? timeStartStr;
+  String? timeEndStr;
+  String? locationjob;
+  String? createDate;
+  bool? status;
+  List? applyDTO;
 
   Job(
-      {this.desciption,
-      this.nameMajor,
-      this.namePosition,
+      {this.id,
+      this.name,
+      this.hr,
+      this.desciption,
+      this.major,
+      this.jobposition,
       this.amount,
-      this.salaryMax,
       this.salaryMin,
+      this.salaryMax,
       this.requirement,
-      this.additionInfor,
-      this.startTime,
-      this.endtime,
-      this.location,
+      this.otherInfo,
+      this.timeStartStr,
+      this.timeEndStr,
+      this.locationjob,
       this.createDate,
       this.status,
-      this.name});
+      this.applyDTO});
 
   Job.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    hr = json['hr'];
     desciption = json['desciption'];
-    nameMajor = json['nameMajor'];
-    namePosition = json['namePosition'];
+    major = json['major'];
+    jobposition = json['jobposition'] != null
+        ? Jobposition.fromJson(json['jobposition'])
+        : null;
     amount = json['amount'];
-    salaryMax = json['salaryMax'];
     salaryMin = json['salaryMin'];
+    salaryMax = json['salaryMax'];
     requirement = json['requirement'];
-    additionInfor = json['additionInfor'];
-    startTime = json['startTime'];
-    endtime = json['endtime'];
-    location = json['location'];
+    otherInfo = json['otherInfo'];
+    timeStartStr = json['timeStartStr'];
+    timeEndStr = json['timeEndStr'];
+    locationjob = json['locationjob'];
     createDate = json['createDate'];
     status = json['status'];
-    name = json['name'];
+    // if (json['applyDTO'] != null) {
+    //   applyDTO = <Null>[];
+    //   json['applyDTO'].forEach((v) {
+    //     applyDTO!.add(new Null.fromJson(v));
+    //   });
+    // }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['hr'] = hr;
     data['desciption'] = desciption;
-    data['nameMajor'] = nameMajor;
-    data['namePosition'] = namePosition;
+    data['major'] = major;
+    if (jobposition != null) {
+      data['jobposition'] = jobposition!.toJson();
+    }
     data['amount'] = amount;
-    data['salaryMax'] = salaryMax;
     data['salaryMin'] = salaryMin;
+    data['salaryMax'] = salaryMax;
     data['requirement'] = requirement;
-    data['additionInfor'] = additionInfor;
-    data['startTime'] = startTime;
-    data['endtime'] = endtime;
-    data['location'] = location;
+    data['otherInfo'] = otherInfo;
+    data['timeStartStr'] = timeStartStr;
+    data['timeEndStr'] = timeEndStr;
+    data['locationjob'] = locationjob;
     data['createDate'] = createDate;
     data['status'] = status;
+    // if (this.applyDTO != null) {
+    //   data['applyDTO'] = this.applyDTO!.map((v) => v.toJson()).toList();
+    // }
+    return data;
+  }
+}
+
+class Jobposition {
+  int? id;
+  String? name;
+  String? demandUnis;
+  String? jobs;
+
+  Jobposition({this.id, this.name, this.demandUnis, this.jobs});
+
+  Jobposition.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    demandUnis = json['demandUnis'];
+    jobs = json['jobs'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['name'] = name;
+    data['demandUnis'] = demandUnis;
+    data['jobs'] = jobs;
     return data;
   }
 }

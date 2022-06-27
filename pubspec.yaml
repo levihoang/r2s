@@ -28,7 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cached_network_image: ^3.2.1
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.5
   dio: ^4.0.6
   dropdown_button2: ^1.5.3
   flutter:
@@ -37,6 +37,7 @@ dependencies:
   flutter_icons_null_safety: ^1.1.0
   flutter_launcher_icons: ^0.9.3
   flutter_linkify: ^5.0.2
+  flutter_tabler_icons: ^1.1.1
   get_it: ^7.2.0
   google_fonts: ^3.0.1
   http: ^0.13.4

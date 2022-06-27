@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/screens/loginandsignup_screen.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../models/job.dart';
+import '../../services/remote_service.dart';
 import '../widgets/job_post.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late List<Job>? jobs;
+  @override
+  late Future<List<Job>?> dataFuture;
+
+ 
+  Future<List<Job>?> getJob() async {
+    jobs = await RemoteService.getAllJobs();
+    return jobs;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +75,20 @@ class SearchBar extends StatelessWidget {
           SizedBox(
             width: sizeDivide,
           ),
-          Image.asset(
-            'images/icon_filter.png',
-            height: 20,
-            width: 20,
-            fit: BoxFit.cover,
+          InkWell(
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const LoginSignupScreen()),
+              ),
+            },
+            child: Image.asset(
+              'images/icon_filter.png',
+              height: 20,
+              width: 20,
+              fit: BoxFit.cover,
+            ),
           ),
         ],
       ),

@@ -1,15 +1,13 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:it_intership_jobs_r2s/models/candidate.dart';
+import 'package:it_intership_jobs_r2s/screens/pages/edit_page.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
-import 'package:it_intership_jobs_r2s/utils/dimensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../models/user.dart';
 import '../widgets/button_with_icon.dart';
 
 class PersonPage extends StatefulWidget {
@@ -21,81 +19,85 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   bool show = true;
-  String username = '';
-  String name = '';
-  String major = '';
-  String cv = '';
-  String phoneNumber = '';
-  String email = '';
-  String gender = '';
-  String avatar = '';
-  User? user;
+
   Candidate? candidate;
+
+  late Future<Candidate?> dataFutureCandidate;
 
   @override
   void initState() {
-    getUser();
     super.initState();
+    dataFutureCandidate = getCandidate();
   }
 
-  getUser() async {
+  Future<Candidate?> getCandidate() async {
     candidate = await RemoteService.getCandidate('liemha3');
-
-    if (candidate != null) {
-      name = candidate?.userDTO?.firstName ?? '';
-      username = candidate?.userDTO?.username ?? "";
-      gender = candidate?.userDTO?.gender == 0 ? 'Nam' : 'Nữ';
-      email = candidate?.userDTO?.email ?? "";
-      phoneNumber = candidate?.userDTO?.phone ?? "";
-      avatar = candidate?.userDTO?.avatar ?? '';
-      major = candidate?.major?.name ?? "";
-      cv = candidate?.cv ?? "";
-
-      if (mounted) {
-        setState(() {});
-      }
-    } else {
-      log('Not Found user: $username');
-    }
+    return candidate;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              CardVisit(
-                major: major,
-                username: username,
-                name: name,
-                avatar: avatar,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40, right: 20, left: 20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                          onTap: () async {
-                            await launchUrl(Uri.parse(
-                                'https://stackoverflow.com/questions/63625023/flutter-url-launcher-unhandled-exception-could-not-launch-youtube-url-caused-b'));
-                          },
-                          child: buttonWithIcon(Icons.account_box, 'CV')),
-                    ]),
-              )
-            ],
+    return Scaffold(
+        appBar: AppBar(
+          title: const Center(child: Text('Trang cá nhân của tôi')),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.white, Colors.orange],
+                  begin: FractionalOffset(0.0, 0.0),
+                  end: FractionalOffset(0.5, 0.0),
+                  stops: [0.0, 1.0],
+                  tileMode: TileMode.clamp),
+            ),
           ),
-          InformationCard(
-            phoneNumber: phoneNumber,
-            gender: gender,
-            email: email,
-          ),
-        ],
-      ),
-    );
+        ),
+        backgroundColor: Colors.grey.shade100,
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Column(
+              children: [
+                FutureBuilder<Candidate?>(
+                    future: dataFutureCandidate,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        final error = snapshot.error;
+                        return Text('$error');
+                      } else if (snapshot.hasData) {
+                        Candidate candidate = snapshot.data!;
+                        return CardVisit(
+                          username: "${candidate.userDTO?.username}",
+                          name:
+                              "${candidate.userDTO?.firstName}${candidate.userDTO?.lastName}",
+                          avatar: "${candidate.userDTO?.avatar}",
+                        );
+                      } else {
+                        return const CardVisit(
+                          name: '',
+                          avatar: '',
+                          username: '',
+                        );
+                      }
+                    }),
+                FutureBuilder(
+                    future: dataFutureCandidate,
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: [
+                            InformationCard(
+                              candidate: candidate,
+                            ),
+                          ],
+                        );
+                      } else {
+                        return const InformationCard();
+                      }
+                    })),
+                logoutButton(context),
+              ],
+            ),
+          ]),
+        ));
   }
 }
 
@@ -142,85 +144,99 @@ class CVCard extends StatelessWidget {
 class InformationCard extends StatelessWidget {
   const InformationCard({
     super.key,
-    required this.gender,
-    required this.email,
-    required this.phoneNumber,
+    this.candidate,
   });
 
-  final String gender;
-  final String email;
-  final String phoneNumber;
+  final Candidate? candidate;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Giới tính',
-            style:
-                GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              color: whiteColor,
-              child: Text(
-                gender,
-                style: const TextStyle(fontSize: mText),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Thông tin cá nhân",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  InkWell(
+                    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditPage(
+                                  candidate: candidate,
+                                )),
+                      )
+                    },
+                    child: const Text(
+                      "Chỉnh sửa",
+                      style: TextStyle(color: Colors.blue, fontSize: 18),
+                    ),
+                  )
+                ],
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Email',
-            style:
-                GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              color: whiteColor,
-              width: double.infinity,
-              child: Text(
-                email,
-                style: const TextStyle(fontSize: mText),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Số điện thoại',
-            style:
-                GoogleFonts.openSans(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              color: whiteColor,
-              width: double.infinity,
-              child: Text(
-                phoneNumber,
-                style: const TextStyle(fontSize: mText),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          )
-        ],
+            customText(
+                "Chuyên ngành", TablerIcons.briefcase, candidate?.major?.name),
+            customText(
+                "Giới tính",
+                Icons.people_alt_rounded,
+                candidate?.userDTO?.gender == 0
+                    ? "Nam"
+                    : candidate?.userDTO?.gender == 1
+                        ? "Nữ"
+                        : "Chưa xác định"),
+            customText(
+                "Trạng thái",
+                TablerIcons.clock,
+                candidate?.userDTO?.status == "Active"
+                    ? "Đang hoạt động"
+                    : "Chưa hoạt động"),
+            customText(
+                "Email", Icons.email, candidate?.userDTO?.email ?? "Chưa có"),
+            customText("Số điện thoại", TablerIcons.phone,
+                candidate?.userDTO?.phone ?? "Chưa có"),
+          ],
+        ),
       ),
     );
   }
+}
+
+Widget customText(String text, IconData icon, String? data) {
+  return Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Row(
+      children: [
+        Icon(icon),
+        const SizedBox(
+          width: 5,
+        ),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 17,
+          ),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Text(
+          data ?? "",
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+        )
+      ],
+    ),
+  );
 }
 
 class ButtonShow extends StatelessWidget {
@@ -289,12 +305,10 @@ class ButtonShow extends StatelessWidget {
 class CardVisit extends StatefulWidget {
   const CardVisit(
       {super.key,
-      required this.major,
       required this.username,
       required this.name,
       required this.avatar});
 
-  final String major;
   final String username;
   final String name;
   final String avatar;
@@ -307,23 +321,14 @@ class _CardVisitState extends State<CardVisit> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 10),
           // color: yellowColor,
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                yellowColor,
-                yellowColor,
-                yellowColor,
-                whitePinkColor,
-                whitePinkColor,
-              ])),
+
           child: Wrap(
             children: [
               SizedBox(
@@ -335,22 +340,12 @@ class _CardVisitState extends State<CardVisit> {
                         backgroundColor: darkGrayColor,
                         radius: 75,
                         child: CircleAvatar(
-                          backgroundImage: (widget.avatar != ''
-                                  ? CachedNetworkImageProvider(widget.avatar)
-                                  : const AssetImage('images/logo_r2s.jpg'))
+                          backgroundImage: (widget.avatar == '' ||
+                                      widget.avatar == "null"
+                                  ? const AssetImage('images/logo_r2s.jpg')
+                                  : CachedNetworkImageProvider(widget.avatar))
                               as ImageProvider,
                           radius: 70,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: InkWell(
-                          onTap: () {
-                            log('Edit profile');
-                          },
-                          child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Icon(Icons.edit)),
                         ),
                       ),
                     ]),
@@ -362,18 +357,20 @@ class _CardVisitState extends State<CardVisit> {
                         style: GoogleFonts.openSans(fontSize: 30),
                       ),
                     ),
-                    Text(widget.name,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      widget.major,
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 10, right: 20, left: 20, top: 20),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                  onTap: () async {
+                                    await launchUrl(Uri.parse(
+                                        'https://stackoverflow.com/questions/63625023/flutter-url-launcher-unhandled-exception-could-not-launch-youtube-url-caused-b'));
+                                  },
+                                  child: buttonWithIcon(
+                                      Icons.account_box, 'CV của tôi')),
+                            ]))
                   ],
                 ),
               ),
@@ -383,4 +380,76 @@ class _CardVisitState extends State<CardVisit> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context, Function function) {
+  // Create button
+  Widget okButton = TextButton(
+    child: const Text(
+      "Không",
+      style: TextStyle(fontSize: 20),
+    ),
+    onPressed: () {
+      function;
+      Navigator.of(context).pop();
+    },
+  );
+  Widget cancelButton = TextButton(
+    child:
+        const Text("Đồng ý", style: TextStyle(fontSize: 20, color: Colors.red)),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text(
+      "Đăng xuất",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ),
+    content: const Text("Bạn có muốn đăng xuất không?"),
+    actions: [okButton, cancelButton],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+Widget logoutButton(BuildContext context) {
+  return InkWell(
+    onTap: () {
+      showAlertDialog(context, () => {});
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: const [
+              Icon(
+                TablerIcons.logout,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Đăng xuất',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

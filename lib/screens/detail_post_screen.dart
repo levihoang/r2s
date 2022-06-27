@@ -21,8 +21,8 @@ class _DetailPostState extends State<DetailPost> {
               icon: Icon(
                 Icons.bookmark_add_sharp,
                 color: isChangeColor
-                    ? Color.fromARGB(255, 203, 83, 39)
-                    : Color.fromARGB(255, 100, 100, 216),
+                    ? const Color.fromARGB(255, 203, 83, 39)
+                    : const Color.fromARGB(255, 100, 100, 216),
               ),
               onPressed: () {
                 setState(() {
@@ -37,7 +37,7 @@ class _DetailPostState extends State<DetailPost> {
               )),
           centerTitle: true,
           iconTheme: const IconThemeData(
-            color: Colors.black87, //change your color here
+            color: Colors.black87,
           ),
           backgroundColor: Colors.white,
         ),
@@ -82,25 +82,25 @@ class _DetailPostState extends State<DetailPost> {
                   color: Colors.grey.shade400,
                 ),
                 title("Miêu tả công việc", 17, Colors.black),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                const SizedBox(
+                  height: 5,
+                ),
+                title("Lập trình  Application/Software cho Công ty.", 15,
+                    Colors.grey),
+                title("Thực hiện lập trình ABAP trên SAP.", 15, Colors.grey),
+                const SizedBox(
+                  height: 5,
+                ),
                 title("Yêu cầu ứng viên", 17, Colors.black),
                 title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
-                title(
-                    "Thành thạo ngôn ngữ lập trình ReactJS.", 15, Colors.grey),
+                    "Tốt Nghiệp Đại Học/Cao đẳng IT hạng Khá/Giỏi , chuyên về Application.",
+                    15,
+                    Colors.grey),
+                title("Ít nhất 2-3 năm kinh nghiệm IT lập trình.", 15,
+                    Colors.grey),
+                const SizedBox(
+                  height: 5,
+                ),
                 title("Quyền lợi", 17, Colors.black),
                 title(
                     "Lương cơ bản: 700 - 1000 USD (chưa bao gồm incentive Tháng/ Quý/ Năm)",
@@ -134,7 +134,7 @@ Widget SJP() {
               width: 50,
               height: 50,
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             title("Số lượng tuyển", 15, Colors.black),

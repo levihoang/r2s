@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/models/job.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/apply_post.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/job_post.dart';
+import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import '../widgets/hash_tag.dart';
 
@@ -14,6 +16,19 @@ class JobPage extends StatefulWidget {
 
 class _JobPageState extends State<JobPage> {
   var selectedIndex = 0;
+  late Future<List<Job>?> dataFuture;
+  List<Job>? job;
+
+  Future<List<Job>?> getAllJob() async {
+    job = await RemoteService.getAllJobs();
+    return job;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dataFuture = getAllJob();
+  }
 
   var bodyItems = [
     const CareJobs(),

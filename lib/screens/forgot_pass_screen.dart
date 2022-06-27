@@ -91,7 +91,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                               if (Validate.invalidateEmail(
                                   mailController.text)) {
-                                mess = 'Mail không hợp lệ';
+                                mess = 'Email không đúng định dạng';
                                 setState(() {});
                                 return;
                               }
