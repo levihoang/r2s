@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
-  NotificationPage({Key? key}) : super(key: key);
+  const NotificationPage({Key? key}) : super(key: key);
 
   @override
   _NotificationPageState createState() => _NotificationPageState();
@@ -13,19 +13,21 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("RS2 company"),
+        title: const Text("RS2 company"),
       ),
       body: FittedBox(
         child: Container(
           // height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: Colors.amber,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(8.0),
-              boxShadow: [BoxShadow(color: Colors.amber, blurRadius: 2.0)]),
+              boxShadow: const [
+                BoxShadow(color: Colors.amber, blurRadius: 2.0)
+              ]),
           child: Column(
             children: const [
               Text(

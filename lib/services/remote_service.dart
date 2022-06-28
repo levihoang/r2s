@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:it_intership_jobs_r2s/models/company.dart';
+import 'package:it_intership_jobs_r2s/models/job.dart';
+import 'package:it_intership_jobs_r2s/models/major.dart';
 import 'package:it_intership_jobs_r2s/models/user.dart';
 import 'package:http/http.dart' as http;
 
@@ -43,6 +45,34 @@ class RemoteService {
       if (response.body != '') {
         return Company.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       }
+    } else {
+      // throw Exception('Failed to load getUserAPI');
+      log('Failed to load getCompanyAPI');
+    }
+    return null;
+  }
+
+  static Future<List<Job>?> getAllJobs() async {
+    final response = await getHTTP('/api/job');
+
+    if (response.statusCode == 200) {
+      return (json.decode(utf8.decode(response.bodyBytes)) as List)
+          .map((data) => Job.fromJson(data))
+          .toList();
+    } else {
+      // throw Exception('Failed to load getUserAPI');
+      log('Failed to load getCompanyAPI');
+    }
+    return null;
+  }
+
+  static Future<List<Major>?> getAllMajor() async {
+    final response = await getHTTP('/api/major');
+
+    if (response.statusCode == 200) {
+      return (json.decode(utf8.decode(response.bodyBytes)) as List)
+          .map((data) => Major.fromJson(data))
+          .toList();
     } else {
       // throw Exception('Failed to load getUserAPI');
       log('Failed to load getCompanyAPI');

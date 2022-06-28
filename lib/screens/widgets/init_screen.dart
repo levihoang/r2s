@@ -8,11 +8,11 @@ class InitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 5,
+      seconds: 1,
       navigateAfterSeconds: const HomeScreen(),
       title: Text(
         '''  Chào mừng bạn đến với
-          It InternshipJob        
+          IT InternshipJob        
          ''',
         textScaleFactor: 2,
       ),

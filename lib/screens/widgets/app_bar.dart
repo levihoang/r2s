@@ -66,8 +66,8 @@ class _AppBarR2sState extends State<AppBarR2s> {
                 ? const Padding(
                     padding: EdgeInsets.only(top: 3.0),
                     child: Text(
-                      "Save",
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                      "Lưu",
+                      style: TextStyle(color: Colors.blue, fontSize: 20),
                     ),
                   )
                 : Icon(widget.iconData),

@@ -7,9 +7,15 @@ import 'package:it_intership_jobs_r2s/screens/widgets/hash_tag.dart';
 
 import '../../utils/colors.dart';
 
-class JobPost extends StatelessWidget {
+class JobPost extends StatefulWidget {
   const JobPost({Key? key, required this.isInCompany}) : super(key: key);
   final bool isInCompany;
+
+  @override
+  State<JobPost> createState() => _JobPostState();
+}
+
+class _JobPostState extends State<JobPost> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -30,7 +36,7 @@ class JobPost extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    isInCompany == false
+                    widget.isInCompany == false
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -54,7 +60,7 @@ class JobPost extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    isInCompany == false
+                    widget.isInCompany == false
                         ? Navigator.push(
                             context,
                             MaterialPageRoute(

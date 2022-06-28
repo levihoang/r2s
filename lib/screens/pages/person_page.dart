@@ -4,6 +4,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:it_intership_jobs_r2s/models/candidate.dart';
 import 'package:it_intership_jobs_r2s/screens/pages/edit_page.dart';
+import 'package:it_intership_jobs_r2s/screens/pages/setting_page.dart';
 import 'package:it_intership_jobs_r2s/services/remote_service.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -93,6 +94,7 @@ class _PersonPageState extends State<PersonPage> {
                         return const InformationCard();
                       }
                     })),
+                settingButton(context),
                 logoutButton(context),
               ],
             ),
@@ -446,6 +448,53 @@ Widget logoutButton(BuildContext context) {
                 'Đăng xuất',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget settingButton(BuildContext context) {
+  return InkWell(
+    onTap: () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Setting()));
+    },
+    child: Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: const [
+                  Icon(
+                    TablerIcons.settings,
+                    color: Colors.green,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Cài đặt ứng dụng',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Row(
+                children: const [
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.grey,
+                  ),
+                ],
+              )
             ],
           ),
         ),

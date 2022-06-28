@@ -29,6 +29,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isRememberMe = false;
   bool isWrong = true;
   bool isFill = true;
+  int addSize = 0;
+  double addValue = 0;
 
   String _usernameLogAnnounce = "";
   String _passwordLogA = "";
@@ -50,11 +52,19 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       },
       "email": _email.text,
     };
+    // Map data = {
+    //   "username": "Test21011933",
+    //   "password": "Test123",
+    //   "confirmPassword": "Test123",
+    //   "role": {"id": 3},
+    //   "email": "testtest010101@gmail.com"
+    // };
     print(data);
     String body = json.encode(data);
 
     var response = await RemoteService.postHTTP("/api/user/add", data);
     var myResponse = json.decode(utf8.decode(response.bodyBytes));
+
     if (response.statusCode == 200) {
       setState(() {
         isSignupScreen = false;
@@ -67,11 +77,14 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             myResponse["Username"].toString() != "null") {
           _emailAnnounce = myResponse["Email"].toString();
           _usernameannounce = myResponse["Username"].toString();
+          addValue += 20;
         } else {
           if (myResponse["Email"].toString() != "null") {
             _emailAnnounce = myResponse["Email"].toString();
+            addValue += 10;
           } else {
             _usernameannounce = myResponse["Username"].toString();
+            addValue += 10;
           }
         }
       });
@@ -116,7 +129,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 700),
                         curve: Curves.bounceInOut,
-                        height: isSignupScreen ? 500 : 330,
+                        height: isSignupScreen
+                            ? (430 + addValue)
+                            : (330 + addValue),
                         padding: const EdgeInsets.all(20),
                         width: size * 35,
                         margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -139,6 +154,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
+                                        addValue = 0;
                                         clear();
                                         clearText();
                                         isSignupScreen = false;
@@ -169,6 +185,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
+                                        addValue = 0;
                                         clear();
                                         clearText();
                                         isSignupScreen = true;
@@ -398,6 +415,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   }
 
   loginApi() {
+    addValue = 0;
     clear();
     setState(() {
       bool checklength =
@@ -406,14 +424,18 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         if (checklength) {
         } else {
           _usernameLogAnnounce = "Tài khoản phải chứa từ 6 kí tự";
+          addValue += 10;
         }
       } else {
         loginAnnounce = "Vui lòng điền hết thông tin";
+        addValue += 10;
       }
     });
   }
 
   registerApi() {
+    addValue = 0;
+
     clear();
     setState(() {
       bool checklength =
@@ -425,27 +447,35 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         if (checklength) {
         } else {
           _usernameannounce = "Tài khoản phải chứa từ 6 kí tự";
+          addValue += 10;
         }
         if (validPass) {
         } else {
           _passRegannounce =
               "Mật khẩu phải chứa ít nhất 1 chữ hoa, chữ thường, kí tự đặc biệt, số và chứa từ 6 kí tự";
+          addValue += 20;
         }
         if (isMatch) {
         } else {
           _repassAnnounce = "Xác nhận mật khẩu sai";
+          addValue += 10;
         }
         if (validEmail == false) {
         } else {
           _emailAnnounce = "Email không không đúng định dạng";
+          addValue += 10;
         }
       } else {
         _registerAnnounce = "Vui lòng điền hết thông tin";
+        addValue += 10;
       }
-      if (checkFillRgister() &&
+      bool check = checkFillRgister() == true &&
           checklength &&
           validPass &&
-          isMatch & validEmail == false) {
+          isMatch &&
+          validEmail == false;
+      print(check);
+      if (check) {
         _register();
       }
     });
@@ -479,7 +509,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 700),
       curve: Curves.bounceInOut,
-      top: isSignupScreen ? 555 : 410,
+      top: isSignupScreen ? (480 + addValue) : (410 + addValue),
       right: 0,
       left: 0,
       child: Center(

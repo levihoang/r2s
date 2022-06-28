@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/screens/widgets/app_bar.dart';
 import 'package:it_intership_jobs_r2s/screens/widgets/box_with_label.dart';
 import 'package:it_intership_jobs_r2s/utils/colors.dart';
 import 'package:it_intership_jobs_r2s/validates/validate.dart';
@@ -67,9 +68,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBarR2s(foregroundColor: Colors.amber[100]),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ClipRRect(
@@ -127,7 +134,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       announcement: prePassAnnounce,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.only(bottom: 5),
                       child: Center(
                         child: Text(
                           mess,
@@ -136,7 +143,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         setState(() {
                           clear();
                           if (checkFillAll()) {
