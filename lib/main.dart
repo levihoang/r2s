@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:it_intership_jobs_r2s/locator.dart';
-import 'package:it_intership_jobs_r2s/screens/change_password_screen.dart';
-import 'package:it_intership_jobs_r2s/screens/loginandsignup_screen.dart';
-import 'package:it_intership_jobs_r2s/utils/colors.dart';
-import 'package:it_intership_jobs_r2s/utils/routing/route.dart';
-import 'package:it_intership_jobs_r2s/utils/routing/route_name.dart';
+import 'package:it_intership_jobs_r2s/src/locator.dart';
+
+import 'src/utils/routing/route.dart';
+import 'src/utils/routing/route_name.dart';
 
 void main() {
   setupLocator();
