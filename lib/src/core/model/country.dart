@@ -1,28 +1,29 @@
-class Countries {
-  int? id;
-  String? name;
-  String? areaCode;
-  String? createDate;
-  String? provinces;
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:json_annotation/json_annotation.dart';
+part 'country.g.dart';
 
-  Countries(
-      {this.id, this.name, this.areaCode, this.createDate, this.provinces});
+@JsonSerializable()
+class Country {
+  @JsonKey(name: 'id')
+  final int? id;
 
-  Countries.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    areaCode = json['areaCode'];
-    createDate = json['createDate'];
-    provinces = json['provinces'];
-  }
+  @JsonKey(name: 'name')
+  final String? name;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['areaCode'] = this.areaCode;
-    data['createDate'] = this.createDate;
-    data['provinces'] = this.provinces;
-    return data;
-  }
+  @JsonKey(name: 'areaCode')
+  final String? areaCode;
+
+  @JsonKey(name: 'createDate')
+  final String? createDate;
+  Country({
+    this.id,
+    this.name,
+    this.areaCode,
+    this.createDate,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) =>
+      _$CountryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CountryToJson(this);
 }

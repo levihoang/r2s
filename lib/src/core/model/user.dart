@@ -1,69 +1,51 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
+import 'package:json_annotation/json_annotation.dart';
+
+import 'role.dart';
+
+part 'user.g.dart';
+
+@JsonSerializable()
 class User {
-  String? username;
-  int? gender;
-  String? phone;
-  String? email;
-  String? avatar;
-  String? lastName;
-  String? firstName;
-  String? status;
-  Role? role;
+  @JsonKey(name: 'username')
+  final String? username;
 
-  User(
-      {this.username,
-      this.gender,
-      this.phone,
-      this.email,
-      this.avatar,
-      this.lastName,
-      this.firstName,
-      this.status,
-      this.role});
+  @JsonKey(name: 'gender')
+  final int? gender;
 
-  User.fromJson(Map<String, dynamic> json) {
-    username = json['username'];
-    gender = json['gender'];
-    phone = json['phone'];
-    email = json['email'];
-    avatar = json['avatar'];
-    lastName = json['last_name'];
-    firstName = json['first_name'];
-    status = json['status'];
-    role = json['role'] != null ? Role.fromJson(json['role']) : null;
-  }
+  @JsonKey(name: 'phone')
+  final String? phone;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['username'] = username;
-    data['gender'] = gender;
-    data['phone'] = phone;
-    data['email'] = email;
-    data['avatar'] = avatar;
-    data['last_name'] = lastName;
-    data['first_name'] = firstName;
-    data['status'] = status;
-    if (role != null) {
-      data['role'] = role!.toJson();
-    }
-    return data;
-  }
-}
+  @JsonKey(name: 'email')
+  final String? email;
 
-class Role {
-  int? id;
-  String? name;
+  @JsonKey(name: 'role')
+  final Role? role;
 
-  Role({this.id, this.name});
+  @JsonKey(name: 'firstName')
+  final String? firstName;
 
-  Role.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
+  @JsonKey(name: 'lastName')
+  final String? lastName;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    return data;
-  }
+  @JsonKey(name: 'avatar')
+  final String? avatar;
+  User({
+    this.username,
+    this.gender,
+    this.phone,
+    this.email,
+    this.role,
+    this.firstName,
+    this.lastName,
+    this.avatar,
+  });
+
+  // @JsonKey(name: 'fileAvatar')
+  // final String? fileAvatar;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

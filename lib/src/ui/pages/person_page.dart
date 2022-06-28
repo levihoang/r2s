@@ -197,12 +197,12 @@ class InformationCard extends StatelessWidget {
                     : candidate?.userDTO?.gender == 1
                         ? "Nữ"
                         : "Chưa xác định"),
-            customText(
-                "Trạng thái",
-                TablerIcons.clock,
-                candidate?.userDTO?.status == "Active"
-                    ? "Đang hoạt động"
-                    : "Chưa hoạt động"),
+            // customText(
+            //     "Trạng thái",
+            //     TablerIcons.clock,
+            //     candidate?.userDTO?.status == "Active"
+            //         ? "Đang hoạt động"
+            //         : "Chưa hoạt động"),
             customText(
                 "Email", Icons.email, candidate?.userDTO?.email ?? "Chưa có"),
             customText("Số điện thoại", TablerIcons.phone,

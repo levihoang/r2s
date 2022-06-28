@@ -1,29 +1,31 @@
-import 'package:it_intership_jobs_r2s/src/core/model/province.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'province.dart';
+
+part 'district.g.dart';
+
+@JsonSerializable()
 class District {
-  int? id;
-  String? name;
-  String? prefix;
-  Province? province;
+  District({
+    this.id,
+    this.name,
+    this.prefix,
+    this.province,
+  });
+  @JsonKey(name: 'id')
+  final int? id;
 
-  District({this.id, this.name, this.prefix, this.province});
+  @JsonKey(name: 'name')
+  final String? name;
 
-  District.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    prefix = json['prefix'];
-    province =
-        json['province'] != null ? Province.fromJson(json['province']) : null;
-  }
+  @JsonKey(name: 'prefix')
+  final String? prefix;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['prefix'] = prefix;
-    if (province != null) {
-      data['province'] = province!.toJson();
-    }
-    return data;
-  }
+  @JsonKey(name: 'province')
+  final Province? province;
+
+  factory District.fromJson(Map<String, dynamic> json) =>
+      _$DistrictFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DistrictToJson(this);
 }

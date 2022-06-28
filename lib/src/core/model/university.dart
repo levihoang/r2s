@@ -1,21 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
 
-part 'company.g.dart';
+import 'status.dart';
+
+part 'university.g.dart';
 
 @JsonSerializable()
-class Company {
+class University {
   @JsonKey(name: 'id')
   final int? id;
 
   @JsonKey(name: 'name')
   final String? name;
 
-  @JsonKey(name: 'logo')
-  final String? logo;
+  @JsonKey(name: 'avatar')
+  final String? avatar;
 
-  // @JsonKey(name: 'fileLogo')
-  // final String? fileLogo;
+  @JsonKey(name: 'shortName')
+  final String? shortName;
 
   @JsonKey(name: 'description')
   final String? description;
@@ -29,30 +31,30 @@ class Company {
   @JsonKey(name: 'phone')
   final String? phone;
 
-  @JsonKey(name: 'tax')
-  final String? tax;
+  @JsonKey(name: 'type')
+  final int? type;
 
-  @JsonKey(name: 'date')
-  final String? date;
+  @JsonKey(name: 'createDate')
+  final String? createDate;
 
   @JsonKey(name: 'status')
-  final int? status;
-
-  Company({
+  final Status? status;
+  University({
     this.id,
     this.name,
-    this.logo,
+    this.avatar,
+    this.shortName,
     this.description,
     this.website,
     this.email,
     this.phone,
-    this.tax,
-    this.date,
+    this.type,
+    this.createDate,
     this.status,
   });
 
-  factory Company.fromJson(Map<String, dynamic> json) =>
-      _$CompanyFromJson(json);
+  factory University.fromJson(Map<String, dynamic> json) =>
+      _$UniversityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CompanyToJson(this);
+  Map<String, dynamic> toJson() => _$UniversityToJson(this);
 }

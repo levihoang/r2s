@@ -1,21 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:json_annotation/json_annotation.dart';
 
-part 'major.g.dart';
+part 'status.g.dart';
 
 @JsonSerializable()
-class Major {
+class Status {
   @JsonKey(name: 'id')
   final int? id;
 
   @JsonKey(name: 'name')
   final String? name;
-  Major({
+  Status({
     this.id,
     this.name,
   });
 
-  factory Major.fromJson(Map<String, dynamic> json) => _$MajorFromJson(json);
+  factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MajorToJson(this);
+  Map<String, dynamic> toJson() => _$StatusToJson(this);
 }

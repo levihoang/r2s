@@ -1,38 +1,36 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'package:it_intership_jobs_r2s/src/core/model/user.dart';
-
+import 'package:json_annotation/json_annotation.dart';
+import 'job.dart';
 import 'major.dart';
+import 'user.dart';
 
+part 'candidate.g.dart';
+
+@JsonSerializable()
 class Candidate {
+  @JsonKey(name: 'id')
   final int? id;
+
+  @JsonKey(name: 'userDTO')
   final User? userDTO;
+
+  @JsonKey(name: 'major')
   final Major? major;
-  final List? careJobs;
+
+  @JsonKey(name: 'careJobs')
+  final List<Job>? careJobs;
+
+  @JsonKey(name: 'cv')
   final String? cv;
-  Candidate(
+  Candidate({
     this.id,
     this.userDTO,
     this.major,
     this.careJobs,
     this.cv,
-  );
+  });
 
-  Map<String, dynamic> toJson() => {
-        'id ': id,
-        'userDTO': userDTO,
-        'major': major,
-        'careJobs': careJobs,
-        'cv': cv
-      };
+  factory Candidate.fromJson(Map<String, dynamic> json) =>
+      _$CandidateFromJson(json);
 
-  factory Candidate.fromJson(Map<String, dynamic> json) {
-    return Candidate(
-      json['id'],
-      User.fromJson(json['userDTO']),
-      Major.fromJson(json['major']),
-      json['careJobs'],
-      json['cv'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$CandidateToJson(this);
 }

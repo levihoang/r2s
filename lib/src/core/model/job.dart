@@ -1,116 +1,84 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
+import 'package:json_annotation/json_annotation.dart';
+
+import 'hr.dart';
+import 'job_position.dart';
+import 'location.dart';
+import 'major.dart';
+import 'status.dart';
+
+part 'job.g.dart';
+
+@JsonSerializable()
 class Job {
-  int? id;
-  String? name;
-  String? hr;
-  String? desciption;
-  String? major;
-  Jobposition? jobposition;
-  int? amount;
-  int? salaryMin;
-  int? salaryMax;
-  String? requirement;
-  String? otherInfo;
-  String? timeStartStr;
-  String? timeEndStr;
-  String? locationjob;
-  String? createDate;
-  bool? status;
-  List? applyDTO;
+  @JsonKey(name: 'id')
+  final int? id;
 
-  Job(
-      {this.id,
-      this.name,
-      this.hr,
-      this.desciption,
-      this.major,
-      this.jobposition,
-      this.amount,
-      this.salaryMin,
-      this.salaryMax,
-      this.requirement,
-      this.otherInfo,
-      this.timeStartStr,
-      this.timeEndStr,
-      this.locationjob,
-      this.createDate,
-      this.status,
-      this.applyDTO});
+  @JsonKey(name: 'hr')
+  final HR? hr;
 
-  Job.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    hr = json['hr'];
-    desciption = json['desciption'];
-    major = json['major'];
-    jobposition = json['jobposition'] != null
-        ? Jobposition.fromJson(json['jobposition'])
-        : null;
-    amount = json['amount'];
-    salaryMin = json['salaryMin'];
-    salaryMax = json['salaryMax'];
-    requirement = json['requirement'];
-    otherInfo = json['otherInfo'];
-    timeStartStr = json['timeStartStr'];
-    timeEndStr = json['timeEndStr'];
-    locationjob = json['locationjob'];
-    createDate = json['createDate'];
-    status = json['status'];
-    // if (json['applyDTO'] != null) {
-    //   applyDTO = <Null>[];
-    //   json['applyDTO'].forEach((v) {
-    //     applyDTO!.add(new Null.fromJson(v));
-    //   });
-    // }
-  }
+  @JsonKey(name: 'desciption')
+  final String? description;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['hr'] = hr;
-    data['desciption'] = desciption;
-    data['major'] = major;
-    if (jobposition != null) {
-      data['jobposition'] = jobposition!.toJson();
-    }
-    data['amount'] = amount;
-    data['salaryMin'] = salaryMin;
-    data['salaryMax'] = salaryMax;
-    data['requirement'] = requirement;
-    data['otherInfo'] = otherInfo;
-    data['timeStartStr'] = timeStartStr;
-    data['timeEndStr'] = timeEndStr;
-    data['locationjob'] = locationjob;
-    data['createDate'] = createDate;
-    data['status'] = status;
-    // if (this.applyDTO != null) {
-    //   data['applyDTO'] = this.applyDTO!.map((v) => v.toJson()).toList();
-    // }
-    return data;
-  }
-}
+  @JsonKey(name: 'major')
+  final Major? major;
 
-class Jobposition {
-  int? id;
-  String? name;
-  String? demandUnis;
-  String? jobs;
+  @JsonKey(name: 'jobposition')
+  final JobPosition? jobposition;
 
-  Jobposition({this.id, this.name, this.demandUnis, this.jobs});
+  @JsonKey(name: 'amount')
+  final int? amount;
 
-  Jobposition.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    demandUnis = json['demandUnis'];
-    jobs = json['jobs'];
-  }
+  @JsonKey(name: 'salaryMin')
+  final int? salaryMin;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['demandUnis'] = demandUnis;
-    data['jobs'] = jobs;
-    return data;
-  }
+  @JsonKey(name: 'salaryMax')
+  final int? salaryMax;
+
+  @JsonKey(name: 'requirement')
+  final String? requirement;
+
+  @JsonKey(name: 'otherInfo')
+  final String? otherInfo;
+
+  @JsonKey(name: 'timeStartStr')
+  final String? timeStartStr;
+
+  @JsonKey(name: 'timeEndStr')
+  final String? timeEndStr;
+
+  @JsonKey(name: 'locationjob')
+  final Location? locationjob;
+
+  @JsonKey(name: 'createDate')
+  final String? createDate;
+
+  @JsonKey(name: 'status')
+  final Status? status;
+
+  @JsonKey(name: 'applyDTO')
+  final List<Job>? applyDTO;
+  Job({
+    this.id,
+    this.hr,
+    this.description,
+    this.major,
+    this.jobposition,
+    this.amount,
+    this.salaryMin,
+    this.salaryMax,
+    this.requirement,
+    this.otherInfo,
+    this.timeStartStr,
+    this.timeEndStr,
+    this.locationjob,
+    this.createDate,
+    this.status,
+    this.applyDTO,
+  });
+
+  factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);
+
+  Map<String, dynamic> toJson() => _$JobToJson(this);
 }

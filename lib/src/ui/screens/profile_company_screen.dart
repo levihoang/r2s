@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/model/company.dart';
-import '../../core/model/locationDTO.dart';
+import '../../core/model/location.dart';
 import '../../core/model/user.dart';
 
 import '../../services/remote_service.dart';
@@ -100,7 +100,7 @@ class _CompanyScreenState extends State<CompanyScreen> {
                           email: company?.email,
                           phoneNumber: company?.phone,
                           website: company?.website,
-                          location: company?.locationsDTO,
+                          // location: company?.,
                         ),
                 ],
               ),
@@ -177,7 +177,7 @@ class InformationCompanyCard extends StatelessWidget {
   final String? website;
   final String? email;
   final String? phoneNumber;
-  final List<LocationsDTO>? location;
+  final List<Location>? location;
 
   @override
   Widget build(BuildContext context) {

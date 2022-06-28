@@ -1,30 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:json_annotation/json_annotation.dart';
+
 import 'country.dart';
 
+part 'province.g.dart';
+
+@JsonSerializable()
 class Province {
-  int? id;
-  String? name;
-  String? shortName;
-  Countries? countries;
+  @JsonKey(name: 'id')
+  final int? id;
 
-  Province({this.id, this.name, this.shortName, this.countries});
+  @JsonKey(name: 'name')
+  final String? name;
 
-  Province.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    shortName = json['shortName'];
-    countries = json['countries'] != null
-        ? Countries.fromJson(json['countries'])
-        : null;
-  }
+  @JsonKey(name: 'shortName')
+  final String? shortName;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['shortName'] = shortName;
-    if (countries != null) {
-      data['countries'] = countries!.toJson();
-    }
-    return data;
-  }
+  @JsonKey(name: 'countries')
+  final Country? countries;
+  Province({
+    this.id,
+    this.name,
+    this.shortName,
+    this.countries,
+  });
+
+  factory Province.fromJson(Map<String, dynamic> json) =>
+      _$ProvinceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProvinceToJson(this);
 }
