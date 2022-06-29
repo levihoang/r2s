@@ -15,7 +15,7 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       major: json['major'] == null
           ? null
           : Major.fromJson(json['major'] as Map<String, dynamic>),
-      jobposition: json['jobposition'] == null
+      jobPosition: json['jobposition'] == null
           ? null
           : JobPosition.fromJson(json['jobposition'] as Map<String, dynamic>),
       amount: json['amount'] as int?,
@@ -25,7 +25,7 @@ Job _$JobFromJson(Map<String, dynamic> json) => Job(
       otherInfo: json['otherInfo'] as String?,
       timeStartStr: json['timeStartStr'] as String?,
       timeEndStr: json['timeEndStr'] as String?,
-      locationjob: json['locationjob'] == null
+      locationJob: json['locationjob'] == null
           ? null
           : Location.fromJson(json['locationjob'] as Map<String, dynamic>),
       createDate: json['createDate'] as String?,
@@ -42,7 +42,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'hr': instance.hr,
       'desciption': instance.description,
       'major': instance.major,
-      'jobposition': instance.jobposition,
+      'jobposition': instance.jobPosition,
       'amount': instance.amount,
       'salaryMin': instance.salaryMin,
       'salaryMax': instance.salaryMax,
@@ -50,7 +50,7 @@ Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'otherInfo': instance.otherInfo,
       'timeStartStr': instance.timeStartStr,
       'timeEndStr': instance.timeEndStr,
-      'locationjob': instance.locationjob,
+      'locationjob': instance.locationJob,
       'createDate': instance.createDate,
       'status': instance.status,
       'applyDTO': instance.applyDTO,

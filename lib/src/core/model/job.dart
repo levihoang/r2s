@@ -25,7 +25,7 @@ class Job {
   final Major? major;
 
   @JsonKey(name: 'jobposition')
-  final JobPosition? jobposition;
+  final JobPosition? jobPosition;
 
   @JsonKey(name: 'amount')
   final int? amount;
@@ -49,7 +49,7 @@ class Job {
   final String? timeEndStr;
 
   @JsonKey(name: 'locationjob')
-  final Location? locationjob;
+  final Location? locationJob;
 
   @JsonKey(name: 'createDate')
   final String? createDate;
@@ -64,7 +64,7 @@ class Job {
     this.hr,
     this.description,
     this.major,
-    this.jobposition,
+    this.jobPosition,
     this.amount,
     this.salaryMin,
     this.salaryMax,
@@ -72,7 +72,7 @@ class Job {
     this.otherInfo,
     this.timeStartStr,
     this.timeEndStr,
-    this.locationjob,
+    this.locationJob,
     this.createDate,
     this.status,
     this.applyDTO,
