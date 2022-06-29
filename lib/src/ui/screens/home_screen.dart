@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import '../../utils/colors.dart';
 import '../../utils/global_variables.dart';
-import '../widgets/job_post.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -226,35 +225,7 @@ class PostLatest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-      ],
+      children: const [],
     );
   }
 }
