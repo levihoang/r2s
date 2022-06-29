@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/src/core/model/job.dart';
 
 class DetailPost extends StatefulWidget {
-  const DetailPost({Key? key}) : super(key: key);
-
+  const DetailPost({Key? key, this.job}) : super(key: key);
+  final Job? job;
   @override
   State<DetailPost> createState() => _DetailPostState();
 }
@@ -48,23 +49,20 @@ class _DetailPostState extends State<DetailPost> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  "Full Stack Ruby on Rails Devoloper",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                Text(
+                  widget.job?.jobPosition?.name ?? "",
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: sizediv,
                 ),
                 Text(
-                  "Đăng ngày 24/3 2016, 13:00",
+                  "Đăng ngày ${widget.job?.createDate}",
                   style: TextStyle(fontSize: 17, color: Colors.grey.shade600),
                 ),
                 Text(
-                  "Cập nhật lần cuối  24/5 2016, 13:30",
-                  style: TextStyle(fontSize: 17, color: Colors.grey.shade600),
-                ),
-                Text(
-                  "Người đăng bài: Nguyễn Văn A",
+                  "Người đăng bài: ${widget.job?.hr}",
                   style: TextStyle(fontSize: 17, color: Colors.grey.shade600),
                 ),
                 SizedBox(
@@ -74,7 +72,7 @@ class _DetailPostState extends State<DetailPost> {
                 SizedBox(
                   height: sizediv,
                 ),
-                SJP(),
+                SJP(widget.job),
                 SizedBox(
                   height: sizediv,
                 ),
@@ -85,30 +83,15 @@ class _DetailPostState extends State<DetailPost> {
                 const SizedBox(
                   height: 5,
                 ),
-                title("Lập trình  Application/Software cho Công ty.", 15,
-                    Colors.grey),
-                title("Thực hiện lập trình ABAP trên SAP.", 15, Colors.grey),
-                const SizedBox(
-                  height: 5,
-                ),
+                title("${widget.job?.description}", 15, Colors.grey),
                 title("Yêu cầu ứng viên", 17, Colors.black),
-                title(
-                    "Tốt Nghiệp Đại Học/Cao đẳng IT hạng Khá/Giỏi , chuyên về Application.",
-                    15,
-                    Colors.grey),
-                title("Ít nhất 2-3 năm kinh nghiệm IT lập trình.", 15,
-                    Colors.grey),
+                title("${widget.job?.requirement}", 15, Colors.grey),
                 const SizedBox(
                   height: 5,
                 ),
                 title("Quyền lợi", 17, Colors.black),
                 title(
-                    "Lương cơ bản: 700 - 1000 USD (chưa bao gồm incentive Tháng/ Quý/ Năm)",
-                    15,
-                    Colors.grey),
-                title("Được hỗ trợ Ipad để làm việc", 15, Colors.grey),
-                title(
-                    "Được đào tạo chuyên môn & tham gia các khoá học bổ sung các kỹ năng",
+                    "Lương: ${widget.job?.salaryMin} - ${widget.job?.salaryMax} ",
                     15,
                     Colors.grey),
               ],
@@ -121,7 +104,7 @@ class _DetailPostState extends State<DetailPost> {
   }
 }
 
-Widget SJP() {
+Widget SJP(Job? job) {
   return Padding(
     padding: const EdgeInsets.all(10),
     child: Row(
@@ -138,7 +121,7 @@ Widget SJP() {
               height: 5,
             ),
             title("Số lượng tuyển", 15, Colors.black),
-            title("3 người", 14, Colors.grey)
+            title("${job?.amount} người", 14, Colors.grey)
           ],
         ),
         Column(
@@ -160,7 +143,7 @@ Widget SJP() {
               height: 55,
             ),
             title("Cấp Bậc", 15, Colors.black),
-            title("Thực tập sinh", 14, Colors.grey)
+            title("${job?.jobPosition?.name}", 14, Colors.grey)
           ],
         )
       ],

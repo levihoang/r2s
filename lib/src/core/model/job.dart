@@ -14,7 +14,8 @@ part 'job.g.dart';
 class Job {
   @JsonKey(name: 'id')
   final int? id;
-
+  @JsonKey(name: 'name')
+  final String? name;
   @JsonKey(name: 'hr')
   final HR? hr;
 
@@ -60,6 +61,7 @@ class Job {
   @JsonKey(name: 'applyDTO')
   final List<Job>? applyDTO;
   Job({
+    this.name,
     this.id,
     this.hr,
     this.description,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:it_intership_jobs_r2s/src/core/model/job.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../core/model/job.dart';
 import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
 import '../screens/loginandsignup_screen.dart';
@@ -15,15 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late List<Job>? jobs;
-  @override
-  late Future<List<Job>?> dataFuture;
-
-  Future<List<Job>?> getJob() async {
-    jobs = await RemoteService.getAllJobs();
-    return jobs;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -101,7 +92,6 @@ class LatestPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PageController pageBriefController = PageController();
-    PageController pageHomeController = PageController();
 
     return Column(
       children: [
@@ -132,43 +122,62 @@ class LatestPost extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        const Posts(),
+        const Posts()
       ],
     );
   }
 }
 
-class MostPosts extends StatelessWidget {
-  const MostPosts({super.key});
+// class MostPosts extends StatefulWidget {
+//   const MostPosts({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        SizedBox(
-          height: 10,
-        ),
-        Posts(),
-      ],
-    );
-  }
-}
+//   @override
+//   State<MostPosts> createState() => _MostPostsState();
+// }
 
-class NearPosts extends StatelessWidget {
-  const NearPosts({super.key});
+// class _MostPostsState extends State<MostPosts> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         const SizedBox(
+//           height: 10,
+//         ),
+//         Expanded(
+//           child: ListView.builder(
+//               itemCount: 2,
+//               // scrollDirection: Axis.vertical,
+//               itemBuilder: (BuildContext context, int index) {
+//                 return const JobPost(isInCompany: true);
+//               }),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        SizedBox(
-          height: 10,
-        ),
-        Posts(),
-      ],
-    );
-  }
-}
+// class NearPosts extends StatelessWidget {
+//   const NearPosts({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         const SizedBox(
+//           height: 10,
+//         ),
+//         Expanded(
+//           child: ListView.builder(
+//               itemCount: 2,
+//               // scrollDirection: Axis.vertical,
+//               itemBuilder: (BuildContext context, int index) {
+//                 return const JobPost(isInCompany: true);
+//               }),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -180,8 +189,8 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   var bodyItems = [
     const LatestPost(),
-    const MostPosts(),
-    const NearPosts(),
+    // const MostPosts(),
+    // const NearPosts(),
   ];
   var topBar = 0;
   @override
@@ -256,9 +265,14 @@ class _BodyState extends State<Body> {
   }
 }
 
-class BriefPost extends StatelessWidget {
+class BriefPost extends StatefulWidget {
   const BriefPost({super.key});
 
+  @override
+  State<BriefPost> createState() => _BriefPostState();
+}
+
+class _BriefPostState extends State<BriefPost> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -296,41 +310,45 @@ class BriefPost extends StatelessWidget {
   }
 }
 
-class Posts extends StatelessWidget {
+class Posts extends StatefulWidget {
   const Posts({super.key});
 
   @override
+  State<Posts> createState() => _PostsState();
+}
+
+class _PostsState extends State<Posts> {
+  Future<List<Job>?> getJobs() async {
+    List<Job>? jobs = await RemoteService.getAllJobs();
+    print(jobs?.map((e) => e.id));
+
+    return jobs;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        JobPost(
-          isInCompany: false,
-        ),
-      ],
+    return FutureBuilder<List<Job>?>(
+      future: getJobs(),
+      builder: (context, jobsnapshot) {
+        if (jobsnapshot.hasError) {
+          return Container();
+        } else if (jobsnapshot.hasData) {
+          return SizedBox(
+            width: double.infinity,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: jobsnapshot.data!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return JobPost(
+                    isInCompany: true,
+                    job: jobsnapshot.data?[index],
+                  );
+                }),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }
