@@ -16,7 +16,9 @@ Company _$CompanyFromJson(Map<String, dynamic> json) => Company(
       phone: json['phone'] as String?,
       tax: json['tax'] as String?,
       date: json['date'] as String?,
-      status: json['status'] as int?,
+      status: json['status'] == null
+          ? null
+          : Status.fromJson(json['status'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CompanyToJson(Company instance) => <String, dynamic>{

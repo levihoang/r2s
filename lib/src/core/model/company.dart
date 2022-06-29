@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:it_intership_jobs_r2s/src/core/model/status.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'company.g.dart';
@@ -36,7 +37,7 @@ class Company {
   final String? date;
 
   @JsonKey(name: 'status')
-  final int? status;
+  final Status? status;
 
   Company({
     this.id,

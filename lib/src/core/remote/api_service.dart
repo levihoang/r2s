@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:it_intership_jobs_r2s/src/core/model/json/register.dart';
+import 'package:it_intership_jobs_r2s/src/core/model/response/login_response.dart';
 import 'package:retrofit/dio.dart';
 import 'package:retrofit/http.dart';
 
@@ -11,6 +11,8 @@ import '../model/job.dart';
 import '../model/location.dart';
 import '../model/major.dart';
 import '../model/province.dart';
+import '../model/request/login_request.dart';
+import '../model/request/register_request.dart';
 
 part 'api_service.g.dart';
 
@@ -19,11 +21,12 @@ abstract class ApiService {
   factory ApiService(Dio dio) {
     dio.options = BaseOptions(
         validateStatus: (status) => true,
-        receiveTimeout: 30000,
-        connectTimeout: 30000,
+        sendTimeout: 5000,
+        receiveTimeout: 5000,
+        connectTimeout: 5000,
+        receiveDataWhenStatusError: true,
         contentType: 'application/json',
         headers: {'Content-Type': 'application/json'});
-
     return _ApiService(dio);
   }
 
@@ -75,4 +78,7 @@ abstract class ApiService {
   @POST('/api/user')
   Future<HttpResponse> register(
       @Header("Authorization") String auth, @Body() Register register);
+
+  @POST('/api/signin')
+  Future<LoginResponse> login(@Body() LoginRequest login);
 }
