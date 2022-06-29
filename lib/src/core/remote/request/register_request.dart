@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../role.dart';
+import '../../model/role.dart';
 
 part 'register_request.g.dart';
 

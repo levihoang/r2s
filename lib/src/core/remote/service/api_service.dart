@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
-import 'package:it_intership_jobs_r2s/src/core/model/response/login_response.dart';
 import 'package:retrofit/dio.dart';
 import 'package:retrofit/http.dart';
 
-import '../model/candidate.dart';
-import '../model/company.dart';
-import '../model/country.dart';
-import '../model/district.dart';
-import '../model/job.dart';
-import '../model/location.dart';
-import '../model/major.dart';
-import '../model/province.dart';
-import '../model/request/login_request.dart';
-import '../model/request/register_request.dart';
+import '../../model/candidate.dart';
+import '../../model/company.dart';
+import '../../model/country.dart';
+import '../../model/district.dart';
+import '../../model/job.dart';
+import '../../model/location.dart';
+import '../../model/major.dart';
+import '../../model/province.dart';
+import '../request/login_request.dart';
+import '../request/register_request.dart';
+import '../response/login_response.dart';
 
 part 'api_service.g.dart';
 

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:it_intership_jobs_r2s/src/core/remote/api_service.dart';
 
 import '../../core/model/job.dart';
+import '../../core/remote/service/api_service.dart';
 import '../../utils/colors.dart';
 import '../widgets/apply_post.dart';
 import '../widgets/hash_tag.dart';
