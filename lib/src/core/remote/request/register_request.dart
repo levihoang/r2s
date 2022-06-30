@@ -5,8 +5,8 @@ import '../../model/role.dart';
 part 'register_request.g.dart';
 
 @JsonSerializable()
-class Register {
-  Register(
+class RegisterRequest {
+  RegisterRequest(
       {this.username,
       this.password,
       this.confirmPassword,
@@ -27,8 +27,8 @@ class Register {
   @JsonKey(name: 'email')
   final String? email;
 
-  factory Register.fromJson(Map<String, dynamic> json) =>
-      _$RegisterFromJson(json);
+  factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RegisterToJson(this);
+  Map<String, dynamic> toJson() => _$RegisterRequestToJson(this);
 }

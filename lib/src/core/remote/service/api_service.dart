@@ -75,9 +75,8 @@ abstract class ApiService {
   @GET('/api/company/{id}')
   Future<Company> getCompany(@Path('id') int id);
 
-  @POST('/api/user')
-  Future<HttpResponse> register(
-      @Header("Authorization") String auth, @Body() Register register);
+  @POST('/api/user/add')
+  Future<HttpResponse> register(@Body() RegisterRequest register);
 
   @POST('/api/signin')
   Future<LoginResponse> login(@Body() LoginRequest login);

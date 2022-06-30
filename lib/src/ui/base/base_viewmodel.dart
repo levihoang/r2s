@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:it_intership_jobs_r2s/src/core/model/company.dart';
+import 'package:it_intership_jobs_r2s/src/core/remote/request/register_request.dart';
+import 'package:retrofit/dio.dart';
 
 import '../../core/model/candidate.dart';
 import '../../core/model/job.dart';
@@ -65,6 +67,12 @@ class Controller extends GetxController {
       log('SUCCEED LOGIN');
       return true;
     }
+  }
+
+  Future<bool> isSucceedRegister({RegisterRequest? registerRequest}) async {
+    HttpResponse httpResponse =
+        await ApiService(Dio()).register(registerRequest ?? RegisterRequest());
+    return httpResponse.response.statusCode == 200 ? true : false;
   }
 
   Future<Candidate?> getCandidate() async {
