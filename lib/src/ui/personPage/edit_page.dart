@@ -1,31 +1,35 @@
+import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:it_intership_jobs_r2s/src/core/remote/service/api_service.dart';
+import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
 
 import '../../core/model/candidate.dart';
 import '../../core/model/major.dart';
-import '../../services/remote_service.dart';
 import '../widgets/app_bar.dart';
 
 class EditPage extends StatefulWidget {
-  const EditPage({Key? key, this.candidate}) : super(key: key);
-  final Candidate? candidate;
+  const EditPage();
   @override
   State<EditPage> createState() => _EditPageState();
 }
 
 class _EditPageState extends State<EditPage> {
   late List<Major>? major;
+  Candidate? candidate;
 
-  late Future<List<Major>?> dataFututreMajor;
+  Controller editPageController = Get.put(Controller());
+
   @override
   void initState() {
     super.initState();
-    dataFututreMajor = getAllMajor();
+    getData();
   }
 
-  Future<List<Major>?> getAllMajor() async {
-    major = await RemoteService.getAllMajor();
-    return major;
+  getData() async {
+    candidate = await editPageController.getCandidate();
+    setState(() {});
   }
 
   final List<String> genderItems = [
@@ -55,27 +59,27 @@ class _EditPageState extends State<EditPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              inputBox("Họ", lastName, false, context,
-                  widget.candidate?.userDTO?.lastName),
+              inputBox(
+                  "Họ", lastName, false, context, candidate?.userDTO?.lastName),
               inputBox("Tên", firstName, false, context,
-                  widget.candidate?.userDTO?.firstName),
+                  candidate?.userDTO?.firstName),
               const SizedBox(height: 20),
               dropBox(
                   "Giới tính",
-                  widget.candidate?.userDTO?.gender == 0
+                  candidate?.userDTO?.gender == 0
                       ? "Nam"
-                      : widget.candidate?.userDTO?.gender == 1
+                      : candidate?.userDTO?.gender == 1
                           ? "Nữ"
                           : "Chưa xác định",
                   genderItems,
                   selectedValue),
               const SizedBox(height: 20),
-              inputBox("Email", email, false, context,
-                  widget.candidate?.userDTO?.email),
+              inputBox(
+                  "Email", email, false, context, candidate?.userDTO?.email),
               inputBox("Số điện thoại", phone, false, context,
-                  widget.candidate?.userDTO?.phone),
+                  candidate?.userDTO?.phone),
               FutureBuilder<List<Major>?>(
-                  future: dataFututreMajor,
+                  future: ApiService(Dio()).getMajors(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       final error = snapshot.error;
@@ -88,11 +92,8 @@ class _EditPageState extends State<EditPage> {
                           listMajors.add(element.name);
                         }
                       }
-                      return dropBox(
-                          "Chuyên ngành",
-                          widget.candidate?.major?.name,
-                          listMajors,
-                          selectedValue);
+                      return dropBox("Chuyên ngành", candidate?.major?.name,
+                          listMajors, selectedValue);
                     } else {
                       return const CircularProgressIndicator();
                     }

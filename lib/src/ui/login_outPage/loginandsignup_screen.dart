@@ -5,10 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:get/get.dart';
-import 'package:it_intership_jobs_r2s/src/locator.dart';
 import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
-import 'package:it_intership_jobs_r2s/src/utils/routing/navigation_service.dart';
-import 'package:it_intership_jobs_r2s/src/utils/routing/route_name.dart';
 
 import '../../helper/validate.dart';
 import '../../utils/colors.dart';
@@ -386,7 +383,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         if (await loginController.isSucceedSignIn(
                 username: _username.text, password: _password.text) ==
             true) {
-          locator<NavigationService>().globalNavigateTo(HomeRoute, context);
+          loginController.changeSelectedIndex(0);
+
+          Get.back();
         } else {
           loginAnnounce = "Sai tài khoản hoặc mật khẩu";
         }

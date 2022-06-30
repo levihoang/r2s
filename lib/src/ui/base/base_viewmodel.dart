@@ -20,6 +20,20 @@ class Controller extends GetxController {
   String? _token;
   List<Company>? _companies;
 
+  RxInt selectedIndex = 0.obs;
+
+  void changeSelectedIndex(int selectedIndex) {
+    this.selectedIndex.value = selectedIndex;
+  }
+
+  String? get username {
+    return _username;
+  }
+
+  String? get token {
+    return _token;
+  }
+
   Future<List<Company>?> getCompanies() async {
     if (_companies == null) {
       _companies = await ApiService(Dio()).getCompanies();
@@ -65,7 +79,7 @@ class Controller extends GetxController {
     } else {
       _token = 'Bearer ${loginResponse.token}';
       _username = username;
-      getCandidate();
+      log('username: $_username');
       log('SUCCEED LOGIN');
       return true;
     }

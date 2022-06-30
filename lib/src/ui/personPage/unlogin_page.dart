@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:it_intership_jobs_r2s/src/locator.dart';
-
-import '../../utils/routing/navigation_service.dart';
-import '../../utils/routing/route_name.dart';
+import 'package:get/get.dart';
+import 'package:it_intership_jobs_r2s/src/ui/login_outPage/loginandsignup_screen.dart';
 
 class UnLoginPage extends StatefulWidget {
   const UnLoginPage({Key? key}) : super(key: key);
@@ -41,8 +39,7 @@ class _UnLoginPageState extends State<UnLoginPage> {
                     onPrimary: Colors.white, // foreground
                   ),
                   onPressed: () {
-                    locator<NavigationService>()
-                        .navigateTo(LoginAndSignInRoute);
+                    Get.to(() => const LoginSignupScreen());
                   },
                   child: const Text('Đăng nhập'),
                 )
