@@ -1,9 +1,14 @@
 import 'dart:developer';
 
+import 'package:another_flushbar/flushbar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:get/get.dart';
+import 'package:it_intership_jobs_r2s/src/locator.dart';
 import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
+import 'package:it_intership_jobs_r2s/src/utils/routing/navigation_service.dart';
+import 'package:it_intership_jobs_r2s/src/utils/routing/route_name.dart';
 
 import '../../helper/validate.dart';
 import '../../utils/colors.dart';
@@ -32,6 +37,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isFill = true;
   int addSize = 0;
   double addValue = 0;
+  bool loginSuccess = false;
+  bool registerSuccess = false;
 
   String _usernameLogAnnounce = "";
   String _passwordLogA = "";
@@ -42,26 +49,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   String _passRegannounce = "";
   String _repassAnnounce = "";
   String _emailAnnounce = "";
-
-  _register() async {
-    String? announcement = await Controller().isAnnouncementRegister(
-      username: _usernameReg.text,
-      password: _passwordReg.text,
-      email: _email.text,
-    );
-
-    if (announcement == null) {
-      setState(() {
-        isSignupScreen = false;
-        _username.text = _usernameReg.text;
-        _password.text = _passwordReg.text;
-      });
-    } else {
-      loginAnnounce = announcement;
-
-      setState(() {});
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -399,9 +386,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         if (await loginController.isSucceedSignIn(
                 username: _username.text, password: _password.text) ==
             true) {
-          log('đăng nhập thành cong6');
+          locator<NavigationService>().globalNavigateTo(HomeRoute, context);
         } else {
-          log('đăng nhap that bai');
+          loginAnnounce = "Sai tài khoản hoặc mật khẩu";
         }
       } else {
         _usernameLogAnnounce = "Tài khoản phải chứa từ 6 kí tự";
@@ -411,6 +398,66 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       loginAnnounce = "Vui lòng điền hết thông tin";
     }
     setState(() {});
+  }
+
+  _register() async {
+    String? announcement = await Controller().isAnnouncementRegister(
+      username: _usernameReg.text,
+      password: _passwordReg.text,
+      email: _email.text,
+    );
+
+    if (announcement == null) {
+      setState(() {
+        isSignupScreen = false;
+        _username.text = _usernameReg.text;
+        _password.text = _passwordReg.text;
+        Flushbar(
+          title: "Thông báo",
+          message: "Đăng kí thành công",
+          flushbarPosition: FlushbarPosition.TOP,
+          flushbarStyle: FlushbarStyle.FLOATING,
+          reverseAnimationCurve: Curves.decelerate,
+          forwardAnimationCurve: Curves.elasticOut,
+          backgroundColor: Colors.red,
+          boxShadows: const [
+            BoxShadow(
+                color: Colors.orange, offset: Offset(0.0, 2.0), blurRadius: 3.0)
+          ],
+          backgroundGradient:
+              const LinearGradient(colors: [Colors.white, Colors.yellow]),
+          isDismissible: false,
+          duration: const Duration(seconds: 4),
+          icon: const Icon(
+            Icons.check,
+            color: Colors.black,
+          ),
+          showProgressIndicator: true,
+          progressIndicatorBackgroundColor: Colors.blueGrey,
+          titleText: const Text(
+            "Thông báo",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+                color: Colors.black,
+                fontFamily: "ShadowsIntoLightTwo"),
+          ),
+          messageText: const Text(
+            "Chúc mừng bạn đã đăng kí thành công",
+            style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.black,
+                fontFamily: "ShadowsIntoLightTwo"),
+          ),
+        ).show(context);
+      });
+    } else {
+      log(announcement);
+      setState(() {
+        _registerAnnounce = announcement;
+        addValue += 20;
+      });
+    }
   }
 
   registerApi() {
