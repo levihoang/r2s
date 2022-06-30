@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:it_intership_jobs_r2s/src/core/remote/response/register_response.dart';
 import 'package:retrofit/dio.dart';
 import 'package:retrofit/http.dart';
 
@@ -76,7 +77,7 @@ abstract class ApiService {
   Future<Company> getCompany(@Path('id') int id);
 
   @POST('/api/user/add')
-  Future<HttpResponse> register(@Body() RegisterRequest register);
+  Future<RegisterResponse> register(@Body() RegisterRequest register);
 
   @POST('/api/signin')
   Future<LoginResponse> login(@Body() LoginRequest login);

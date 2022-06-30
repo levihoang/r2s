@@ -10,7 +10,7 @@ class RegisterRequest {
       {this.username,
       this.password,
       this.confirmPassword,
-      // this.role,
+      this.role,
       this.email});
   @JsonKey(name: 'username')
   final String? username;
@@ -22,7 +22,7 @@ class RegisterRequest {
   final String? confirmPassword;
 
   @JsonKey(name: 'role')
-  final Role? role = Role(id: 3);
+  Role? role = Role(id: 3);
 
   @JsonKey(name: 'email')
   final String? email;

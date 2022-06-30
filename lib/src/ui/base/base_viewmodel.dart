@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:it_intership_jobs_r2s/src/core/model/company.dart';
 import 'package:it_intership_jobs_r2s/src/core/remote/request/register_request.dart';
-import 'package:retrofit/dio.dart';
+import 'package:it_intership_jobs_r2s/src/core/remote/response/register_response.dart';
 
 import '../../core/model/candidate.dart';
 import '../../core/model/job.dart';
@@ -69,10 +69,21 @@ class Controller extends GetxController {
     }
   }
 
-  Future<bool> isSucceedRegister({RegisterRequest? registerRequest}) async {
-    HttpResponse httpResponse =
+  Future<String> isSucceedRegister({RegisterRequest? registerRequest}) async {
+    RegisterResponse registerResponse =
         await ApiService(Dio()).register(registerRequest ?? RegisterRequest());
-    return httpResponse.response.statusCode == 200 ? true : false;
+    if (registerResponse.path == null) {
+      return '';
+    } else {
+      String announcement = "";
+      if (registerResponse.username != null) {
+        announcement += '${registerResponse.username}\n';
+      }
+      if (registerResponse.email != null) {
+        announcement += '${registerResponse.email}';
+      }
+      return announcement;
+    }
   }
 
   Future<Candidate?> getCandidate() async {
