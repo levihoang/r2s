@@ -1,10 +1,11 @@
-import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+import 'package:get/get.dart';
+import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
 
 import '../../helper/validate.dart';
-import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
 import 'forgot_pass_screen.dart';
 import '../widgets/box_with_label.dart';
@@ -43,51 +44,22 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   String _emailAnnounce = "";
 
   _register() async {
-    Map data = {
-      "username": _usernameReg.text,
-      "password": _passwordReg.text,
-      "confirmPassword": _confirmPasswordReg.text,
-      "role": {
-        "id": 3,
-      },
-      "email": _email.text,
-    };
-    // Map data = {
-    //   "username": "Test21011933",
-    //   "password": "Test123",
-    //   "confirmPassword": "Test123",
-    //   "role": {"id": 3},
-    //   "email": "testtest010101@gmail.com"
-    // };
-    print(data);
-    String body = json.encode(data);
+    String? announcement = await Controller().isAnnouncementRegister(
+      username: _usernameReg.text,
+      password: _passwordReg.text,
+      email: _email.text,
+    );
 
-    var response = await RemoteService.postHTTP("/api/user/add", data);
-    var myResponse = json.decode(utf8.decode(response.bodyBytes));
-
-    if (response.statusCode == 200) {
+    if (announcement == null) {
       setState(() {
         isSignupScreen = false;
         _username.text = _usernameReg.text;
         _password.text = _passwordReg.text;
       });
     } else {
-      setState(() {
-        if (myResponse["Email"].toString() != "null" &&
-            myResponse["Username"].toString() != "null") {
-          _emailAnnounce = myResponse["Email"].toString();
-          _usernameannounce = myResponse["Username"].toString();
-          addValue += 20;
-        } else {
-          if (myResponse["Email"].toString() != "null") {
-            _emailAnnounce = myResponse["Email"].toString();
-            addValue += 10;
-          } else {
-            _usernameannounce = myResponse["Username"].toString();
-            addValue += 10;
-          }
-        }
-      });
+      loginAnnounce = announcement;
+
+      setState(() {});
     }
   }
 
@@ -414,23 +386,31 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     );
   }
 
-  loginApi() {
+  Controller loginController = Get.put(Controller());
+
+  loginApi() async {
     addValue = 0;
     clear();
-    setState(() {
-      bool checklength =
-          _username.text.length >= 6 && _password.text.length < 250;
-      if (checkFillLogin()) {
-        if (checklength) {
+
+    bool checklength =
+        _username.text.length >= 6 && _password.text.length < 250;
+    if (checkFillLogin()) {
+      if (checklength) {
+        if (await loginController.isSucceedSignIn(
+                username: _username.text, password: _password.text) ==
+            true) {
+          log('đăng nhập thành cong6');
         } else {
-          _usernameLogAnnounce = "Tài khoản phải chứa từ 6 kí tự";
-          addValue += 10;
+          log('đăng nhap that bai');
         }
       } else {
-        loginAnnounce = "Vui lòng điền hết thông tin";
+        _usernameLogAnnounce = "Tài khoản phải chứa từ 6 kí tự";
         addValue += 10;
       }
-    });
+    } else {
+      loginAnnounce = "Vui lòng điền hết thông tin";
+    }
+    setState(() {});
   }
 
   registerApi() {
@@ -467,14 +447,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         }
       } else {
         _registerAnnounce = "Vui lòng điền hết thông tin";
-        addValue += 10;
       }
       bool check = checkFillRgister() == true &&
           checklength &&
           validPass &&
           isMatch &&
           validEmail == false;
-      print(check);
       if (check) {
         _register();
       }
