@@ -1,9 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
+import 'package:it_intership_jobs_r2s/src/ui/personPage/unlogin_page.dart';
 
 import '../../core/model/job.dart';
-import '../../core/remote/service/api_service.dart';
 import '../../utils/colors.dart';
 import '../widgets/apply_post.dart';
 import 'job_post.dart';
@@ -17,18 +18,12 @@ class JobPage extends StatefulWidget {
 
 class _JobPageState extends State<JobPage> {
   var selectedIndex = 0;
-  late Future<List<Job>?> dataFuture;
-  var jobs;
 
-  Future<List<Job>?> getAllJob() async {
-    jobs = await ApiService(Dio()).getJobs();
-    return jobs;
-  }
+  Controller jobPageController = Get.put(Controller());
 
   @override
   void initState() {
     super.initState();
-    dataFuture = getAllJob();
   }
 
   var bodyItems = [
@@ -38,69 +33,74 @@ class _JobPageState extends State<JobPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
+    return jobPageController.isSigned() == true
+        ? Column(
             children: [
-              InkWell(
-                onTap: () {
-                  selectedIndex = 0;
-                  setState(() {});
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Container(
-                      color: selectedIndex == 0 ? yellowColor : darkBlueColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      child: Text('Đang quan tâm',
-                          style: GoogleFonts.openSans(
-                            fontWeight: selectedIndex == 0
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: whiteColor,
-                          ))),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        selectedIndex = 0;
+                        setState(() {});
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                            color: selectedIndex == 0
+                                ? yellowColor
+                                : darkBlueColor,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Text('Đang quan tâm',
+                                style: GoogleFonts.openSans(
+                                  fontWeight: selectedIndex == 0
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  color: whiteColor,
+                                ))),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        selectedIndex = 1;
+                        setState(() {});
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Container(
+                          color:
+                              selectedIndex == 1 ? yellowColor : darkBlueColor,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Text('Đang ứng tuyển',
+                              style: GoogleFonts.openSans(
+                                fontWeight: selectedIndex == 1
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: whiteColor,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
-                width: 20,
+                height: 10,
               ),
-              InkWell(
-                onTap: () {
-                  selectedIndex = 1;
-                  setState(() {});
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Container(
-                    color: selectedIndex == 1 ? yellowColor : darkBlueColor,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Text('Đang ứng tuyển',
-                        style: GoogleFonts.openSans(
-                          fontWeight: selectedIndex == 1
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                          color: whiteColor,
-                        )),
-                  ),
-                ),
-              ),
+              bodyItems[selectedIndex],
+              // const ApplyJobs(),
             ],
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        bodyItems[selectedIndex],
-        // const ApplyJobs(),
-      ],
-    );
+          )
+        : const UnLoginPage();
   }
 }
 
@@ -229,11 +229,8 @@ class CareJobs extends StatefulWidget {
 }
 
 class _CareJobsState extends State<CareJobs> {
-  var listJob = <JobPost>[
-    const JobPost(
-      isInCompany: false,
-    ),
-  ];
+  // var listJob = <JobPost>[];
+  Controller jobPageController = Get.put(Controller());
 
   @override
   void initState() {
@@ -245,12 +242,35 @@ class _CareJobsState extends State<CareJobs> {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Wrap(
-            runSpacing: 10,
-            children: listJob,
-          ),
-        ),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                FutureBuilder<List<Job>?>(
+                  future: jobPageController.getJobs(),
+                  builder: (context, jobSnapshot) {
+                    if (jobSnapshot.hasError) {
+                      return Container();
+                    } else if (jobSnapshot.hasData) {
+                      return SizedBox(
+                        width: double.infinity,
+                        child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: jobSnapshot.data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return JobPost(
+                                isInCompany: true,
+                                job: jobSnapshot.data?[index],
+                              );
+                            }),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ],
+            )),
       ),
     );
   }
