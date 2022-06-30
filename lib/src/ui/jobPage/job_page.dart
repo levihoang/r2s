@@ -6,8 +6,7 @@ import '../../core/model/job.dart';
 import '../../core/remote/service/api_service.dart';
 import '../../utils/colors.dart';
 import '../widgets/apply_post.dart';
-import '../widgets/hash_tag.dart';
-import '../widgets/job_post.dart';
+import 'job_post.dart';
 
 class JobPage extends StatefulWidget {
   const JobPage({super.key});
@@ -171,13 +170,7 @@ Widget aspplyJobLists() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
-              children: const [
-                HashTag(),
-                SizedBox(
-                  width: 5,
-                ),
-                HashTag(),
-              ],
+              children: const [],
             ),
             Flexible(
               flex: 1,
@@ -237,9 +230,9 @@ class CareJobs extends StatefulWidget {
 
 class _CareJobsState extends State<CareJobs> {
   var listJob = <JobPost>[
-    // const JobPost(
-    //   isInCompany: false,
-    // ),
+    const JobPost(
+      isInCompany: false,
+    ),
   ];
 
   @override

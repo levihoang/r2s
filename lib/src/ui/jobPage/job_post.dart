@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/src/core/model/job.dart';
 
 import '../../utils/colors.dart';
-import '../screens/detail_post_screen.dart';
-import '../screens/profile_company_screen.dart';
+import 'detail_post_screen.dart';
+import 'profile_company_screen.dart';
 
 class JobPost extends StatefulWidget {
   const JobPost({

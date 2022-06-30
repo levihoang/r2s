@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../ui/screens/home_screen.dart';
+import '../../ui/mainScreen/home_screen.dart';
 import 'route_name.dart';
 
 PageRoute generateRoute(RouteSettings settings) {

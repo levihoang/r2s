@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/change_password_screen.dart';
+import 'change_password_screen.dart';
 import '../widgets/navigate_box.dart';
 import '../widgets/option_box.dart';
 

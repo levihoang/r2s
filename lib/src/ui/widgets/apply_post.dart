@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../utils/colors.dart';
 
-import '../screens/detail_post_screen.dart';
-import '../screens/profile_company_screen.dart';
-import 'hash_tag.dart';
+import '../jobPage/detail_post_screen.dart';
+import '../jobPage/profile_company_screen.dart';
 
 class ApplyPost extends StatelessWidget {
   const ApplyPost({Key? key, required this.isInCompany}) : super(key: key);
@@ -113,13 +112,7 @@ class ApplyPost extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: const [
-                    HashTag(),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    HashTag(),
-                  ],
+                  children: const [],
                 ),
                 Flexible(
                   flex: 1,

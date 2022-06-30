@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:it_intership_jobs_r2s/src/core/model/job.dart';
+import 'package:it_intership_jobs_r2s/src/ui/jobPage/job_post.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
-import '../screens/loginandsignup_screen.dart';
-import '../widgets/job_post.dart';
+import '../login_outPage/loginandsignup_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -128,56 +128,42 @@ class LatestPost extends StatelessWidget {
   }
 }
 
-// class MostPosts extends StatefulWidget {
-//   const MostPosts({super.key});
+class MostPosts extends StatefulWidget {
+  const MostPosts({super.key});
 
-//   @override
-//   State<MostPosts> createState() => _MostPostsState();
-// }
+  @override
+  State<MostPosts> createState() => _MostPostsState();
+}
 
-// class _MostPostsState extends State<MostPosts> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         const SizedBox(
-//           height: 10,
-//         ),
-//         Expanded(
-//           child: ListView.builder(
-//               itemCount: 2,
-//               // scrollDirection: Axis.vertical,
-//               itemBuilder: (BuildContext context, int index) {
-//                 return const JobPost(isInCompany: true);
-//               }),
-//         ),
-//       ],
-//     );
-//   }
-// }
+class _MostPostsState extends State<MostPosts> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 10,
+        ),
+        Posts()
+      ],
+    );
+  }
+}
 
-// class NearPosts extends StatelessWidget {
-//   const NearPosts({super.key});
+class NearPosts extends StatelessWidget {
+  const NearPosts({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         const SizedBox(
-//           height: 10,
-//         ),
-//         Expanded(
-//           child: ListView.builder(
-//               itemCount: 2,
-//               // scrollDirection: Axis.vertical,
-//               itemBuilder: (BuildContext context, int index) {
-//                 return const JobPost(isInCompany: true);
-//               }),
-//         ),
-//       ],
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 10,
+        ),
+        Posts()
+      ],
+    );
+  }
+}
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -189,8 +175,8 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   var bodyItems = [
     const LatestPost(),
-    // const MostPosts(),
-    // const NearPosts(),
+    const MostPosts(),
+    const NearPosts(),
   ];
   var topBar = 0;
   @override
@@ -201,6 +187,7 @@ class _BodyState extends State<Body> {
           await Future.delayed(const Duration(seconds: 1));
         },
         child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -320,35 +307,38 @@ class Posts extends StatefulWidget {
 class _PostsState extends State<Posts> {
   Future<List<Job>?> getJobs() async {
     List<Job>? jobs = await RemoteService.getAllJobs();
-    print(jobs?.map((e) => e.id));
-
     return jobs;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Job>?>(
-      future: getJobs(),
-      builder: (context, jobsnapshot) {
-        if (jobsnapshot.hasError) {
-          return Container();
-        } else if (jobsnapshot.hasData) {
-          return SizedBox(
-            width: double.infinity,
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: jobsnapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return JobPost(
-                    isInCompany: true,
-                    job: jobsnapshot.data?[index],
-                  );
-                }),
-          );
-        } else {
-          return Container();
-        }
-      },
+    return Column(
+      children: [
+        FutureBuilder<List<Job>?>(
+          future: getJobs(),
+          builder: (context, jobsnapshot) {
+            if (jobsnapshot.hasError) {
+              return Container();
+            } else if (jobsnapshot.hasData) {
+              return SizedBox(
+                width: double.infinity,
+                child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: jobsnapshot.data!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return JobPost(
+                        isInCompany: true,
+                        job: jobsnapshot.data?[index],
+                      );
+                    }),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+      ],
     );
   }
 }

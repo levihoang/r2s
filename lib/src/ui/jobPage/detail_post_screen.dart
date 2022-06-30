@@ -79,7 +79,19 @@ class _DetailPostState extends State<DetailPost> {
                 Divider(
                   color: Colors.grey.shade400,
                 ),
-                title("Miêu tả công việc", 17, Colors.black),
+                title("Miêu tả công việc ", 17, Colors.black),
+                Row(
+                  children: [
+                    title("Thời gian bắt đầu ", 15, Colors.grey),
+                    title("${widget.job?.timeStartStr}", 15, Colors.grey),
+                  ],
+                ),
+                Row(
+                  children: [
+                    title("Thời gian kết thúc", 15, Colors.grey),
+                    title("${widget.job?.timeEndStr}", 15, Colors.grey),
+                  ],
+                ),
                 const SizedBox(
                   height: 5,
                 ),

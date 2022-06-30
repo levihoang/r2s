@@ -26,8 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
           BottomNavigationBarItem(
               icon: Icon(Icons.bookmark), label: 'Công việc'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Thông báo'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Cá nhân'),
         ],
         onTap: (index) {

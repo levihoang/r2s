@@ -6,8 +6,8 @@ import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import '../../helper/validate.dart';
 import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
-import '../widgets/box_with_label.dart';
 import 'forgot_pass_screen.dart';
+import '../widgets/box_with_label.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);

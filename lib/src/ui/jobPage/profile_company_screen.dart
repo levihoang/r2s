@@ -9,7 +9,7 @@ import '../../core/model/user.dart';
 import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
 import '../widgets/button_with_icon.dart';
-import '../widgets/job_post.dart';
+import 'job_post.dart';
 
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({Key? key}) : super(key: key);

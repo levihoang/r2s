@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../pages/notification_screen.dart';
-
 class OptionBox extends StatefulWidget {
   final String title;
-  final NotificationPage? notificationPage;
+
   final bool enable;
 
   const OptionBox({
     Key? key,
     required this.title,
-    this.notificationPage,
     required this.enable,
   }) : super(key: key);
 
