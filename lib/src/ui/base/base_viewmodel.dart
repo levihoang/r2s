@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:it_intership_jobs_r2s/src/core/model/company.dart';
+import 'package:it_intership_jobs_r2s/src/core/model/role.dart';
 import 'package:it_intership_jobs_r2s/src/core/remote/request/register_request.dart';
 import 'package:it_intership_jobs_r2s/src/core/remote/response/register_response.dart';
 
@@ -53,7 +54,8 @@ class Controller extends GetxController {
     _username = null;
   }
 
-  Future<bool> isSucceedSignIn({String? username, String? password}) async {
+  Future<bool> isSucceedSignIn(
+      {required String? username, required String? password}) async {
     LoginResponse loginResponse = await ApiService(Dio()).login(LoginRequest(
       username: username,
       password: password,
@@ -69,15 +71,32 @@ class Controller extends GetxController {
     }
   }
 
-  Future<String> isSucceedRegister({RegisterRequest? registerRequest}) async {
+  Future<String?> isAnnouncementRegister({
+    required String? username,
+    required String? password,
+    required String? email,
+  }) async {
+    RegisterRequest registerRequest = RegisterRequest(
+        username: username,
+        password: password,
+        confirmPassword: password,
+        role: Role(id: 3),
+        email: email);
     RegisterResponse registerResponse =
-        await ApiService(Dio()).register(registerRequest ?? RegisterRequest());
+        await ApiService(Dio()).register(registerRequest);
+    print(registerResponse.toJson());
     if (registerResponse.path == null) {
-      return '';
+      return null;
     } else {
       String announcement = "";
       if (registerResponse.username != null) {
         announcement += '${registerResponse.username}\n';
+      }
+      if (registerResponse.Username != null) {
+        announcement += '${registerResponse.Username}\n';
+      }
+      if (registerResponse.Email != null) {
+        announcement += '${registerResponse.Email}\n';
       }
       if (registerResponse.email != null) {
         announcement += '${registerResponse.email}';

@@ -6,14 +6,22 @@ part 'register_response.g.dart';
 @JsonSerializable()
 class RegisterResponse {
   @JsonKey(name: 'Username')
-  final String? username;
+  final String? Username;
 
   @JsonKey(name: 'Email')
+  final String? Email;
+
+  @JsonKey(name: 'username')
+  final String? username;
+
+  @JsonKey(name: 'email')
   final String? email;
 
   @JsonKey(name: 'path')
   final String? path;
   RegisterResponse({
+    this.Username,
+    this.Email,
     this.username,
     this.email,
     this.path,
