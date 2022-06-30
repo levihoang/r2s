@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:it_intership_jobs_r2s/src/core/model/candidate.dart';
 import 'package:it_intership_jobs_r2s/src/core/model/job.dart';
+import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
 import 'package:it_intership_jobs_r2s/src/ui/jobPage/job_post.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
-import '../login_outPage/loginandsignup_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,8 +16,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Controller homePageController = Get.put(Controller());
+  Candidate? candidate;
+
+  getData() async {
+    candidate = await homePageController.getCandidate();
+  }
+
   @override
   Widget build(BuildContext context) {
+    getData();
     return Column(
       children: const [
         // TopBar(),
@@ -66,13 +75,7 @@ class SearchBar extends StatelessWidget {
             width: sizeDivide,
           ),
           InkWell(
-            onTap: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const LoginSignupScreen()),
-              ),
-            },
+            onTap: () => {},
             child: Image.asset(
               'images/icon_filter.png',
               height: 20,
@@ -179,12 +182,14 @@ class _BodyState extends State<Body> {
     const NearPosts(),
   ];
   var topBar = 0;
+  Controller homePageController = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
         onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 1));
+          homePageController.refreshJobs();
+          setState(() {});
         },
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -305,31 +310,27 @@ class Posts extends StatefulWidget {
 }
 
 class _PostsState extends State<Posts> {
-  Future<List<Job>?> getJobs() async {
-    List<Job>? jobs = await RemoteService.getAllJobs();
-    return jobs;
-  }
-
+  Controller homePageController = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FutureBuilder<List<Job>?>(
-          future: getJobs(),
-          builder: (context, jobsnapshot) {
-            if (jobsnapshot.hasError) {
+          future: homePageController.getJobs(),
+          builder: (context, jobSnapshot) {
+            if (jobSnapshot.hasError) {
               return Container();
-            } else if (jobsnapshot.hasData) {
+            } else if (jobSnapshot.hasData) {
               return SizedBox(
                 width: double.infinity,
                 child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: jobsnapshot.data!.length,
+                    itemCount: jobSnapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return JobPost(
                         isInCompany: true,
-                        job: jobsnapshot.data?[index],
+                        job: jobSnapshot.data?[index],
                       );
                     }),
               );

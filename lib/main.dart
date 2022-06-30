@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:it_intership_jobs_r2s/src/locator.dart';
-
-import 'src/utils/routing/route.dart';
-import 'src/utils/routing/route_name.dart';
+import 'package:it_intership_jobs_r2s/src/ui/mainScreen/home_screen.dart';
 
 void main() {
   setupLocator();
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "It Intership Jobs",
       theme: ThemeData().copyWith(
@@ -22,9 +21,9 @@ class MyApp extends StatelessWidget {
               primary: Colors.grey,
             ),
       ),
-      // home: const ChangePasswordScreen(),
-      onGenerateRoute: generateRoute,
-      initialRoute: HomeRoute,
+      home: const HomeScreen(),
+      // onGenerateRoute: generateRoute,
+      // initialRoute: HomeRoute,
     );
   }
 }

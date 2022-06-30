@@ -1,11 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
+import 'package:it_intership_jobs_r2s/src/ui/personPage/unlogin_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/model/candidate.dart';
-import '../../services/remote_service.dart';
 import '../../utils/colors.dart';
 import '../widgets/button_with_icon.dart';
 import 'edit_page.dart';
@@ -23,83 +24,76 @@ class _PersonPageState extends State<PersonPage> {
 
   Candidate? candidate;
 
-  late Future<Candidate?> dataFutureCandidate;
-
   @override
   void initState() {
     super.initState();
-    dataFutureCandidate = getCandidate();
   }
 
-  Future<Candidate?> getCandidate() async {
-    candidate = await RemoteService.getCandidate('liemha3');
-    return candidate;
-  }
-
+  Controller personPageController = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Trang cá nhân của tôi')),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.white, Colors.orange],
-                  begin: FractionalOffset(0.0, 0.0),
-                  end: FractionalOffset(0.5, 0.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
+    return personPageController.isSigned() == true
+        ? Scaffold(
+            appBar: AppBar(
+              title: const Center(child: Text('Trang cá nhân của tôi')),
+              flexibleSpace: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.white, Colors.orange],
+                      begin: FractionalOffset(0.0, 0.0),
+                      end: FractionalOffset(0.5, 0.0),
+                      stops: [0.0, 1.0],
+                      tileMode: TileMode.clamp),
+                ),
+              ),
             ),
-          ),
-        ),
-        backgroundColor: Colors.grey.shade100,
-        body: SingleChildScrollView(
-          child: Column(children: [
-            Column(
-              children: [
-                FutureBuilder<Candidate?>(
-                    future: dataFutureCandidate,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        final error = snapshot.error;
-                        return Text('$error');
-                      } else if (snapshot.hasData) {
-                        Candidate candidate = snapshot.data!;
-                        return CardVisit(
-                          username: "${candidate.userDTO?.username}",
-                          name:
-                              "${candidate.userDTO?.firstName}${candidate.userDTO?.lastName}",
-                          avatar: "${candidate.userDTO?.avatar}",
-                        );
-                      } else {
-                        return const CardVisit(
-                          name: '',
-                          avatar: '',
-                          username: '',
-                        );
-                      }
-                    }),
-                FutureBuilder(
-                    future: dataFutureCandidate,
-                    builder: ((context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            InformationCard(
-                              candidate: candidate,
-                            ),
-                          ],
-                        );
-                      } else {
-                        return const InformationCard();
-                      }
-                    })),
-                settingButton(context),
-                logoutButton(context),
-              ],
-            ),
-          ]),
-        ));
+            backgroundColor: Colors.grey.shade100,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  FutureBuilder<Candidate?>(
+                      future: personPageController.getCandidate(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          final error = snapshot.error;
+                          return Text('$error');
+                        } else if (snapshot.hasData) {
+                          Candidate candidate = snapshot.data!;
+                          return CardVisit(
+                            username: "${candidate.userDTO?.username}",
+                            name:
+                                "${candidate.userDTO?.firstName} ${candidate.userDTO?.lastName}",
+                            avatar: "${candidate.userDTO?.avatar}",
+                          );
+                        } else {
+                          return const CardVisit(
+                            name: '',
+                            avatar: '',
+                            username: '',
+                          );
+                        }
+                      }),
+                  FutureBuilder(
+                      future: personPageController.getCandidate(),
+                      builder: ((context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                            children: [
+                              InformationCard(
+                                candidate: snapshot.data as Candidate,
+                              ),
+                            ],
+                          );
+                        } else {
+                          return const InformationCard();
+                        }
+                      })),
+                  settingButton(context),
+                  logoutButton(context),
+                ],
+              ),
+            ))
+        : const UnLoginPage();
   }
 }
 
@@ -174,9 +168,7 @@ class InformationCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditPage(
-                                  candidate: candidate,
-                                )),
+                            builder: (context) => const EditPage()),
                       )
                     },
                     child: const Text(
@@ -337,16 +329,17 @@ class _CardVisitState extends State<CardVisit> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    Stack(alignment: Alignment.topCenter, children: [
+                    Stack(alignment: Alignment.topCenter, children: const [
                       CircleAvatar(
                         backgroundColor: darkGrayColor,
                         radius: 75,
                         child: CircleAvatar(
-                          backgroundImage: (widget.avatar == '' ||
-                                      widget.avatar == "null"
-                                  ? const AssetImage('images/logo_r2s.jpg')
-                                  : CachedNetworkImageProvider(widget.avatar))
-                              as ImageProvider,
+                          // backgroundImage: (widget.avatar == '' ||
+                          //             widget.avatar == "null"
+                          //         ? const AssetImage('images/logo_r2s.jpg')
+                          //         : CachedNetworkImageProvider(widget.avatar))
+                          //     as ImageProvider,
+                          backgroundImage: AssetImage('images/logo_r2s.jpg'),
                           radius: 70,
                         ),
                       ),
@@ -354,7 +347,7 @@ class _CardVisitState extends State<CardVisit> {
                     Container(
                       margin: const EdgeInsets.only(top: 10),
                       child: Text(
-                        widget.username,
+                        widget.name,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.openSans(fontSize: 30),
                       ),
@@ -396,11 +389,15 @@ showAlertDialog(BuildContext context, Function function) {
       Navigator.of(context).pop();
     },
   );
+  Controller personPageController = Get.put(Controller());
+
   Widget cancelButton = TextButton(
     child:
         const Text("Đồng ý", style: TextStyle(fontSize: 20, color: Colors.red)),
     onPressed: () {
       Navigator.of(context).pop();
+      personPageController.signOut();
+      personPageController.changeSelectedIndex(0);
     },
   );
 

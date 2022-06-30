@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:it_intership_jobs_r2s/src/ui/base/base_viewmodel.dart';
 import '../../utils/colors.dart';
 import '../../utils/global_variables.dart';
 
@@ -11,17 +13,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var selectedIndex = 0;
+  Controller homeScreenController = Get.put(Controller());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: grayColor,
       body: SafeArea(
-        child: appScreen[selectedIndex],
+        child: Obx(() => appScreen[homeScreenController.selectedIndex.value]),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
+        currentIndex: homeScreenController.selectedIndex.value,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
           BottomNavigationBarItem(
@@ -30,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         onTap: (index) {
           setState(() {
-            selectedIndex = index;
+            homeScreenController.changeSelectedIndex(index);
           });
         },
       ),
